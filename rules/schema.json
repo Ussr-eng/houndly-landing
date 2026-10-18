@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Regulatory deadline rule set",
+  "description": "Framework-neutral deadline rules. Consumed by the backend (Python) and the landing site (TypeScript). Semantics are specified in rules/README.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "rule_set_version", "rules"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "rule_set_version": {
+      "description": "Version of this rule set. Changing any rule requires a new version; stored deadlines keep the version they were computed with.",
+      "type": "string",
+      "pattern": "^v[1-9][0-9]*$"
+    },
+    "rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/rule" }
+    }
+  },
+  "$defs": {
+    "regime": {
+      "type": "string",
+      "enum": ["CRA", "NIS2", "GDPR"]
+    },
+    "event_type": {
+      "description": "Legal qualification of the event under one regime.",
+      "type": "string",
+      "enum": [
+        "actively_exploited_vulnerability",
+        "severe_incident",
+        "significant_incident",
+        "personal_data_breach"
+      ]
+    },
+    "stage": {
+      "type": "string",
+      "enum": ["early_warning", "notification", "final_report"]
+    },
+    "anchor": {
+      "description": "Instant the offset is counted from. aware_at: when the organisation became aware of the event. fix_available_at: when the first corrective or mitigating measure was made available (CRA wording). notification_submitted_at: when the notification stage was actually submitted. An unknown anchor yields a 'waiting' state, never a date.",
+      "type": "string",
+      "enum": ["aware_at", "fix_available_at", "notification_submitted_at"]
+    },
+    "offset": {
+      "description": "Exactly one unit. hours: exact elapsed hours on the UTC timeline. months: calendar months on the local wall clock of the reporting timezone, clamped to the last day of the target month (see rules/README.md).",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["hours"],
+          "properties": { "hours": { "type": "integer", "minimum": 1 } }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["months"],
+          "properties": { "months": { "type": "integer", "minimum": 1 } }
+        }
+      ]
+    },
+    "rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "regime",
+        "event_type",
+        "stage",
+        "anchor",
+        "offset",
+        "source_url",
+        "verified_at",
+        "notes"
+      ],
+      "properties": {
+        "id": {
+          "description": "Stable identifier, unique within the rule set. Stored on every computed deadline.",
+          "type": "string",
+          "pattern": "^[a-z0-9_]+(\\.[a-z0-9_]+)*$"
+        },
+        "regime": { "$ref": "#/$defs/regime" },
+        "event_type": { "$ref": "#/$defs/event_type" },
+        "stage": { "$ref": "#/$defs/stage" },
+        "anchor": { "$ref": "#/$defs/anchor" },
+        "offset": { "$ref": "#/$defs/offset" },
+        "source_url": {
+          "description": "Official source of the legal text.",
+          "type": "string",
+          "pattern": "^https://"
+        },
+        "verified_at": {
+          "description": "Date the rule was checked against the official legal text; null until then.",
+          "oneOf": [
+            { "type": "null" },
+            { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" }
+          ]
+        },
+        "notes": {
+          "description": "Legal basis and caveats. Must contain TODO(verify) while verified_at is null.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

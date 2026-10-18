@@ -1,0 +1,25 @@
+{
+  "$schema": "../case.schema.json",
+  "id": "007-gdpr-breach-hours-ignore-timezone",
+  "description": "GDPR personal data breach: a single 72h notification rule; hour offsets do not depend on the reporting timezone.",
+  "rule_set_version": "v1",
+  "input": {
+    "aware_at": "2026-10-01T09:00:00Z",
+    "reporting_timezone": "Europe/Helsinki",
+    "events": [
+      {
+        "regime": "GDPR",
+        "event_type": "personal_data_breach"
+      }
+    ],
+    "fix_available_at": null,
+    "notification_submitted_at": null
+  },
+  "expected": [
+    {
+      "rule_id": "gdpr.personal_data_breach.notification",
+      "status": "due",
+      "due_at": "2026-10-04T09:00:00Z"
+    }
+  ]
+}

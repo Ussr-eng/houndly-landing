@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Shared deadline test case",
+  "description": "One input to compute_deadlines and its expected result: either a list of deadlines or a stable error code. Semantics are specified in rules/README.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "id", "description", "rule_set_version", "input"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "id": {
+      "description": "Equals the file name without .json.",
+      "type": "string",
+      "pattern": "^[0-9]{3}-[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "description": { "type": "string", "minLength": 1 },
+    "rule_set_version": { "type": "string", "pattern": "^v[1-9][0-9]*$" },
+    "input": { "$ref": "#/$defs/input" },
+    "expected": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/expected_deadline" }
+    },
+    "expected_error": { "$ref": "#/$defs/error_code" }
+  },
+  "oneOf": [
+    { "required": ["expected"], "not": { "required": ["expected_error"] } },
+    { "required": ["expected_error"], "not": { "required": ["expected"] } }
+  ],
+  "$defs": {
+    "instant": {
+      "description": "UTC instant, second precision, always with a Z suffix.",
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "regime": {
+      "type": "string",
+      "enum": ["CRA", "NIS2", "GDPR"]
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "actively_exploited_vulnerability",
+        "severe_incident",
+        "significant_incident",
+        "personal_data_breach"
+      ]
+    },
+    "anchor": {
+      "type": "string",
+      "enum": ["aware_at", "fix_available_at", "notification_submitted_at"]
+    },
+    "error_code": {
+      "description": "Stable machine-readable error code. Implementations must not depend on message text.",
+      "type": "string",
+      "enum": [
+        "notification_submitted_before_aware_at",
+        "unsupported_event",
+        "unknown_reporting_timezone"
+      ]
+    },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "aware_at",
+        "reporting_timezone",
+        "events",
+        "fix_available_at",
+        "notification_submitted_at"
+      ],
+      "properties": {
+        "aware_at": { "$ref": "#/$defs/instant" },
+        "reporting_timezone": {
+          "description": "IANA timezone of the competent authority's member state. Month offsets are counted on its wall clock. Not the user's display timezone.",
+          "type": "string",
+          "pattern": "^[A-Za-z_]+(/[A-Za-z0-9_+-]+)*$"
+        },
+        "events": {
+          "description": "Legal qualification of the incident under each applicable regime.",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["regime", "event_type"],
+            "properties": {
+              "regime": { "$ref": "#/$defs/regime" },
+              "event_type": { "$ref": "#/$defs/event_type" }
+            }
+          }
+        },
+        "fix_available_at": {
+          "description": "When the first corrective or mitigating measure was made available (CRA wording); null if not yet.",
+          "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/instant" }]
+        },
+        "notification_submitted_at": {
+          "description": "When the notification stage was actually submitted; null if not yet.",
+          "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/instant" }]
+        }
+      }
+    },
+    "expected_deadline": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["rule_id", "status", "due_at"],
+          "properties": {
+            "rule_id": { "type": "string" },
+            "status": { "const": "due" },
+            "due_at": { "$ref": "#/$defs/instant" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["rule_id", "status", "waiting_for"],
+          "properties": {
+            "rule_id": { "type": "string" },
+            "status": { "const": "waiting" },
+            "waiting_for": { "$ref": "#/$defs/anchor" }
+          }
+        }
+      ]
+    }
+  }
+}

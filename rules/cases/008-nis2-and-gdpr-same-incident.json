@@ -1,0 +1,44 @@
+{
+  "$schema": "../case.schema.json",
+  "id": "008-nis2-and-gdpr-same-incident",
+  "description": "One incident qualified under NIS2 and GDPR: both rule sets apply in parallel.",
+  "rule_set_version": "v1",
+  "input": {
+    "aware_at": "2026-10-01T09:00:00Z",
+    "reporting_timezone": "Europe/Berlin",
+    "events": [
+      {
+        "regime": "NIS2",
+        "event_type": "significant_incident"
+      },
+      {
+        "regime": "GDPR",
+        "event_type": "personal_data_breach"
+      }
+    ],
+    "fix_available_at": null,
+    "notification_submitted_at": null
+  },
+  "expected": [
+    {
+      "rule_id": "nis2.significant_incident.early_warning",
+      "status": "due",
+      "due_at": "2026-10-02T09:00:00Z"
+    },
+    {
+      "rule_id": "nis2.significant_incident.notification",
+      "status": "due",
+      "due_at": "2026-10-04T09:00:00Z"
+    },
+    {
+      "rule_id": "nis2.significant_incident.final_report",
+      "status": "waiting",
+      "waiting_for": "notification_submitted_at"
+    },
+    {
+      "rule_id": "gdpr.personal_data_breach.notification",
+      "status": "due",
+      "due_at": "2026-10-04T09:00:00Z"
+    }
+  ]
+}

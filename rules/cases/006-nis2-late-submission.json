@@ -1,0 +1,35 @@
+{
+  "$schema": "../case.schema.json",
+  "id": "006-nis2-late-submission",
+  "description": "NIS2 notification submitted after its 72h deadline: final report still counts from the actual submission (11:00 CEST -> 11:00 CET).",
+  "rule_set_version": "v1",
+  "input": {
+    "aware_at": "2026-10-01T09:00:00Z",
+    "reporting_timezone": "Europe/Berlin",
+    "events": [
+      {
+        "regime": "NIS2",
+        "event_type": "significant_incident"
+      }
+    ],
+    "fix_available_at": null,
+    "notification_submitted_at": "2026-10-06T09:00:00Z"
+  },
+  "expected": [
+    {
+      "rule_id": "nis2.significant_incident.early_warning",
+      "status": "due",
+      "due_at": "2026-10-02T09:00:00Z"
+    },
+    {
+      "rule_id": "nis2.significant_incident.notification",
+      "status": "due",
+      "due_at": "2026-10-04T09:00:00Z"
+    },
+    {
+      "rule_id": "nis2.significant_incident.final_report",
+      "status": "due",
+      "due_at": "2026-11-06T10:00:00Z"
+    }
+  ]
+}

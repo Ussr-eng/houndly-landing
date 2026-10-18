@@ -1,0 +1,31 @@
+{
+  "source": "../backend/rules",
+  "backend_commit": "115544f96adf52fa8a32fc7a40d8c81429b91506",
+  "backend_dirty": false,
+  "rule_set_version": "v1",
+  "checksum": "c4ad6626ebb93eace410e8bb065090ad106195f18d69fbfddb5dd7fd214e69ef",
+  "files": {
+    "README.md": "c9c63fecfe1348a7d9e44a763a6e1288906ac30f00e6b50694c148ce068b5b62",
+    "case.schema.json": "e8ac5ee0615297e79c74e2ceeefe220e7bb9cd84d44b4587a9f67d77d68836a2",
+    "cases/001-cra-vulnerability-all-anchors-known.json": "40ee32751584122a96cc926be10b7e54536225dc88f325e3702cf6d510b3a097",
+    "cases/002-cra-vulnerability-no-measure-yet.json": "942c18958059654955aa86b9875951c499f9434bedec02a3b099cf00f993dd49",
+    "cases/003-cra-severe-incident-month-across-eu-dst-end.json": "441321806528b5e94bd1a0589bcf2fc0016e0eb363d9f16e21d886a7da96a98c",
+    "cases/004-nis2-notification-not-submitted.json": "1fe36b86cd06222c3209538409e468d37a8262c7cd0112d01a5c08743088ae7a",
+    "cases/005-nis2-early-submission-moves-final-report.json": "3c11b0413cc822cca11fe441937b6051bf80384b5c470486b515b15a00cdcf76",
+    "cases/006-nis2-late-submission.json": "fab9e6e9e27471660c1c084f23c6b11fd2dbbda0faff461db7cc2f358fe4484a",
+    "cases/007-gdpr-breach-hours-ignore-timezone.json": "74960a9760c65a6008137061e0d17d78ab4ca202727d078ba2fd3a699d4dad95",
+    "cases/008-nis2-and-gdpr-same-incident.json": "78c2b48938e41ab2dda5e9b48e241fd1b7ec43fdc4fc524e1f12ffba6226533a",
+    "cases/009-berlin-hours-across-dst-start.json": "0cd9cb3ebaeb83f24ff9996bde42ab2168677e01fc2d371f1d200dba7b2f90ba",
+    "cases/010-berlin-month-uses-local-date.json": "d793718f2adbcd7d405d785cda563311e786c66270ded4571931a9dbf46161c2",
+    "cases/011-new-york-hours-across-dst-end.json": "200138055103ef0ca96a79df7be22a87d7fde3b936436194111e48a707663a44",
+    "cases/012-new-york-month-into-dst-gap.json": "9939f79a360bb032f49f23a0185bee697d6a2d99ce47f6c622a281c1b94b59fb",
+    "cases/013-new-york-month-into-ambiguous-time.json": "d1826049b638e1d42c58c022630d7b23a4d3b3413580df2b532a0756b113b4c5",
+    "cases/014-end-of-month-clamp-non-leap-year.json": "309eee8ec6360ab7f6b693b7a490441dbaed3ab6210dffe836d83506786a6318",
+    "cases/015-end-of-month-clamp-leap-year.json": "7b1562c4d15a6442f4cac6503a690da3b2bef68c9919977fc90b89f84f1b324a",
+    "cases/016-error-notification-before-aware.json": "b2b072aa1e3d593868ec9e5799a53993e0129bed0d87126239b4dae1103ecd68",
+    "cases/017-error-unsupported-regime-event-pair.json": "6a9cea9b73db690157068d1bc6e8e2854aa62b603083b61b99f5ec1f03738624",
+    "cases/018-error-unknown-reporting-timezone.json": "98da9a16a1026288814e9b16f5772c8faeff1e9e67b628a368a3f66a009081f4",
+    "schema.json": "e861abd2e88d354d0f2bb2b18c3ae95530bb3e14db377207e0df7b00e0360069",
+    "v1.json": "1f150edc9704577331577252d02a8064acaa33bb2f35d2722a3f9cbecd44b71a"
+  }
+}

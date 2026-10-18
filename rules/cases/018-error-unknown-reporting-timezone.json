@@ -1,0 +1,19 @@
+{
+  "$schema": "../case.schema.json",
+  "id": "018-error-unknown-reporting-timezone",
+  "description": "A reporting_timezone that is not in the IANA database is rejected.",
+  "rule_set_version": "v1",
+  "input": {
+    "aware_at": "2026-10-01T09:00:00Z",
+    "reporting_timezone": "Europe/Atlantis",
+    "events": [
+      {
+        "regime": "NIS2",
+        "event_type": "significant_incident"
+      }
+    ],
+    "fix_available_at": null,
+    "notification_submitted_at": null
+  },
+  "expected_error": "unknown_reporting_timezone"
+}

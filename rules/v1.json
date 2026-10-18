@@ -1,0 +1,116 @@
+{
+  "$schema": "./schema.json",
+  "rule_set_version": "v1",
+  "rules": [
+    {
+      "id": "cra.actively_exploited_vulnerability.early_warning",
+      "regime": "CRA",
+      "event_type": "actively_exploited_vulnerability",
+      "stage": "early_warning",
+      "anchor": "aware_at",
+      "offset": { "hours": 24 },
+      "source_url": "https://eur-lex.europa.eu/eli/reg/2024/2847/oj",
+      "verified_at": null,
+      "notes": "Basis: Regulation (EU) 2024/2847, Art. 14(2)(a) — TODO(verify) article/paragraph and the 24h period against the official text. TODO(verify) the date the reporting obligations start to apply (believed to be 11 September 2026)."
+    },
+    {
+      "id": "cra.actively_exploited_vulnerability.notification",
+      "regime": "CRA",
+      "event_type": "actively_exploited_vulnerability",
+      "stage": "notification",
+      "anchor": "aware_at",
+      "offset": { "hours": 72 },
+      "source_url": "https://eur-lex.europa.eu/eli/reg/2024/2847/oj",
+      "verified_at": null,
+      "notes": "Basis: Regulation (EU) 2024/2847, Art. 14(2)(b) — TODO(verify) article/paragraph, the 72h period, and that it is counted from awareness rather than from the early warning."
+    },
+    {
+      "id": "cra.actively_exploited_vulnerability.final_report",
+      "regime": "CRA",
+      "event_type": "actively_exploited_vulnerability",
+      "stage": "final_report",
+      "anchor": "fix_available_at",
+      "offset": { "hours": 336 },
+      "source_url": "https://eur-lex.europa.eu/eli/reg/2024/2847/oj",
+      "verified_at": null,
+      "notes": "Basis: Regulation (EU) 2024/2847, Art. 14(2)(c): no later than 14 days after a corrective or mitigating measure is available — TODO(verify) article/paragraph and the 14-day period. fix_available_at means the first corrective or mitigating measure made available (a mitigation counts, not only a full fix) — TODO(verify) this reading. 14 days is encoded as exact 336h (conservative; no calendar-day or holiday rules). TODO(verify) behaviour when the measure was available before aware_at: the 14-day deadline could then precede the 72h notification."
+    },
+    {
+      "id": "cra.severe_incident.early_warning",
+      "regime": "CRA",
+      "event_type": "severe_incident",
+      "stage": "early_warning",
+      "anchor": "aware_at",
+      "offset": { "hours": 24 },
+      "source_url": "https://eur-lex.europa.eu/eli/reg/2024/2847/oj",
+      "verified_at": null,
+      "notes": "Basis: Regulation (EU) 2024/2847, Art. 14(4)(a), severe incident having an impact on the security of the product — TODO(verify) article/paragraph and the 24h period."
+    },
+    {
+      "id": "cra.severe_incident.notification",
+      "regime": "CRA",
+      "event_type": "severe_incident",
+      "stage": "notification",
+      "anchor": "aware_at",
+      "offset": { "hours": 72 },
+      "source_url": "https://eur-lex.europa.eu/eli/reg/2024/2847/oj",
+      "verified_at": null,
+      "notes": "Basis: Regulation (EU) 2024/2847, Art. 14(4)(b) — TODO(verify) article/paragraph and the 72h period."
+    },
+    {
+      "id": "cra.severe_incident.final_report",
+      "regime": "CRA",
+      "event_type": "severe_incident",
+      "stage": "final_report",
+      "anchor": "notification_submitted_at",
+      "offset": { "months": 1 },
+      "source_url": "https://eur-lex.europa.eu/eli/reg/2024/2847/oj",
+      "verified_at": null,
+      "notes": "Basis: Regulation (EU) 2024/2847, Art. 14(4)(c): within one month after the submission of the incident notification — TODO(verify) article/paragraph and the one-month period. Counted from the actual submission, early or late."
+    },
+    {
+      "id": "nis2.significant_incident.early_warning",
+      "regime": "NIS2",
+      "event_type": "significant_incident",
+      "stage": "early_warning",
+      "anchor": "aware_at",
+      "offset": { "hours": 24 },
+      "source_url": "https://eur-lex.europa.eu/eli/dir/2022/2555/oj",
+      "verified_at": null,
+      "notes": "Basis: Directive (EU) 2022/2555, Art. 23(4)(a) — TODO(verify) article/paragraph and the 24h period. TODO(verify) whether national transposition changes the periods (national specifics are out of MVP scope). Sector variants (e.g. trust service providers) are not modelled."
+    },
+    {
+      "id": "nis2.significant_incident.notification",
+      "regime": "NIS2",
+      "event_type": "significant_incident",
+      "stage": "notification",
+      "anchor": "aware_at",
+      "offset": { "hours": 72 },
+      "source_url": "https://eur-lex.europa.eu/eli/dir/2022/2555/oj",
+      "verified_at": null,
+      "notes": "Basis: Directive (EU) 2022/2555, Art. 23(4)(b) — TODO(verify) article/paragraph and the 72h period. The intermediate report on request (Art. 23(4)(c), TODO(verify)) has no fixed period and is not modelled."
+    },
+    {
+      "id": "nis2.significant_incident.final_report",
+      "regime": "NIS2",
+      "event_type": "significant_incident",
+      "stage": "final_report",
+      "anchor": "notification_submitted_at",
+      "offset": { "months": 1 },
+      "source_url": "https://eur-lex.europa.eu/eli/dir/2022/2555/oj",
+      "verified_at": null,
+      "notes": "Basis: Directive (EU) 2022/2555, Art. 23(4)(d): not later than one month after the submission of the incident notification — TODO(verify) article/paragraph and the one-month period. Counted from the actual submission, early or late. The progress report for an incident still ongoing at that time (Art. 23(4)(e), TODO(verify)) is not modelled."
+    },
+    {
+      "id": "gdpr.personal_data_breach.notification",
+      "regime": "GDPR",
+      "event_type": "personal_data_breach",
+      "stage": "notification",
+      "anchor": "aware_at",
+      "offset": { "hours": 72 },
+      "source_url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj",
+      "verified_at": null,
+      "notes": "Basis: Regulation (EU) 2016/679, Art. 33(1): notification to the supervisory authority without undue delay and, where feasible, not later than 72 hours after becoming aware — TODO(verify) article/paragraph and the 72h period. Not modelled (no fixed period): phased information (Art. 33(4)), processor-to-controller notice (Art. 33(2)), communication to data subjects (Art. 34) — TODO(verify)."
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "../case.schema.json",
+  "id": "003-cra-severe-incident-month-across-eu-dst-end",
+  "description": "CRA severe incident: final report = submission + 1 month on the Berlin wall clock (17:00 CEST -> 17:00 CET), so the UTC hour shifts from 15:00 to 16:00.",
+  "rule_set_version": "v1",
+  "input": {
+    "aware_at": "2026-10-01T09:00:00Z",
+    "reporting_timezone": "Europe/Berlin",
+    "events": [
+      {
+        "regime": "CRA",
+        "event_type": "severe_incident"
+      }
+    ],
+    "fix_available_at": null,
+    "notification_submitted_at": "2026-10-03T15:00:00Z"
+  },
+  "expected": [
+    {
+      "rule_id": "cra.severe_incident.early_warning",
+      "status": "due",
+      "due_at": "2026-10-02T09:00:00Z"
+    },
+    {
+      "rule_id": "cra.severe_incident.notification",
+      "status": "due",
+      "due_at": "2026-10-04T09:00:00Z"
+    },
+    {
+      "rule_id": "cra.severe_incident.final_report",
+      "status": "due",
+      "due_at": "2026-11-03T16:00:00Z"
+    }
+  ]
+}

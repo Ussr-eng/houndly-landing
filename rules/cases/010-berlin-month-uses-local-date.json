@@ -1,0 +1,35 @@
+{
+  "$schema": "../case.schema.json",
+  "id": "010-berlin-month-uses-local-date",
+  "description": "Submission at 2026-10-01 00:30 Berlin (still 2026-09-30 in UTC): one month is counted on the local date -> 2026-11-01 00:30 CET. UTC arithmetic would give 2026-10-30T22:30:00Z.",
+  "rule_set_version": "v1",
+  "input": {
+    "aware_at": "2026-09-30T12:00:00Z",
+    "reporting_timezone": "Europe/Berlin",
+    "events": [
+      {
+        "regime": "NIS2",
+        "event_type": "significant_incident"
+      }
+    ],
+    "fix_available_at": null,
+    "notification_submitted_at": "2026-09-30T22:30:00Z"
+  },
+  "expected": [
+    {
+      "rule_id": "nis2.significant_incident.early_warning",
+      "status": "due",
+      "due_at": "2026-10-01T12:00:00Z"
+    },
+    {
+      "rule_id": "nis2.significant_incident.notification",
+      "status": "due",
+      "due_at": "2026-10-03T12:00:00Z"
+    },
+    {
+      "rule_id": "nis2.significant_incident.final_report",
+      "status": "due",
+      "due_at": "2026-10-31T23:30:00Z"
+    }
+  ]
+}
