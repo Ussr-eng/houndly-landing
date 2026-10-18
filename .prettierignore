@@ -1,0 +1,7 @@
+dist/
+.astro/
+node_modules/
+pnpm-lock.yaml
+rules/
+CLAUDE.md
+TASKS.md

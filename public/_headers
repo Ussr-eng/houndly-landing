@@ -1,0 +1,16 @@
+# Cloudflare Pages headers. A Content-Security-Policy is added in L4 once the form provider is known.
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
+  X-Frame-Options: DENY
+
+# Keep preview and branch deployments (<hash>.<project>.pages.dev) out of search results.
+# The production *.pages.dev host does not match, so it stays indexable until a custom domain exists.
+# TODO(verify): host placeholder matching on the current Cloudflare Pages platform.
+https://:version.:project.pages.dev/*
+  X-Robots-Tag: noindex
+
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable

@@ -1,0 +1,139 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { article, breadcrumbList } from '../lib/seo/jsonld';
+import { absoluteUrl } from '../lib/seo/build';
+import { site, siteUrl } from '../config/site';
+import { htmlLang, localizedPath } from '../i18n/config';
+import type { GuideData } from '../content/guide-schema';
+import { t } from '../i18n';
+
+interface Props {
+  guide: GuideData;
+  related: { title: string; slug: string }[];
+}
+
+const { guide, related } = Astro.props;
+const s = t(guide.locale);
+const origin = siteUrl();
+const home = localizedPath(guide.locale, '/');
+const path = localizedPath(guide.locale, `/guides/${guide.slug}/`);
+const author = guide.author ?? site.author;
+
+const dateFmt = new Intl.DateTimeFormat(htmlLang[guide.locale], {
+  dateStyle: 'long',
+  timeZone: 'UTC',
+});
+const isoDate = (d: Date) => d.toISOString().slice(0, 10);
+
+const crumbs = [
+  { name: s.breadcrumbs.home, path: home },
+  { name: guide.title, path },
+];
+
+const jsonLd = [
+  article({
+    headline: guide.title,
+    description: guide.description,
+    url: origin + path,
+    image: absoluteUrl(origin, site.defaultOgImage),
+    datePublished: guide.datePublished,
+    dateModified: guide.dateModified,
+    author,
+    publisher: { name: site.name, url: origin + '/' },
+    inLanguage: htmlLang[guide.locale],
+  }),
+  breadcrumbList(crumbs.map((c) => ({ name: c.name, url: origin + c.path }))),
+];
+---
+
+<BaseLayout
+  title={guide.title}
+  description={guide.description}
+  locale={guide.locale}
+  neutralPath={`/guides/${guide.slug}/`}
+  ogType="article"
+  jsonLd={jsonLd}
+>
+  <nav aria-label={s.breadcrumbs.label}>
+    <ol class="breadcrumbs">
+      {crumbs.map((c, i) =>
+        i === crumbs.length - 1 ? (
+          <li aria-current="page">{c.name}</li>
+        ) : (
+          <li>
+            <a href={c.path}>{c.name}</a>
+          </li>
+        ),
+      )}
+    </ol>
+  </nav>
+
+  <article class="prose">
+    <h1>{guide.title}</h1>
+    <p class="guide-meta">
+      {guide.lastVerified ? (
+        <>
+          {s.guide.lastVerified}:{' '}
+          <time datetime={isoDate(guide.lastVerified)}>{dateFmt.format(guide.lastVerified)}</time>
+        </>
+      ) : (
+        s.guide.notVerified
+      )}
+      <br />
+      {s.guide.updated}:{' '}
+      <time datetime={isoDate(guide.dateModified)}>{dateFmt.format(guide.dateModified)}</time>
+    </p>
+
+    <slot />
+
+    <p>
+      <a href={home}>{s.guide.calculatorCta}</a>
+    </p>
+
+    <section aria-labelledby="sources-heading">
+      <h2 id="sources-heading">{s.guide.sources}</h2>
+      <ul>
+        {guide.sources.map((src) => (
+          <li>
+            <a href={src.url} rel="noopener">
+              {src.title}
+            </a>{' '}
+            ({src.publisher})
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section aria-labelledby="related-heading">
+      <h2 id="related-heading">{s.guide.related}</h2>
+      <ul>
+        {related.map((r) => (
+          <li>
+            <a href={localizedPath(guide.locale, `/guides/${r.slug}/`)}>{r.title}</a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .breadcrumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--font-size-sm);
+  }
+  .breadcrumbs li + li::before {
+    content: '/';
+    margin-inline-end: var(--space-2);
+    color: var(--color-text-muted);
+  }
+  .guide-meta {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+  }
+</style>

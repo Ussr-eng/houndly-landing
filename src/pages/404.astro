@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { t } from '../i18n';
+
+const s = t('en').notFound;
+---
+
+<BaseLayout title={s.title} description={s.body} noindex>
+  <div class="prose">
+    <h1>{s.title}</h1>
+    <p>{s.body}</p>
+    <p>
+      <a href="/">{s.back}</a>
+    </p>
+  </div>
+</BaseLayout>

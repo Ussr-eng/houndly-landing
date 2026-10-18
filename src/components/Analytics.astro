@@ -1,0 +1,21 @@
+---
+// Plausible: cookieless, no consent banner needed. Rendered only in production builds
+// with PUBLIC_ANALYTICS_DOMAIN set, so dev and preview deploys send nothing.
+import { site } from '../config/site';
+
+const domain = import.meta.env.PUBLIC_ANALYTICS_DOMAIN as string | undefined;
+const enabled = import.meta.env.PROD && !!domain;
+---
+
+{enabled && (
+  <>
+    <script is:inline>
+      window.plausible =
+        window.plausible ||
+        function (...args) {
+          (window.plausible.q = window.plausible.q || []).push(args);
+        };
+    </script>
+    <script is:inline defer data-domain={domain} src={site.analytics.scriptSrc} />
+  </>
+)}

@@ -1,0 +1,35 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import GuideLayout from '../../layouts/GuideLayout.astro';
+import { publishedGuides } from '../../lib/guides';
+
+export const getStaticPaths = (async () => {
+  const guides = publishedGuides(
+    (await getCollection('guides')).filter((g) => g.data.locale === 'en'),
+  );
+  const bySlug = new Map(guides.map((g) => [g.data.slug, g]));
+  return guides.map((guide) => ({
+    params: { slug: guide.data.slug },
+    props: {
+      guide,
+      related: guide.data.related.map((slug) => ({
+        slug,
+        title: bySlug.get(slug)?.data.title ?? slug,
+      })),
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  guide: CollectionEntry<'guides'>;
+  related: { slug: string; title: string }[];
+}
+
+const { guide, related } = Astro.props;
+const { Content } = await render(guide);
+---
+
+<GuideLayout guide={guide.data} related={related}>
+  <Content />
+</GuideLayout>

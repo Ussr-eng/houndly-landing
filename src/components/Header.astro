@@ -1,0 +1,53 @@
+---
+import { site } from '../config/site';
+import { localizedPath, type Locale } from '../i18n/config';
+import { t } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const s = t(locale);
+const home = localizedPath(locale, '/');
+---
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="site-header__brand" href={home}>
+      {site.name}
+    </a>
+    <nav aria-label={s.nav.label}>
+      <ul class="site-header__nav">
+        <li>
+          <a href={home}>{s.nav.calculator}</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid var(--color-border);
+  }
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    min-height: 3.5rem;
+  }
+  .site-header__brand {
+    font-weight: 700;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+  .site-header__nav {
+    display: flex;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+</style>
