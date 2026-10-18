@@ -91,6 +91,12 @@
   border-radius: var(--radius);
 }
 
+/* An empty date field shows nothing until it is focused: no grey example date (Safari) and
+   no dd.mm.yyyy mask (Chrome). The hint below the field says what to enter. */
+.calc input[type='datetime-local'][data-empty='true']:not(:focus)::-webkit-datetime-edit {
+  color: transparent;
+}
+
 .calc input[aria-invalid='true'] {
   border-color: var(--color-danger);
 }

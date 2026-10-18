@@ -55,6 +55,17 @@ describe('Calculator', () => {
     expect(screen.getByText('2026-11-02 20:15 UTC')).toBeTruthy();
   });
 
+  it('marks empty date fields so no browser example date is shown', async () => {
+    const { user } = setup();
+    const fix = screen.getByLabelText(/First fix or mitigation/);
+    expect(fix.getAttribute('data-empty')).toBe('true');
+    expect(fix).toHaveProperty('value', '');
+    expect(fix.hasAttribute('placeholder')).toBe(false);
+    await user.type(fix, '2026-10-20T10:00');
+    expect(fix.hasAttribute('data-empty')).toBe(false);
+    expect(screen.getByLabelText('Became aware at').hasAttribute('data-empty')).toBe(false);
+  });
+
   it('ticks boxes from the helper answers and lets the person change them', async () => {
     const { user } = setup();
     await user.click(screen.getByText(/Not sure which boxes apply/));

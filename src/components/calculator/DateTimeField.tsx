@@ -72,6 +72,9 @@ export function DateTimeField({
         value={shown}
         required={required}
         aria-invalid={invalid || missing ? true : undefined}
+        // Empty fields hide the browser's own date text (Safari draws today's date in grey,
+        // which reads like a real value). See calculator.css.
+        data-empty={shown === '' ? 'true' : undefined}
         aria-describedby={messages.length ? `${id}-hint` : undefined}
         onChange={(e) => {
           const text = e.target.value;
