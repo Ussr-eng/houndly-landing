@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { webApplication } from '../lib/seo/jsonld';
+import { site, siteUrl } from '../config/site';
+
+const title = 'EU incident reporting deadline calculator';
+const description = site.defaultDescription;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={[
+    webApplication({
+      name: `${site.name} deadline calculator`,
+      url: siteUrl() + '/',
+      description,
+      inLanguage: 'en',
+    }),
+  ]}
+>
+  <div class="prose">
+    <h1>{title}</h1>
+    <p>
+      Enter when you became aware of an incident or vulnerability. See every reporting deadline
+      under the Cyber Resilience Act, NIS2 and GDPR in your time zone.
+    </p>
+  </div>
+  <!-- L2: calculator island renders here with its default state in the static HTML. -->
+  <section id="calculator" aria-label="Deadline calculator"></section>
+</BaseLayout>

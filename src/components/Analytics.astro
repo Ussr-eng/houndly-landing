@@ -1,0 +1,20 @@
+---
+// Umami Cloud: cookieless, no consent banner needed. Rendered only in production builds with both
+// PUBLIC_ANALYTICS_WEBSITE_ID (Umami website ID) and PUBLIC_ANALYTICS_DOMAIN (host to count) set,
+// so dev and preview deploys send nothing.
+import { site } from '../config/site';
+
+const websiteId = import.meta.env.PUBLIC_ANALYTICS_WEBSITE_ID as string | undefined;
+const domain = import.meta.env.PUBLIC_ANALYTICS_DOMAIN as string | undefined;
+const enabled = import.meta.env.PROD && !!websiteId && !!domain;
+---
+
+{enabled && (
+  <script
+    is:inline
+    defer
+    src={site.analytics.scriptSrc}
+    data-website-id={websiteId}
+    data-domains={domain}
+  />
+)}

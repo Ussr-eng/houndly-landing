@@ -1,0 +1,84 @@
+---
+import '../styles/tokens.css';
+import '../styles/base.css';
+import Seo from '../components/Seo.astro';
+import Analytics from '../components/Analytics.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { buildSeo } from '../lib/seo/build';
+import { allowIndexing, site, siteUrl } from '../config/site';
+import {
+  defaultLocale,
+  htmlLang,
+  locales,
+  ogLocale,
+  normalizePath,
+  type Locale,
+} from '../i18n/config';
+import { t } from '../i18n';
+
+interface Props {
+  title: string;
+  description: string;
+  locale?: Locale;
+  /** Locale-neutral path for hreflang; defaults to the current URL path. */
+  neutralPath?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown>[];
+}
+
+const {
+  title,
+  description,
+  locale = defaultLocale,
+  neutralPath,
+  ogImage = site.defaultOgImage,
+  ogType = 'website',
+  noindex = false,
+  jsonLd = [],
+} = Astro.props;
+
+const path = Astro.url.pathname === '/404.html' ? '/404/' : normalizePath(Astro.url.pathname);
+const seo = buildSeo({
+  title,
+  description,
+  path,
+  origin: siteUrl(),
+  ogImage,
+  ogImageAlt: site.ogImageAlt,
+  ogType,
+  ogLocale: ogLocale[locale],
+  siteName: site.name,
+  // While the global switch is off, every page is noindex.
+  noindex: noindex || !allowIndexing(),
+  locales,
+  defaultLocale,
+  ...(neutralPath ? { neutralPath } : {}),
+});
+const s = t(locale);
+---
+
+<!doctype html>
+<html lang={htmlLang[locale]}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <Seo seo={seo} jsonLd={jsonLd} />
+    <Analytics />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">
+      {s.skipToContent}
+    </a>
+    <Header locale={locale} />
+    <main id="main" class="container" tabindex="-1">
+      <slot />
+    </main>
+    <Footer locale={locale} />
+  </body>
+</html>
