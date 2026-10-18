@@ -10,7 +10,8 @@ export default defineConfig({
   site,
   output: 'static',
   trailingSlash: 'always',
-  build: { format: 'directory' },
+  // Inline CSS (about 10 KB): one less render-blocking request on mobile.
+  build: { format: 'directory', inlineStylesheets: 'always' },
   i18n: {
     locales: ['en'],
     defaultLocale: 'en',
