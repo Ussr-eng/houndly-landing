@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { webApplication } from '../lib/seo/jsonld';
 import { site, siteUrl } from '../config/site';
+import Calculator from '../components/calculator/Calculator';
+import { t } from '../i18n';
 
 const title = 'EU incident reporting deadline calculator';
 const description = site.defaultDescription;
@@ -26,6 +28,9 @@ const description = site.defaultDescription;
       under the Cyber Resilience Act, NIS2 and GDPR in your time zone.
     </p>
   </div>
-  <!-- L2: calculator island renders here with its default state in the static HTML. -->
-  <section id="calculator" aria-label="Deadline calculator"></section>
+  <!-- Server-rendered with the fixed example; hydrates without changing the rows. -->
+  <Calculator client:load locale="en" />
+  <noscript>
+    <p class="noscript-note">{t('en').calculator.result.noscript}</p>
+  </noscript>
 </BaseLayout>

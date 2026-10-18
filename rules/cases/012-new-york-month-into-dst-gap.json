@@ -1,0 +1,35 @@
+{
+  "$schema": "../case.schema.json",
+  "id": "012-new-york-month-into-dst-gap",
+  "description": "Submission at 2026-02-08 02:30 EST; one month later 2026-03-08 02:30 does not exist (DST gap). Disambiguation 'earlier' -> 01:30 EST = 06:30Z.",
+  "rule_set_version": "v1",
+  "input": {
+    "aware_at": "2026-02-07T12:00:00Z",
+    "reporting_timezone": "America/New_York",
+    "events": [
+      {
+        "regime": "CRA",
+        "event_type": "severe_incident"
+      }
+    ],
+    "fix_available_at": null,
+    "notification_submitted_at": "2026-02-08T07:30:00Z"
+  },
+  "expected": [
+    {
+      "rule_id": "cra.severe_incident.early_warning",
+      "status": "due",
+      "due_at": "2026-02-08T12:00:00Z"
+    },
+    {
+      "rule_id": "cra.severe_incident.notification",
+      "status": "due",
+      "due_at": "2026-02-10T12:00:00Z"
+    },
+    {
+      "rule_id": "cra.severe_incident.final_report",
+      "status": "due",
+      "due_at": "2026-03-08T06:30:00Z"
+    }
+  ]
+}

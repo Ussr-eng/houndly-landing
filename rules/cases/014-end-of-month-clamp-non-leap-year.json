@@ -1,0 +1,35 @@
+{
+  "$schema": "../case.schema.json",
+  "id": "014-end-of-month-clamp-non-leap-year",
+  "description": "End of month: 31 January + 1 month clamps to 28 February (2027 is not a leap year), time of day kept.",
+  "rule_set_version": "v1",
+  "input": {
+    "aware_at": "2027-01-30T10:00:00Z",
+    "reporting_timezone": "Europe/Berlin",
+    "events": [
+      {
+        "regime": "NIS2",
+        "event_type": "significant_incident"
+      }
+    ],
+    "fix_available_at": null,
+    "notification_submitted_at": "2027-01-31T10:00:00Z"
+  },
+  "expected": [
+    {
+      "rule_id": "nis2.significant_incident.early_warning",
+      "status": "due",
+      "due_at": "2027-01-31T10:00:00Z"
+    },
+    {
+      "rule_id": "nis2.significant_incident.notification",
+      "status": "due",
+      "due_at": "2027-02-02T10:00:00Z"
+    },
+    {
+      "rule_id": "nis2.significant_incident.final_report",
+      "status": "due",
+      "due_at": "2027-02-28T10:00:00Z"
+    }
+  ]
+}

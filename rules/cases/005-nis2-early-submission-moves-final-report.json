@@ -1,0 +1,35 @@
+{
+  "$schema": "../case.schema.json",
+  "id": "005-nis2-early-submission-moves-final-report",
+  "description": "NIS2 notification submitted 12h after awareness: final report counts from the actual submission and moves earlier.",
+  "rule_set_version": "v1",
+  "input": {
+    "aware_at": "2026-06-10T08:00:00Z",
+    "reporting_timezone": "Europe/Berlin",
+    "events": [
+      {
+        "regime": "NIS2",
+        "event_type": "significant_incident"
+      }
+    ],
+    "fix_available_at": null,
+    "notification_submitted_at": "2026-06-10T20:00:00Z"
+  },
+  "expected": [
+    {
+      "rule_id": "nis2.significant_incident.early_warning",
+      "status": "due",
+      "due_at": "2026-06-11T08:00:00Z"
+    },
+    {
+      "rule_id": "nis2.significant_incident.notification",
+      "status": "due",
+      "due_at": "2026-06-13T08:00:00Z"
+    },
+    {
+      "rule_id": "nis2.significant_incident.final_report",
+      "status": "due",
+      "due_at": "2026-07-10T20:00:00Z"
+    }
+  ]
+}

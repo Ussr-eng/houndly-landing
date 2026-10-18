@@ -1,0 +1,35 @@
+{
+  "$schema": "../case.schema.json",
+  "id": "013-new-york-month-into-ambiguous-time",
+  "description": "Submission at 2026-10-01 01:30 EDT; one month later 2026-11-01 01:30 occurs twice. Disambiguation 'earlier' -> the EDT occurrence, 05:30Z.",
+  "rule_set_version": "v1",
+  "input": {
+    "aware_at": "2026-09-30T20:00:00Z",
+    "reporting_timezone": "America/New_York",
+    "events": [
+      {
+        "regime": "CRA",
+        "event_type": "severe_incident"
+      }
+    ],
+    "fix_available_at": null,
+    "notification_submitted_at": "2026-10-01T05:30:00Z"
+  },
+  "expected": [
+    {
+      "rule_id": "cra.severe_incident.early_warning",
+      "status": "due",
+      "due_at": "2026-10-01T20:00:00Z"
+    },
+    {
+      "rule_id": "cra.severe_incident.notification",
+      "status": "due",
+      "due_at": "2026-10-03T20:00:00Z"
+    },
+    {
+      "rule_id": "cra.severe_incident.final_report",
+      "status": "due",
+      "due_at": "2026-11-01T05:30:00Z"
+    }
+  ]
+}

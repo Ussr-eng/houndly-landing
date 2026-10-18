@@ -5,3 +5,4 @@ pnpm-lock.yaml
 rules/
 CLAUDE.md
 TASKS.md
+rules.lock.json

@@ -1,0 +1,19 @@
+{
+  "$schema": "../case.schema.json",
+  "id": "017-error-unsupported-regime-event-pair",
+  "description": "CRA has no personal_data_breach rules: the pair is rejected instead of silently producing no deadlines.",
+  "rule_set_version": "v1",
+  "input": {
+    "aware_at": "2026-10-01T09:00:00Z",
+    "reporting_timezone": "Europe/Berlin",
+    "events": [
+      {
+        "regime": "CRA",
+        "event_type": "personal_data_breach"
+      }
+    ],
+    "fix_available_at": null,
+    "notification_submitted_at": null
+  },
+  "expected_error": "unsupported_event"
+}

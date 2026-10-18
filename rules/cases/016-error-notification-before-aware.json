@@ -1,0 +1,19 @@
+{
+  "$schema": "../case.schema.json",
+  "id": "016-error-notification-before-aware",
+  "description": "notification_submitted_at earlier than aware_at is rejected.",
+  "rule_set_version": "v1",
+  "input": {
+    "aware_at": "2026-10-01T09:00:00Z",
+    "reporting_timezone": "Europe/Berlin",
+    "events": [
+      {
+        "regime": "NIS2",
+        "event_type": "significant_incident"
+      }
+    ],
+    "fix_available_at": null,
+    "notification_submitted_at": "2026-10-01T08:00:00Z"
+  },
+  "expected_error": "notification_submitted_before_aware_at"
+}

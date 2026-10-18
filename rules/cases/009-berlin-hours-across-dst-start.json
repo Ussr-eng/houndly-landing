@@ -1,0 +1,35 @@
+{
+  "$schema": "../case.schema.json",
+  "id": "009-berlin-hours-across-dst-start",
+  "description": "24h across the EU DST start (2026-03-29) is exact elapsed time: 11:00 CET -> 12:00 CEST, not the same local time next day.",
+  "rule_set_version": "v1",
+  "input": {
+    "aware_at": "2026-03-28T10:00:00Z",
+    "reporting_timezone": "Europe/Berlin",
+    "events": [
+      {
+        "regime": "NIS2",
+        "event_type": "significant_incident"
+      }
+    ],
+    "fix_available_at": null,
+    "notification_submitted_at": null
+  },
+  "expected": [
+    {
+      "rule_id": "nis2.significant_incident.early_warning",
+      "status": "due",
+      "due_at": "2026-03-29T10:00:00Z"
+    },
+    {
+      "rule_id": "nis2.significant_incident.notification",
+      "status": "due",
+      "due_at": "2026-03-31T10:00:00Z"
+    },
+    {
+      "rule_id": "nis2.significant_incident.final_report",
+      "status": "waiting",
+      "waiting_for": "notification_submitted_at"
+    }
+  ]
+}

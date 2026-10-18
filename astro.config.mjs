@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import { PLACEHOLDER_SITE_URL } from './src/config/site.ts';
 
@@ -16,6 +17,7 @@ export default defineConfig({
     routing: { prefixDefaultLocale: false },
   },
   integrations: [
+    react(),
     sitemap({
       filter: (page) => !new URL(page).pathname.startsWith('/404'),
       // Turns on hreflang in the sitemap once a second locale is added.

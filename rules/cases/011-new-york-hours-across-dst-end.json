@@ -1,0 +1,35 @@
+{
+  "$schema": "../case.schema.json",
+  "id": "011-new-york-hours-across-dst-end",
+  "description": "Hour offsets across the US DST end (2026-11-01): exact elapsed time (08:00 EDT -> 07:00 EST).",
+  "rule_set_version": "v1",
+  "input": {
+    "aware_at": "2026-10-31T12:00:00Z",
+    "reporting_timezone": "America/New_York",
+    "events": [
+      {
+        "regime": "CRA",
+        "event_type": "actively_exploited_vulnerability"
+      }
+    ],
+    "fix_available_at": "2026-10-31T18:00:00Z",
+    "notification_submitted_at": null
+  },
+  "expected": [
+    {
+      "rule_id": "cra.actively_exploited_vulnerability.early_warning",
+      "status": "due",
+      "due_at": "2026-11-01T12:00:00Z"
+    },
+    {
+      "rule_id": "cra.actively_exploited_vulnerability.notification",
+      "status": "due",
+      "due_at": "2026-11-03T12:00:00Z"
+    },
+    {
+      "rule_id": "cra.actively_exploited_vulnerability.final_report",
+      "status": "due",
+      "due_at": "2026-11-14T18:00:00Z"
+    }
+  ]
+}

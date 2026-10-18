@@ -1,7 +1,9 @@
 ---
 import { site } from '../config/site';
 import type { Locale } from '../i18n/config';
-import { t } from '../i18n';
+import { fill, t } from '../i18n';
+import { currentRuleSet, verificationSummary } from '../lib/deadlines/rules';
+import lock from '../../rules.lock.json';
 
 interface Props {
   locale: Locale;
@@ -9,14 +11,24 @@ interface Props {
 
 const { locale } = Astro.props;
 const s = t(locale);
-// The rules version and verification date are wired in L2 (rules module).
+const verification = verificationSummary(currentRuleSet.rules);
+const rulesLine = [
+  fill(s.footer.rulesVersion, { version: currentRuleSet.rule_set_version }),
+  verification.allVerified && verification.latestVerifiedAt
+    ? fill(s.footer.rulesVerified, { date: verification.latestVerifiedAt })
+    : s.footer.rulesUnverified,
+].join(' · ');
+const commit = lock.backend_commit?.slice(0, 7);
 ---
 
 <footer class="site-footer">
   <div class="container site-footer__inner">
     <p>{s.footer.notLegalAdvice}</p>
-    <p>
-      {s.footer.rulesVersion}: <span data-rules-version>{s.footer.rulesPending}</span>
+    <p
+      data-rules-version={currentRuleSet.rule_set_version}
+      title={commit && `Rules commit ${commit}`}
+    >
+      {rulesLine}
     </p>
     <p>
       © {new Date().getFullYear()} {site.name}
