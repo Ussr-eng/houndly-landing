@@ -21,7 +21,10 @@ jobs:
     env:
       # Repository variables (Settings → Secrets and variables → Actions → Variables).
       PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL }}
-      # Analytics only for production builds; previews send nothing.
+      # Production builds (push to main) read these from repository variables. Pull-request
+      # previews are never indexable and send no analytics. check:dist reads the same env.
+      PUBLIC_ALLOW_INDEXING: ${{ github.event_name == 'push' && vars.PUBLIC_ALLOW_INDEXING || 'false' }}
+      PUBLIC_ANALYTICS_WEBSITE_ID: ${{ github.event_name == 'push' && vars.PUBLIC_ANALYTICS_WEBSITE_ID || '' }}
       PUBLIC_ANALYTICS_DOMAIN: ${{ github.event_name == 'push' && vars.PUBLIC_ANALYTICS_DOMAIN || '' }}
     steps:
       - uses: actions/checkout@v7

@@ -1,5 +1,5 @@
-// Typed wrapper around the analytics tool (Plausible). Safe to call anywhere:
-// it does nothing on the server, in dev, or when the script is blocked.
+// Typed, provider-agnostic analytics. Safe to call anywhere: it does nothing on the server,
+// in dev, or when the provider script is missing or blocked.
 
 export interface AnalyticsEvents {
   calculator_opened: undefined;
@@ -23,23 +23,38 @@ export const analyticsEvents = [
   'waitlist_submitted',
 ] as const satisfies readonly AnalyticsEvent[];
 
-type PlausibleFn = (event: string, options?: { props?: Record<string, string> }) => void;
+type Props = Record<string, string>;
 
 declare global {
   interface Window {
-    plausible?: PlausibleFn;
+    umami?: { track: (event: string, data?: Props) => void };
+    plausible?: (event: string, options?: { props?: Props }) => void;
   }
 }
+
+/** One adapter per supported provider; the first whose script is present receives the event. */
+const providers: ((w: Window, event: string, props: Props | undefined) => boolean)[] = [
+  (w, event, props) => {
+    if (typeof w.umami?.track !== 'function') return false;
+    w.umami.track(event, props);
+    return true;
+  },
+  (w, event, props) => {
+    if (typeof w.plausible !== 'function') return false;
+    w.plausible(event, props ? { props } : undefined);
+    return true;
+  },
+];
 
 type TrackArgs<E extends AnalyticsEvent> = AnalyticsEvents[E] extends undefined
   ? [event: E]
   : [event: E, props: AnalyticsEvents[E]];
 
 export function track<E extends AnalyticsEvent>(...args: TrackArgs<E>): void {
-  const [event, props] = args as [E, Record<string, string> | undefined];
+  const [event, props] = args as [E, Props | undefined];
   try {
-    if (typeof window === 'undefined' || typeof window.plausible !== 'function') return;
-    window.plausible(event, props ? { props } : undefined);
+    if (typeof window === 'undefined') return;
+    for (const send of providers) if (send(window, event, props)) return;
   } catch {
     // Analytics must never break the page.
   }

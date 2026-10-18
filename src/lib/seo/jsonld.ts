@@ -52,7 +52,7 @@ export function article(input: {
     datePublished: input.datePublished.toISOString(),
     dateModified: input.dateModified.toISOString(),
     author: {
-      '@type': input.author.url ? 'Person' : 'Organization',
+      '@type': 'Person',
       name: input.author.name,
       ...(input.author.url ? { url: input.author.url } : {}),
     },

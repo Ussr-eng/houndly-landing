@@ -24,24 +24,42 @@ describe('track', () => {
     expect(() => track('link_copied')).not.toThrow();
   });
 
-  it('does nothing when the script is not loaded', () => {
+  it('does nothing when no provider script is loaded', () => {
     vi.stubGlobal('window', {});
     expect(() => track('kit_requested')).not.toThrow();
   });
 
-  it('forwards the event and props to Plausible', () => {
-    const plausible = vi.fn();
-    vi.stubGlobal('window', { plausible });
+  it('forwards the event and props to Umami', () => {
+    const umami = { track: vi.fn() };
+    vi.stubGlobal('window', { umami });
     track('buy_clicked', { plan: 'team' });
     track('link_copied');
-    expect(plausible).toHaveBeenNthCalledWith(1, 'buy_clicked', { props: { plan: 'team' } });
-    expect(plausible).toHaveBeenNthCalledWith(2, 'link_copied', undefined);
+    expect(umami.track).toHaveBeenNthCalledWith(1, 'buy_clicked', { plan: 'team' });
+    expect(umami.track).toHaveBeenNthCalledWith(2, 'link_copied', undefined);
   });
 
-  it('never throws when the analytics script throws', () => {
+  it('falls back to Plausible when that is the loaded provider', () => {
+    const plausible = vi.fn();
+    vi.stubGlobal('window', { plausible });
+    track('ics_downloaded', { scope: 'all' });
+    expect(plausible).toHaveBeenCalledWith('ics_downloaded', { props: { scope: 'all' } });
+  });
+
+  it('sends to one provider only', () => {
+    const umami = { track: vi.fn() };
+    const plausible = vi.fn();
+    vi.stubGlobal('window', { umami, plausible });
+    track('waitlist_submitted');
+    expect(umami.track).toHaveBeenCalledOnce();
+    expect(plausible).not.toHaveBeenCalled();
+  });
+
+  it('never throws when the provider script throws', () => {
     vi.stubGlobal('window', {
-      plausible: () => {
-        throw new Error('blocked');
+      umami: {
+        track: () => {
+          throw new Error('blocked');
+        },
       },
     });
     expect(() => track('waitlist_submitted')).not.toThrow();

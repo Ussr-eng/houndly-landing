@@ -25,15 +25,15 @@ describe('JSON-LD builders', () => {
     expect(ld['@context']).toBe('https://schema.org');
   });
 
-  it('builds Article with ISO dates and an organisation author when no URL is given', () => {
+  it('builds Article with ISO dates and a Person author without URL', () => {
     const ld = article(articleInput);
     expect(ld['@type']).toBe('Article');
     expect(ld['datePublished']).toBe('2026-10-01T00:00:00.000Z');
     expect(ld['dateModified']).toBe('2026-10-10T00:00:00.000Z');
-    expect(ld['author']).toEqual({ '@type': 'Organization', name: 'Houndly team' });
+    expect(ld['author']).toEqual({ '@type': 'Person', name: 'Houndly team' });
   });
 
-  it('uses a Person author when a URL is given', () => {
+  it('includes the author URL when given', () => {
     const ld = article({ ...articleInput, author: { name: 'A', url: 'https://a.example/' } });
     expect(ld['author']).toEqual({ '@type': 'Person', name: 'A', url: 'https://a.example/' });
   });

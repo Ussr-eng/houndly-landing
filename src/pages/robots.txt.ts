@@ -1,8 +1,12 @@
 import type { APIRoute } from 'astro';
+import { robotsTxt } from '../config/indexing';
+import { allowIndexing } from '../config/site';
 
-export const GET: APIRoute = ({ site }) => {
-  const sitemap = new URL('sitemap-index.xml', site).href;
-  return new Response(`User-agent: *\nAllow: /\n\nSitemap: ${sitemap}\n`, {
-    headers: { 'Content-Type': 'text/plain; charset=utf-8' },
-  });
-};
+export const GET: APIRoute = ({ site }) =>
+  new Response(
+    robotsTxt({
+      allowIndexing: allowIndexing(),
+      sitemapUrl: new URL('sitemap-index.xml', site).href,
+    }),
+    { headers: { 'Content-Type': 'text/plain; charset=utf-8' } },
+  );

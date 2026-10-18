@@ -6,7 +6,7 @@ import Analytics from '../components/Analytics.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { buildSeo } from '../lib/seo/build';
-import { site, siteUrl } from '../config/site';
+import { allowIndexing, site, siteUrl } from '../config/site';
 import {
   defaultLocale,
   htmlLang,
@@ -51,7 +51,8 @@ const seo = buildSeo({
   ogType,
   ogLocale: ogLocale[locale],
   siteName: site.name,
-  noindex,
+  // While the global switch is off, every page is noindex.
+  noindex: noindex || !allowIndexing(),
   locales,
   defaultLocale,
   ...(neutralPath ? { neutralPath } : {}),

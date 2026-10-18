@@ -1,9 +1,9 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import { PLACEHOLDER_SITE_URL } from './src/config/site.ts';
 
-// Keep the fallback in sync with site.url in src/config/site.ts.
-const site = (process.env.PUBLIC_SITE_URL || 'https://houndly.pages.dev').replace(/\/+$/, '');
+const site = (process.env.PUBLIC_SITE_URL || PLACEHOLDER_SITE_URL).replace(/\/+$/, '');
 
 export default defineConfig({
   site,

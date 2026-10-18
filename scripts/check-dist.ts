@@ -7,6 +7,13 @@ import { join, relative, sep } from 'node:path';
 const DIST = join(import.meta.dirname, '..', 'dist');
 const TITLE_MAX = 60;
 const DESCRIPTION_MAX = 155;
+// Same variable and parsing as src/config/indexing.ts. Run with the env used for the build;
+// the robots.txt check below catches a mismatch.
+const ALLOW_INDEXING = process.env.PUBLIC_ALLOW_INDEXING?.trim().toLowerCase() === 'true';
+// Keep in sync with PLACEHOLDER_SITE_URL in src/config/site.ts.
+const PLACEHOLDER_HOST = 'site-url-not-set.invalid';
+// Pages that are noindex regardless of the global switch.
+const NOINDEX_BY_DESIGN = new Set(['/404.html']);
 
 function htmlFiles(dir: string): string[] {
   return readdirSync(dir).flatMap((name) => {
@@ -57,6 +64,13 @@ for (const file of files) {
   const html = readFileSync(file, 'utf8');
   const fail = (msg: string) => problems.push(`${page}: ${msg}`);
   const isNoindex = /noindex/.test(metaContent(html, 'name', 'robots') ?? '');
+  const byDesign = NOINDEX_BY_DESIGN.has(page);
+
+  if (byDesign && !isNoindex) fail('must be noindex by design');
+  else if (!byDesign && !ALLOW_INDEXING && !isNoindex)
+    fail('missing noindex while PUBLIC_ALLOW_INDEXING is off');
+  else if (!byDesign && ALLOW_INDEXING && isNoindex)
+    fail('has noindex while PUBLIC_ALLOW_INDEXING is on');
 
   const h1s = html.match(/<h1\b/gi)?.length ?? 0;
   if (h1s !== 1) fail(`expected one <h1>, found ${h1s}`);
@@ -80,9 +94,11 @@ for (const file of files) {
   if (!canonical) fail('missing canonical');
   else if (!/^https:\/\/[^/]+(\/[a-z0-9\-/]*)?\/$/.test(canonical))
     fail(`canonical must be absolute https, lowercase, trailing slash: ${canonical}`);
-  else if (!isNoindex) {
+  else {
+    if (ALLOW_INDEXING && new URL(canonical).host === PLACEHOLDER_HOST)
+      fail('indexing is on but PUBLIC_SITE_URL is not set (placeholder canonical)');
     const expected = page.replace(/index\.html$/, '');
-    if (new URL(canonical).pathname !== expected)
+    if (!byDesign && new URL(canonical).pathname !== expected)
       fail(`canonical path ${new URL(canonical).pathname} does not match ${expected}`);
   }
 
@@ -115,8 +131,18 @@ for (const file of files) {
   }
 }
 
-for (const required of ['robots.txt', 'sitemap-index.xml']) {
-  if (!existsSync(join(DIST, required))) problems.push(`missing /${required}`);
+if (!existsSync(join(DIST, 'sitemap-index.xml'))) problems.push('missing /sitemap-index.xml');
+
+const robotsPath = join(DIST, 'robots.txt');
+if (!existsSync(robotsPath)) problems.push('missing /robots.txt');
+else {
+  const robots = readFileSync(robotsPath, 'utf8');
+  const disallowAll = /^Disallow:\s*\/\s*$/m.test(robots);
+  const hasSitemap = /^Sitemap:/m.test(robots);
+  if (!ALLOW_INDEXING && (!disallowAll || hasSitemap))
+    problems.push('/robots.txt: must disallow all and omit Sitemap while indexing is off');
+  if (ALLOW_INDEXING && (disallowAll || !hasSitemap))
+    problems.push('/robots.txt: must allow crawling and list the sitemap while indexing is on');
 }
 
 if (problems.length) {
@@ -124,4 +150,6 @@ if (problems.length) {
   for (const p of problems) console.error(`  ✗ ${p}`);
   process.exit(1);
 }
-console.log(`check-dist: ${files.length} HTML files OK`);
+console.log(
+  `check-dist: ${files.length} HTML files OK (indexing ${ALLOW_INDEXING ? 'on' : 'off'})`,
+);
