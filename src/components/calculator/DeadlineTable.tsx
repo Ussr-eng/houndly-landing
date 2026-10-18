@@ -47,14 +47,12 @@ export function DeadlineTable({
         <tr>
           <th scope="col">{c.deadline}</th>
           <th scope="col">
-            {c.local} <span className="calc-col-note">({displayZone})</span>
+            {c.due} <span className="calc-col-note">({displayZone})</span>
           </th>
-          <th scope="col">
-            {c.reporting} <span className="calc-col-note">({reportingLabel})</span>
-          </th>
-          <th scope="col">{c.utc}</th>
           <th scope="col">{c.left}</th>
-          <th scope="col">{c.calendar}</th>
+          <th scope="col" className="calc-cal">
+            {c.calendar}
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -73,9 +71,17 @@ export function DeadlineTable({
               </th>
               {row.status === 'due' ? (
                 <>
-                  <td data-label={`${c.local} (${displayZone})`}>{row.display.local}</td>
-                  <td data-label={`${c.reporting} (${reportingLabel})`}>{row.display.reporting}</td>
-                  <td data-label={c.utc}>{row.display.utc}</td>
+                  <td data-label={`${c.due} (${displayZone})`} className="calc-due">
+                    <span className="calc-due-local">{row.display.local}</span>
+                    <span className="calc-due-other">
+                      {fill(s.result.dueAuthority, {
+                        country: reportingLabel,
+                        time: row.display.reporting,
+                      })}
+                      <br />
+                      {fill(s.result.dueUtc, { time: row.display.utc })}
+                    </span>
+                  </td>
                   <td data-label={c.left} className="calc-left">
                     {now === null ? (
                       s.result.pending
@@ -83,7 +89,7 @@ export function DeadlineTable({
                       <TimeLeft dueMs={row.dueMs} now={now} s={s} />
                     )}
                   </td>
-                  <td data-label={c.calendar}>
+                  <td data-label={c.calendar} className="calc-cal">
                     <button
                       type="button"
                       className="calc-link-button"
@@ -95,7 +101,7 @@ export function DeadlineTable({
                   </td>
                 </>
               ) : (
-                <td colSpan={5} className="calc-waiting">
+                <td colSpan={3} className="calc-waiting">
                   {s.result.waiting[row.waitingFor]}
                 </td>
               )}

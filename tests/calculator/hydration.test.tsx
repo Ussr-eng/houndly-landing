@@ -64,6 +64,23 @@ describe('Calculator hydration', () => {
     expect(logged).toEqual([]);
   });
 
+  it('renders the timeline on the server and keeps its lanes after hydration', async () => {
+    const html = renderToString(<Calculator locale="en" />);
+    const server = document.createElement('div');
+    server.innerHTML = html;
+    const lanes = (root: Element) =>
+      [...root.querySelectorAll('.tl-lane .tl-label')].map((l) => l.textContent);
+    expect(lanes(server)).toEqual(['CRA · vulnerability']);
+    expect(server.querySelector('.tl-now')).toBeNull();
+    const { container } = await hydrate();
+    expect(lanes(container)).toEqual(['CRA · vulnerability']);
+    const tl = container.querySelector('.tl');
+    expect(tl?.getAttribute('aria-hidden')).toBe('true');
+    expect(tl?.querySelectorAll('a, button, input, select, [tabindex]')).toHaveLength(0);
+    // After hydration the clock runs: the "now" marker appears.
+    expect(container.querySelector('.tl-now')).not.toBeNull();
+  });
+
   it('keeps the same rows after switching to now and the browser zone', async () => {
     const { container, serverRows } = await hydrate();
     expect(serverRows).toHaveLength(3);

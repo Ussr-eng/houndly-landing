@@ -11,21 +11,33 @@ html {
 
 body {
   margin: 0;
-  background: var(--color-bg);
-  color: var(--color-text);
+  background: var(--bg);
+  color: var(--text);
   font-family: var(--font-sans);
-  font-size: var(--font-size-base);
-  line-height: var(--line-height);
+  font-size: var(--fs-base);
+  line-height: var(--lh-body);
   overflow-wrap: break-word;
 }
 
+h1,
+h2,
+h3 {
+  line-height: var(--lh-heading);
+  font-weight: var(--weight-bold);
+}
+
 h1 {
-  font-size: var(--font-size-xl);
-  line-height: 1.2;
+  font-size: var(--fs-xl);
+  margin: var(--space-6) 0 var(--space-3);
+}
+
+h2 {
+  font-size: var(--fs-lg);
 }
 
 a {
-  color: var(--color-link);
+  color: var(--accent);
+  text-underline-offset: 0.15em;
 }
 
 img,
@@ -35,7 +47,7 @@ svg {
 }
 
 :focus-visible {
-  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline: var(--focus-ring) solid var(--focus);
   outline-offset: 2px;
 }
 
@@ -54,14 +66,21 @@ main:focus {
   max-width: var(--measure);
 }
 
+.lead {
+  margin: 0;
+  max-width: 72ch;
+  color: var(--muted);
+  font-size: var(--fs-md);
+}
+
 .skip-link {
   position: absolute;
   top: var(--space-2);
   left: var(--space-2);
   z-index: 10;
   padding: var(--space-2) var(--space-4);
-  background: var(--color-bg);
-  color: var(--color-text);
+  background: var(--surface);
+  color: var(--text);
   transform: translateY(-200%);
 }
 

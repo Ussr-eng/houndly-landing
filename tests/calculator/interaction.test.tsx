@@ -52,7 +52,7 @@ describe('Calculator', () => {
     await user.type(screen.getByLabelText(/First fix or mitigation/), '2026-10-20T10:00');
     expect(rows().at(-1)?.textContent).not.toContain('Waiting');
     // 20 Oct 10:00 Chatham (UTC+13:45) = 19 Oct 20:15Z; + 336 h = 2 Nov 20:15Z.
-    expect(screen.getByText('2026-11-02 20:15 UTC')).toBeTruthy();
+    expect(screen.getByText(/UTC: 2026-11-02 20:15 UTC/)).toBeTruthy();
   });
 
   it('marks empty date fields so no browser example date is shown', async () => {

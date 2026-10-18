@@ -75,6 +75,7 @@ export function EventPicker({ available, selected, strings, onChange }: Props) {
         </fieldset>
         <button
           type="button"
+          className="calc-button"
           onClick={() => {
             const events = eventsFromAnswers(cra, nis2, gdpr).filter((k) => available.includes(k));
             onChange(events);
