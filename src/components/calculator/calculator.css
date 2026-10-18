@@ -1,0 +1,278 @@
+/* Calculator island. Quiet on purpose: the parallel-timelines visual is a separate design task. */
+
+.calc {
+  display: grid;
+  gap: var(--space-8);
+  margin-block: var(--space-8);
+}
+
+.calc h2 {
+  margin: 0 0 var(--space-4);
+  font-size: var(--font-size-lg);
+}
+
+.calc-form {
+  display: grid;
+  gap: var(--space-6);
+  max-width: 40rem;
+}
+
+.calc fieldset {
+  margin: 0;
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
+
+.calc legend {
+  padding-inline: var(--space-1);
+  font-weight: 600;
+}
+
+.calc-events {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.calc-helper {
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface);
+  border-radius: var(--radius);
+}
+
+.calc-helper summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.calc-helper[open] {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.calc-helper fieldset {
+  margin-top: var(--space-4);
+  background: var(--color-bg);
+}
+
+.calc-choice {
+  display: flex;
+  gap: var(--space-2);
+  align-items: flex-start;
+  padding-block: var(--space-1);
+}
+
+.calc-choice input {
+  margin-top: 0.3em;
+  flex: none;
+}
+
+.calc-field {
+  display: grid;
+  gap: var(--space-1);
+  justify-items: start;
+}
+
+.calc-field label {
+  font-weight: 600;
+}
+
+.calc input[type='datetime-local'],
+.calc input[type='text'],
+.calc select {
+  width: 100%;
+  max-width: 24rem;
+  min-height: 2.75rem;
+  padding: var(--space-2);
+  font: inherit;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 1px solid var(--color-text-muted);
+  border-radius: var(--radius);
+}
+
+.calc input[aria-invalid='true'] {
+  border-color: var(--color-danger);
+}
+
+.calc button {
+  min-height: 2.75rem;
+  padding: var(--space-2) var(--space-4);
+  font: inherit;
+  color: var(--color-bg);
+  background: var(--color-text);
+  border: 1px solid var(--color-text);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.calc button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.calc .calc-link-button {
+  min-height: 2.75rem;
+  padding: 0;
+  color: var(--color-link);
+  background: none;
+  border: 0;
+  text-decoration: underline;
+}
+
+.calc-hint {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.calc-hint:empty {
+  display: none;
+}
+
+.calc-notices {
+  display: grid;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.calc-notice {
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border-left: 4px solid var(--color-text-muted);
+  background: var(--color-surface);
+}
+
+.calc-notice--strong {
+  font-weight: 600;
+}
+
+.calc-caption {
+  margin: 0 0 var(--space-3);
+  color: var(--color-text-muted);
+  min-height: 1lh;
+}
+
+.calc-error {
+  color: var(--color-danger);
+  font-weight: 600;
+}
+
+.calc-empty,
+.calc-error {
+  margin: 0;
+  padding: var(--space-4);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius);
+}
+
+.calc-table-wrap {
+  overflow-x: auto;
+}
+
+.calc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.calc-table th,
+.calc-table td {
+  padding: var(--space-3) var(--space-2);
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.calc-table thead th {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.calc-col-note {
+  display: block;
+  font-weight: 400;
+}
+
+.calc-deadline-name {
+  display: block;
+  text-transform: none;
+}
+
+.calc-deadline-name::first-letter {
+  text-transform: uppercase;
+}
+
+.calc-deadline-meta {
+  display: block;
+  font-weight: 400;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.calc-left {
+  min-width: 11rem;
+  white-space: nowrap;
+}
+
+.calc-overdue {
+  color: var(--color-danger);
+  font-weight: 600;
+}
+
+.is-overdue th {
+  border-left: 4px solid var(--color-danger);
+}
+
+.calc-waiting {
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.calc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+  margin-top: var(--space-4);
+}
+
+/* Narrow screens: each row becomes a labelled block. Still a <table> for assistive tech. */
+@media (max-width: 47.99rem) {
+  .calc-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .calc-table,
+  .calc-table tbody,
+  .calc-table tr,
+  .calc-table th,
+  .calc-table td {
+    display: block;
+  }
+
+  .calc-table tr {
+    padding-block: var(--space-2);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .calc-table th,
+  .calc-table td {
+    padding: var(--space-1) 0;
+    border: 0;
+  }
+
+  .calc-table td[data-label]::before {
+    content: attr(data-label) ': ';
+    font-weight: 600;
+  }
+
+  .is-overdue th {
+    padding-left: var(--space-2);
+  }
+}

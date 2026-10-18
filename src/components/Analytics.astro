@@ -13,6 +13,7 @@ const enabled = import.meta.env.PROD && !!websiteId && !!domain;
   <script
     is:inline
     defer
+    data-analytics
     src={site.analytics.scriptSrc}
     data-website-id={websiteId}
     data-domains={domain}

@@ -1,5 +1,6 @@
 // Typed, provider-agnostic analytics. Safe to call anywhere: it does nothing on the server,
-// in dev, or when the provider script is missing or blocked.
+// in dev, or when the provider script is missing or blocked. Events sent before the script
+// has loaded are queued (see enqueue) and sent once it loads.
 
 export interface AnalyticsEvents {
   calculator_opened: undefined;
@@ -46,6 +47,46 @@ const providers: ((w: Window, event: string, props: Props | undefined) => boolea
   },
 ];
 
+/** Events sent before the provider script has loaded wait here, up to this many. */
+export const MAX_QUEUED_EVENTS = 20;
+let queue: [string, Props | undefined][] = [];
+let waiting = false;
+
+function deliver(event: string, props: Props | undefined): boolean {
+  for (const send of providers) if (send(window, event, props)) return true;
+  return false;
+}
+
+/** Wait for the analytics <script data-analytics> to load, then send queued events once. */
+function enqueue(event: string, props: Props | undefined): void {
+  const script = document.querySelector<HTMLScriptElement>('script[data-analytics]');
+  if (!script) return; // Analytics is not on this page (dev, previews, turned off).
+  if (queue.length < MAX_QUEUED_EVENTS) queue.push([event, props]);
+  if (waiting) return;
+  waiting = true;
+  const done = () => {
+    waiting = false;
+    script.removeEventListener('load', onLoad);
+    script.removeEventListener('error', onError);
+  };
+  const onLoad = () => {
+    done();
+    const pending = queue;
+    queue = [];
+    try {
+      for (const [e, p] of pending) deliver(e, p);
+    } catch {
+      // Analytics must never break the page.
+    }
+  };
+  const onError = () => {
+    done();
+    queue = []; // Blocked or failed: drop.
+  };
+  script.addEventListener('load', onLoad);
+  script.addEventListener('error', onError);
+}
+
 type TrackArgs<E extends AnalyticsEvent> = AnalyticsEvents[E] extends undefined
   ? [event: E]
   : [event: E, props: AnalyticsEvents[E]];
@@ -54,7 +95,7 @@ export function track<E extends AnalyticsEvent>(...args: TrackArgs<E>): void {
   const [event, props] = args as [E, Props | undefined];
   try {
     if (typeof window === 'undefined') return;
-    for (const send of providers) if (send(window, event, props)) return;
+    if (!deliver(event, props)) enqueue(event, props);
   } catch {
     // Analytics must never break the page.
   }

@@ -54,9 +54,11 @@ Every page must be fully readable by Google without running JavaScript.
   `anchor` (`aware_at` | `fix_available_at` | `notification_submitted_at`), `offset` (`{ "hours": 24 }` or
   `{ "months": 1 }`), `source_url`, `verified_at` (null until checked), `notes`.
 - One pure function `computeDeadlines(input, rules)` — no side effects, no current time inside it
-  (pass `now` in). Output is a list of deadlines with `due_at` in UTC plus a display value in the user's zone.
+  (pass `now` in). Output matches the shared contract exactly (`rule_id`, `status`, `due_at` in UTC or
+  `waiting_for`); a separate `presentDeadlines()` adds display values in the user's and the reporting zone.
 - Anchors that are not known yet (fix not available, notification not submitted) produce a deadline with
-  status "waiting for <anchor>" and, where useful, a "latest possible" example — never a fake exact date.
+  status "waiting for <anchor>". The UI shows a hint about what to enter — never a date or an estimate
+  (as in `rules/README.md`).
 - Conservative interpretation: hour offsets are exact (`aware_at + 24h`), no rounding or holiday extensions.
   Month offsets use calendar months; define and test the end-of-month rule (e.g. Jan 31 + 1 month).
 - Every rule stays `TODO(verify)` until checked against the official legal text. The site footer shows the

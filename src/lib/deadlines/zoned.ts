@@ -26,6 +26,16 @@ export interface WallClock {
  * Luxon's own resolution moves gap times forward, so it is not used here.
  */
 export function wallClockToUtc(wall: WallClock, zoneName: string): DateTime<true> {
+  return resolveWallClock(wall, zoneName).instant;
+}
+
+export type WallClockKind = 'normal' | 'gap' | 'ambiguous';
+
+/** Like wallClockToUtc, and also reports whether the time fell in a DST gap or overlap. */
+export function resolveWallClock(
+  wall: WallClock,
+  zoneName: string,
+): { instant: DateTime<true>; kind: WallClockKind } {
   const zone = IANAZone.create(zoneName);
   if (!zone.isValid) throw new RangeError(`Unknown time zone: "${zoneName}"`);
   // The wall-clock fields read as if they were UTC; offsets are subtracted from this.
@@ -36,12 +46,14 @@ export function wallClockToUtc(wall: WallClock, zoneName: string): DateTime<true
   // Offsets (minutes) a day before and after cover any single transition near t0.
   const offsetBefore = zone.offset(t0 - DAY_MS);
   const offsetAfter = zone.offset(t0 + DAY_MS);
-  const valid = [offsetBefore, offsetAfter]
+  const valid = [...new Set([offsetBefore, offsetAfter])]
     .map((offset) => t0 - offset * MINUTE_MS)
     .filter((t) => zone.offset(t) * MINUTE_MS === t0 - t);
 
   const instant = valid.length ? Math.min(...valid) : t0 - offsetAfter * MINUTE_MS;
-  return DateTime.fromMillis(instant, { zone: 'utc' }) as DateTime<true>;
+  const kind: WallClockKind =
+    valid.length === 0 ? 'gap' : valid.length > 1 ? 'ambiguous' : 'normal';
+  return { instant: DateTime.fromMillis(instant, { zone: 'utc' }) as DateTime<true>, kind };
 }
 
 /**
