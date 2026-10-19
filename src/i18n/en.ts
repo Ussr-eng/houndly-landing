@@ -101,8 +101,10 @@ export const en = {
     fixBeforeAware:
       'The fix is earlier than the time you became aware. Check both times: this case is not covered by the rules yet.',
     result: {
-      exampleCaption: 'Example: aware at {time}, reporting country Belgium.',
-      liveCaption: 'Aware at {time}, reporting country {country}.',
+      exampleCaption: 'Example: aware at {time}.',
+      liveCaption: 'Aware at {time}.',
+      summary: '{country} (authority time) · times shown in {zone}',
+      change: 'Change',
       notLegalAdvice: 'This is not legal advice.',
       unverified:
         'Rules not yet verified against the official text. Check each deadline against its source before you rely on it.',
@@ -110,12 +112,12 @@ export const en = {
       noAware: 'Enter when you became aware to see deadlines.',
       columns: {
         deadline: 'Deadline',
-        local: 'Your time',
-        reporting: 'Authority time',
-        utc: 'UTC',
+        due: 'Due',
         left: 'Time left',
         calendar: 'Calendar',
       },
+      dueAuthority: 'Authority time ({country}): {time}',
+      dueUtc: 'UTC: {time}',
       source: 'Source',
       overdueBy: 'Overdue by {time}',
       dueIn: 'Due in {time}',
@@ -145,6 +147,28 @@ export const en = {
           'The time zone of the reporting country is not known to this browser.',
         notification_submitted_before_aware_at:
           'The notification is earlier than the time you became aware. Check both times.',
+      },
+    },
+    timeline: {
+      aware: 'Aware',
+      now: 'Now',
+      later: 'later',
+      tick: '+{hours} h',
+      lanes: {
+        'cra.actively_exploited_vulnerability': 'CRA · vulnerability',
+        'cra.severe_incident': 'CRA · severe incident',
+        'nis2.significant_incident': 'NIS2',
+        'gdpr.personal_data_breach': 'GDPR',
+      },
+      stages: {
+        early_warning: 'Early warning',
+        notification: 'Notification',
+        final_report: 'Final report',
+      },
+      waiting: {
+        aware_at: 'waiting',
+        fix_available_at: 'waiting: fix',
+        notification_submitted_at: 'waiting: notification',
       },
     },
     stages: {

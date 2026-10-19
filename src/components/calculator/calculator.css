@@ -1,32 +1,90 @@
-/* Calculator island. Quiet on purpose: the parallel-timelines visual is a separate design task. */
+/* Calculator island. Layout: one column in DOM (mobile) order; from 64rem two columns with the
+   results sticky on the right. Controls share --control-* tokens. Timeline styles at the end. */
 
 .calc {
   display: grid;
   gap: var(--space-8);
-  margin-block: var(--space-8);
+  margin-block: var(--space-6) var(--space-8);
 }
 
 .calc h2 {
   margin: 0 0 var(--space-4);
-  font-size: var(--font-size-lg);
+  font-size: var(--fs-lg);
 }
 
-.calc-form {
+.calc-primary,
+.calc-settings {
   display: grid;
   gap: var(--space-6);
-  max-width: 40rem;
+  align-content: start;
+  min-width: 0;
 }
+
+.calc-result {
+  min-width: 0;
+  padding: var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+}
+
+@media (min-width: 48rem) {
+  .calc-result {
+    padding: var(--space-6);
+  }
+
+  .calc-settings {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--space-6);
+  }
+
+  .calc-settings > .calc-notice {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 64rem) {
+  .calc {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 8fr);
+    grid-template-areas:
+      'primary result'
+      'settings result';
+    grid-template-rows: auto 1fr;
+    column-gap: var(--space-8);
+    row-gap: var(--space-6);
+    align-items: start;
+  }
+
+  .calc-primary {
+    grid-area: primary;
+  }
+
+  .calc-settings {
+    grid-area: settings;
+    grid-template-columns: minmax(0, 1fr);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--border);
+  }
+
+  .calc-result {
+    grid-area: result;
+    position: sticky;
+    top: var(--space-4);
+  }
+}
+
+/* ---- Fields and controls ---- */
 
 .calc fieldset {
   margin: 0;
-  padding: var(--space-4);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
+  padding: var(--space-3) var(--space-4) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
 }
 
 .calc legend {
   padding-inline: var(--space-1);
-  font-weight: 600;
+  font-weight: var(--weight-bold);
 }
 
 .calc-events {
@@ -36,13 +94,13 @@
 
 .calc-helper {
   padding: var(--space-3) var(--space-4);
-  background: var(--color-surface);
-  border-radius: var(--radius);
+  background: var(--surface-2);
+  border-radius: var(--radius-panel);
 }
 
 .calc-helper summary {
   cursor: pointer;
-  font-weight: 600;
+  font-weight: var(--weight-bold);
 }
 
 .calc-helper[open] {
@@ -52,29 +110,34 @@
 
 .calc-helper fieldset {
   margin-top: var(--space-4);
-  background: var(--color-bg);
+  background: var(--surface);
 }
 
 .calc-choice {
   display: flex;
-  gap: var(--space-2);
+  gap: var(--space-3);
   align-items: flex-start;
   padding-block: var(--space-1);
 }
 
-.calc-choice input {
-  margin-top: 0.3em;
+.calc input[type='checkbox'],
+.calc input[type='radio'] {
   flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0.15em 0 0;
+  accent-color: var(--accent);
 }
 
 .calc-field {
   display: grid;
   gap: var(--space-1);
   justify-items: start;
+  min-width: 0;
 }
 
 .calc-field label {
-  font-weight: 600;
+  font-weight: var(--weight-bold);
 }
 
 .calc input[type='datetime-local'],
@@ -82,13 +145,32 @@
 .calc select {
   width: 100%;
   max-width: 24rem;
-  min-height: 2.75rem;
-  padding: var(--space-2);
+  height: var(--control-h);
+  padding: 0 var(--control-px);
   font: inherit;
-  color: var(--color-text);
-  background: var(--color-bg);
-  border: 1px solid var(--color-text-muted);
-  border-radius: var(--radius);
+  line-height: 1;
+  color: var(--text);
+  background-color: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--control-radius);
+}
+
+.calc select {
+  appearance: none;
+  padding-right: calc(var(--control-px) * 3);
+  /* Chevron in currentColor, so it follows the theme. */
+  background-image:
+    linear-gradient(45deg, transparent 50%, currentColor 50%),
+    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position:
+    calc(100% - 1.15rem) 50%,
+    calc(100% - 0.8rem) 50%;
+  background-size: 0.35rem 0.35rem;
+  background-repeat: no-repeat;
+}
+
+.calc input[aria-invalid='true'] {
+  border-color: var(--overdue);
 }
 
 /* An empty date field shows nothing until it is focused: no grey example date (Safari) and
@@ -97,89 +179,94 @@
   color: transparent;
 }
 
-.calc input[aria-invalid='true'] {
-  border-color: var(--color-danger);
-}
-
-.calc button {
-  min-height: 2.75rem;
-  padding: var(--space-2) var(--space-4);
+.calc-button {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--control-h);
+  padding: 0 var(--space-4);
   font: inherit;
-  color: var(--color-bg);
-  background: var(--color-text);
-  border: 1px solid var(--color-text);
-  border-radius: var(--radius);
+  font-weight: var(--weight-bold);
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--control-radius);
   cursor: pointer;
 }
 
-.calc button:disabled {
+.calc-button--primary {
+  color: var(--bg);
+  background: var(--text);
+  border-color: var(--text);
+}
+
+.calc-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.calc .calc-link-button {
-  min-height: 2.75rem;
+.calc-link-button {
+  min-height: var(--control-h);
   padding: 0;
-  color: var(--color-link);
+  font: inherit;
+  color: var(--accent);
   background: none;
   border: 0;
   text-decoration: underline;
+  text-underline-offset: 0.15em;
+  cursor: pointer;
+}
+
+.calc-link-button.calc-inline {
+  min-height: 0;
 }
 
 .calc-hint {
   margin: 0;
-  color: var(--color-text-muted);
-  font-size: var(--font-size-sm);
+  color: var(--muted);
+  font-size: var(--fs-sm);
 }
 
 .calc-hint:empty {
   display: none;
 }
 
-.calc-notices {
-  display: grid;
-  gap: var(--space-2);
-  margin-bottom: var(--space-4);
-}
+/* ---- Result ---- */
 
 .calc-notice {
-  margin: 0;
+  margin: 0 0 var(--space-3);
   padding: var(--space-2) var(--space-3);
-  border-left: 4px solid var(--color-text-muted);
-  background: var(--color-surface);
+  border-left: 4px solid var(--muted);
+  background: var(--surface-2);
+  font-size: var(--fs-sm);
 }
 
-.calc-notice--strong {
-  font-weight: 600;
+.calc-summary,
+.calc-caption {
+  margin: 0 0 var(--space-2);
+  color: var(--muted);
+  font-size: var(--fs-sm);
 }
 
 .calc-caption {
-  margin: 0 0 var(--space-3);
-  color: var(--color-text-muted);
   min-height: 1lh;
 }
 
 .calc-error {
-  color: var(--color-danger);
-  font-weight: 600;
+  color: var(--overdue);
+  font-weight: var(--weight-bold);
 }
 
 .calc-empty,
 .calc-error {
-  margin: 0;
+  margin: var(--space-4) 0 0;
   padding: var(--space-4);
-  border: 1px dashed var(--color-border);
-  border-radius: var(--radius);
-}
-
-.calc-table-wrap {
-  overflow-x: auto;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-panel);
 }
 
 .calc-table {
   width: 100%;
   border-collapse: collapse;
-  font-variant-numeric: tabular-nums;
 }
 
 .calc-table th,
@@ -187,23 +274,25 @@
   padding: var(--space-3) var(--space-2);
   text-align: left;
   vertical-align: top;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--border);
 }
 
 .calc-table thead th {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
-  font-weight: 600;
+  font-size: var(--fs-sm);
+  color: var(--muted);
+}
+
+.calc-table th:first-child,
+.calc-table td:first-child {
+  padding-left: 0;
 }
 
 .calc-col-note {
-  display: block;
-  font-weight: 400;
+  font-weight: var(--weight-regular);
 }
 
 .calc-deadline-name {
   display: block;
-  text-transform: none;
 }
 
 .calc-deadline-name::first-letter {
@@ -212,28 +301,63 @@
 
 .calc-deadline-meta {
   display: block;
-  font-weight: 400;
-  font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
+  font-weight: var(--weight-regular);
+  font-size: var(--fs-sm);
+  color: var(--muted);
+}
+
+/* The ticking countdown is monospace, so digits never change width. Due times do not tick. */
+.calc-left {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+}
+
+.calc-due {
+  font-size: var(--fs-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (min-width: 48rem) {
+  .calc-table thead th:nth-child(1) {
+    width: 24%;
+  }
+
+  .calc-table thead th:nth-child(2) {
+    width: 42%;
+  }
+}
+
+.calc-cal {
+  white-space: nowrap;
+}
+
+.calc-due-local {
+  display: block;
+}
+
+.calc-due-other {
+  display: block;
+  margin-top: var(--space-1);
+  color: var(--muted);
+  font-size: var(--fs-xs);
 }
 
 .calc-left {
-  min-width: 11rem;
   white-space: nowrap;
 }
 
 .calc-overdue {
-  color: var(--color-danger);
-  font-weight: 600;
+  color: var(--overdue);
+  font-weight: var(--weight-bold);
 }
 
-.is-overdue th {
-  border-left: 4px solid var(--color-danger);
+.calc-table .is-overdue th {
+  box-shadow: inset 4px 0 0 var(--overdue);
+  padding-left: var(--space-3);
 }
 
 .calc-waiting {
-  color: var(--color-text-muted);
-  font-style: italic;
+  color: var(--muted);
 }
 
 .calc-actions {
@@ -264,7 +388,7 @@
 
   .calc-table tr {
     padding-block: var(--space-2);
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--border);
   }
 
   .calc-table th,
@@ -275,10 +399,328 @@
 
   .calc-table td[data-label]::before {
     content: attr(data-label) ': ';
-    font-weight: 600;
+    display: block;
+    font-family: var(--font-sans);
+    font-size: var(--fs-xs);
+    font-weight: var(--weight-bold);
+    color: var(--muted);
   }
 
-  .is-overdue th {
-    padding-left: var(--space-2);
+  .calc-table td.calc-left::before {
+    display: inline;
+  }
+}
+
+/* ---- Timeline ---- */
+
+.tl {
+  margin: var(--space-4) 0;
+  overflow-x: auto;
+  container-type: inline-size;
+  color: var(--muted);
+  font-size: var(--fs-xs);
+}
+
+.tl-body,
+.tl-axis {
+  /* Insets of the plot (track column); set per layout below. A container query cannot style
+     its own container, so these live on the children of .tl. */
+  --tl-label: 0px;
+  --tl-wait: 0px;
+  min-width: 17rem;
+}
+
+.tl-body {
+  position: relative;
+  padding-top: 1.25rem; /* room for the "Now" label */
+}
+
+.tl-lane {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'label wait'
+    'track track';
+  column-gap: var(--space-2);
+  align-items: center;
+}
+
+.tl-label {
+  grid-area: label;
+  position: relative;
+  z-index: 1;
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  font-weight: var(--weight-bold);
+}
+
+.tl-waiting {
+  grid-area: wait;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: end;
+}
+
+.tl-wait {
+  display: inline-flex;
+  gap: var(--space-1);
+  align-items: center;
+  white-space: nowrap;
+}
+
+.tl-wait::before {
+  content: '';
+  width: 1.25rem;
+  border-top: 2px dashed var(--muted);
+}
+
+.tl-track {
+  grid-area: track;
+  position: relative;
+  /* Tall enough that a label below one rail never meets a label above the next. */
+  height: var(--lane-h);
+}
+
+.tl-rail,
+.tl-elapsed,
+.tl-overdue {
+  position: absolute;
+  top: 50%;
+  height: 2px;
+  translate: 0 -50%;
+}
+
+.tl-rail {
+  left: 0;
+  right: 0;
+  background: var(--border-strong);
+}
+
+.tl-elapsed {
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--text);
+  transform-origin: left center;
+  transform: scaleX(var(--pos));
+}
+
+.tl-overdue {
+  left: calc(var(--pos) * 100%);
+  width: calc((var(--to) - var(--pos)) * 100%);
+  height: 10px;
+  background: repeating-linear-gradient(135deg, var(--overdue) 0 2px, transparent 2px 5px);
+}
+
+.tl-break {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--pos) * 100%);
+  width: 0.55rem;
+  height: 1rem;
+  background: var(--surface);
+  border-inline: 2px solid var(--muted);
+  transform: translate(-50%, -50%) skewX(-20deg);
+}
+
+.tl-marker {
+  position: absolute;
+  z-index: 2; /* labels sit above the "now" line */
+  top: 50%;
+  left: calc(var(--pos) * 100%);
+}
+
+.tl-dot {
+  position: absolute;
+  display: inline-block;
+  width: var(--marker);
+  height: var(--marker);
+  border: 2px solid var(--text);
+  border-radius: 50%;
+  background: var(--surface);
+  transform: translate(-50%, -50%);
+}
+
+.tl-mlabel {
+  position: absolute;
+  left: 0;
+  padding-inline: 2px;
+  background: var(--surface);
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: var(--font-mono);
+}
+
+.tl-marker--below .tl-mlabel {
+  top: 0.55rem;
+}
+
+.tl-marker--above .tl-mlabel {
+  bottom: 0.55rem;
+}
+
+.tl-marker.tl-align--start .tl-mlabel {
+  transform: translateX(-2px);
+}
+
+.tl-marker.tl-align--end .tl-mlabel {
+  transform: translateX(calc(-100% + 2px));
+}
+
+.tl-mlabel-long {
+  display: none;
+  font-family: var(--font-sans);
+}
+
+.tl-marker--pending .tl-dot {
+  border-color: var(--muted);
+}
+
+.tl-marker--upcoming .tl-mlabel {
+  color: var(--text);
+}
+
+.tl-marker--soon .tl-dot {
+  border-width: 3px;
+  border-color: var(--soon);
+}
+
+.tl-marker--soon .tl-mlabel {
+  color: var(--soon);
+  font-weight: var(--weight-bold);
+}
+
+.tl-marker--overdue .tl-dot {
+  border-color: var(--overdue);
+  border-radius: 1px;
+  background: var(--overdue);
+}
+
+.tl-marker--overdue .tl-mlabel {
+  color: var(--overdue);
+  font-weight: var(--weight-bold);
+}
+
+/* "Now": a hairline across all lanes, moved with a transform in plot-width units. */
+.tl-plot {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--tl-label);
+  right: var(--tl-wait);
+  z-index: 1;
+  container-type: inline-size;
+  pointer-events: none;
+}
+
+.tl-now {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--now);
+  transform: translateX(calc(var(--now-pos) * 100cqw));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .tl-now {
+    transition: transform 1s linear;
+  }
+}
+
+.tl-now-label {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  padding-inline: var(--space-1);
+  color: var(--now);
+  background: var(--surface);
+  font-weight: var(--weight-bold);
+  line-height: 1.1;
+}
+
+.tl-now.tl-align--start .tl-now-label {
+  left: 0;
+  transform: none;
+}
+
+.tl-now.tl-align--end .tl-now-label {
+  left: auto;
+  right: 0;
+  transform: none;
+}
+
+.tl-axis {
+  position: relative;
+  height: 1.25rem;
+  margin-left: var(--tl-label);
+  margin-right: var(--tl-wait);
+}
+
+.tl-axis-plot {
+  position: absolute;
+  inset: 0;
+}
+
+.tl-tick {
+  position: absolute;
+  top: 0;
+  left: calc(var(--pos) * 100%);
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: var(--font-mono);
+}
+
+.tl-tick.tl-align--end {
+  transform: translateX(-100%);
+}
+
+.tl-tick--start {
+  transform: none;
+  font-family: var(--font-sans);
+}
+
+.tl-tick--later {
+  font-family: var(--font-sans);
+}
+
+/* Narrow: only "Aware" and "later" on the axis. */
+@container (max-width: 29.99rem) {
+  .tl-tick:not(.tl-tick--start, .tl-tick--later) {
+    display: none;
+  }
+}
+
+/* Wide: label | track | waiting on one row. Labels may wrap to two lines. */
+@container (min-width: 36rem) {
+  .tl-body,
+  .tl-axis {
+    --tl-label: calc(7.5rem + var(--space-2));
+    --tl-wait: calc(7rem + var(--space-2));
+  }
+
+  .tl-lane {
+    grid-template-columns: 7.5rem minmax(0, 1fr) 7rem;
+    grid-template-areas: 'label track wait';
+  }
+
+  .tl-waiting {
+    justify-content: start;
+  }
+
+  .tl-wait {
+    white-space: normal;
+  }
+}
+
+/* Long marker labels ("Early warning · 24 h") when the plot has room. */
+@container (min-width: 38rem) {
+  .tl-mlabel-long {
+    display: inline;
   }
 }

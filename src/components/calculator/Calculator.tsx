@@ -11,6 +11,7 @@ import type { Locale } from '../../i18n/config';
 import { track } from '../../lib/analytics';
 import { countries, countryByCode } from '../../lib/calculator/countries';
 import { buildIcs, icsDate, shortHash, type IcsEvent } from '../../lib/calculator/ics';
+import { timelineLayout } from '../../lib/calculator/timeline';
 import { nowInstant } from '../../lib/calculator/local-input';
 import { decodeQuery, encodeQuery } from '../../lib/calculator/query';
 import {
@@ -32,6 +33,7 @@ import { isKnownZone } from '../../lib/deadlines/zoned';
 import { DateTimeField } from './DateTimeField';
 import { DeadlineTable } from './DeadlineTable';
 import { EventPicker } from './EventPicker';
+import { Timeline } from './Timeline';
 import { useNow } from './useNow';
 import './calculator.css';
 
@@ -227,20 +229,38 @@ export default function Calculator({ locale }: Props) {
 
   const caption = state.awareAt
     ? live
-      ? fill(s.result.liveCaption, {
-          time: formatZoned(parseInstant(state.awareAt), displayZone),
-          country: country?.name ?? state.country,
-        })
+      ? fill(s.result.liveCaption, { time: formatZoned(parseInstant(state.awareAt), displayZone) })
       : fill(s.result.exampleCaption, { time: formatLongUtc(parseInstant(state.awareAt)) })
     : '';
 
+  const instantMs = (v: string | null) => (v ? parseInstant(v).toMillis() : null);
+  const timeline =
+    state.awareAt && result?.ok
+      ? timelineLayout({
+          rows,
+          awareMs: parseInstant(state.awareAt).toMillis(),
+          anchors: {
+            aware_at: instantMs(state.awareAt),
+            fix_available_at: instantMs(state.fixAvailableAt),
+            notification_submitted_at: instantMs(state.notificationSubmittedAt),
+          },
+          nowMs: now,
+          laneOrder: availableEvents,
+        })
+      : null;
+
+  // "Change" moves to the settings below the results (mobile) or beside them (desktop).
+  const focusSettings = () => {
+    const el = document.getElementById(`${id}-country`);
+    el?.scrollIntoView({ block: 'center' });
+    el?.focus({ preventScroll: true });
+  };
+
+  // DOM order is the mobile order: primary inputs → results → settings and optional fields.
+  // On wide screens the grid puts settings under the primary inputs and the results beside them.
   return (
     <div className="calc">
-      <form
-        className="calc-form"
-        aria-labelledby={`${id}-form`}
-        onSubmit={(e) => e.preventDefault()}
-      >
+      <div className="calc-primary" role="group" aria-labelledby={`${id}-form`}>
         <h2 id={`${id}-form`}>{s.formHeading}</h2>
         {linkNotices.map((n) => (
           <p key={n} className="calc-notice">
@@ -273,7 +293,85 @@ export default function Calculator({ locale }: Props) {
             {s.aware.useNow}
           </button>
         </DateTimeField>
+      </div>
 
+      <section className="calc-result" aria-labelledby={`${id}-result`}>
+        <h2 id={`${id}-result`}>{s.resultHeading}</h2>
+        <p className="calc-notice">
+          <strong>{s.result.notLegalAdvice}</strong>
+          {!verification.allVerified && <> {s.result.unverified}</>}
+        </p>
+        <p className="calc-summary">
+          {fill(s.result.summary, {
+            country: country?.name ?? state.country,
+            zone: displayZone.replace(/_/g, ' '),
+          })}{' '}
+          ·{' '}
+          <button type="button" className="calc-link-button calc-inline" onClick={focusSettings}>
+            {s.result.change}
+          </button>
+        </p>
+        <p className="calc-caption">{caption}</p>
+
+        {!state.awareAt ? (
+          <p className="calc-empty">{s.result.noAware}</p>
+        ) : state.events.length === 0 ? (
+          <p className="calc-empty">{s.result.noEvents}</p>
+        ) : result && !result.ok ? (
+          <p className="calc-error" role="alert">
+            {s.result.errors[result.error]}
+          </p>
+        ) : (
+          <>
+            {timeline && <Timeline layout={timeline} strings={s} />}
+            <div className="calc-table-wrap">
+              <DeadlineTable
+                rows={rows}
+                now={now}
+                displayZone={displayZone.replace(/_/g, ' ')}
+                reportingLabel={country?.name ?? zone}
+                strings={s}
+                deadlineName={deadlineName}
+                onDownload={(row) => downloadIcs([row], 'single')}
+              />
+            </div>
+          </>
+        )}
+
+        <div className="calc-actions">
+          <button
+            type="button"
+            className="calc-button calc-button--primary"
+            disabled={!dueRows.length}
+            onClick={() => downloadIcs(dueRows, 'all')}
+          >
+            {s.result.downloadAll}
+          </button>
+          <button type="button" className="calc-button" onClick={copyLink} disabled={!live}>
+            {s.result.copyLink}
+          </button>
+          <p role="status" className="calc-hint">
+            {copyStatus === 'copied' ? s.result.copied : ''}
+          </p>
+        </div>
+        {copyStatus === 'fallback' && (
+          <div className="calc-field">
+            <label htmlFor={`${id}-share`}>{s.result.copyFallback}</label>
+            <input
+              id={`${id}-share`}
+              type="text"
+              readOnly
+              value={shareUrl()}
+              onFocus={(e) => e.currentTarget.select()}
+            />
+          </div>
+        )}
+        <p className="visually-hidden" role="status" aria-live="polite">
+          {announcement}
+        </p>
+      </section>
+
+      <div className="calc-settings">
         <div className="calc-field">
           <label htmlFor={`${id}-country`}>{s.country.label}</label>
           <select
@@ -325,69 +423,7 @@ export default function Calculator({ locale }: Props) {
           />
         ))}
         {fixBeforeAware && <p className="calc-notice">{s.fixBeforeAware}</p>}
-      </form>
-
-      <section className="calc-result" aria-labelledby={`${id}-result`}>
-        <h2 id={`${id}-result`}>{s.resultHeading}</h2>
-        <div className="calc-notices">
-          <p className="calc-notice calc-notice--strong">{s.result.notLegalAdvice}</p>
-          {!verification.allVerified && <p className="calc-notice">{s.result.unverified}</p>}
-        </div>
-        <p className="calc-caption">{caption}</p>
-
-        {!state.awareAt ? (
-          <p className="calc-empty">{s.result.noAware}</p>
-        ) : state.events.length === 0 ? (
-          <p className="calc-empty">{s.result.noEvents}</p>
-        ) : result && !result.ok ? (
-          <p className="calc-error" role="alert">
-            {s.result.errors[result.error]}
-          </p>
-        ) : (
-          <div className="calc-table-wrap">
-            <DeadlineTable
-              rows={rows}
-              now={now}
-              displayZone={displayZone.replace(/_/g, ' ')}
-              reportingLabel={country?.name ?? zone}
-              strings={s}
-              deadlineName={deadlineName}
-              onDownload={(row) => downloadIcs([row], 'single')}
-            />
-          </div>
-        )}
-
-        <div className="calc-actions">
-          <button
-            type="button"
-            disabled={!dueRows.length}
-            onClick={() => downloadIcs(dueRows, 'all')}
-          >
-            {s.result.downloadAll}
-          </button>
-          <button type="button" onClick={copyLink} disabled={!live}>
-            {s.result.copyLink}
-          </button>
-          <p role="status" className="calc-hint">
-            {copyStatus === 'copied' ? s.result.copied : ''}
-          </p>
-        </div>
-        {copyStatus === 'fallback' && (
-          <div className="calc-field">
-            <label htmlFor={`${id}-share`}>{s.result.copyFallback}</label>
-            <input
-              id={`${id}-share`}
-              type="text"
-              readOnly
-              value={shareUrl()}
-              onFocus={(e) => e.currentTarget.select()}
-            />
-          </div>
-        )}
-        <p className="visually-hidden" role="status" aria-live="polite">
-          {announcement}
-        </p>
-      </section>
+      </div>
     </div>
   );
 }
