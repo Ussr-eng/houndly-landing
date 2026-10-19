@@ -1,0 +1,47 @@
+---
+// Bridge from the calculator result to the product. Static HTML, outside the island.
+import { t } from '../i18n';
+import { localizedPath, type Locale } from '../i18n/config';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const s = t(locale).bridge;
+---
+
+<section class="bridge" aria-labelledby="bridge-heading">
+  <h2 id="bridge-heading">{s.heading}</h2>
+  <p>{s.intro}</p>
+  <ol>
+    {s.steps.map((step) => (
+      <li>{step}</li>
+    ))}
+  </ol>
+  <p>
+    <a href={localizedPath(locale, '/pricing/')}>{s.link}</a>
+  </p>
+</section>
+
+<style>
+  .bridge {
+    max-width: var(--measure);
+    margin-block: var(--space-12) var(--space-8);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--border);
+  }
+
+  .bridge h2 {
+    margin: 0 0 var(--space-3);
+    font-size: var(--fs-lg);
+  }
+
+  .bridge ol {
+    padding-left: 1.25rem;
+  }
+
+  .bridge li + li {
+    margin-top: var(--space-2);
+  }
+</style>

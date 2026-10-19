@@ -1,6 +1,6 @@
 // Brand and site identity. "Houndly" is a working codename: rename it here only.
 
-import { parseAllowIndexing } from './indexing';
+import { parseAllowIndexing } from './indexing.ts';
 
 /**
  * Fallback origin when PUBLIC_SITE_URL is not set. Deliberately invalid (.invalid TLD):
@@ -19,11 +19,26 @@ export const site = {
   twitterHandle: null as string | null,
   // Shown in Article JSON-LD on guides.
   author: { name: 'Dmytro Slobodin', url: null as string | null },
+  // Legal notice (/legal/). TODO(verify) before taking real payments: whether a postal
+  // address and further details are required.
+  operator: {
+    name: 'Dmytro Slobodin',
+    country: 'Ukraine',
+    // Placeholder until the production domain exists.
+    email: null as string | null,
+  },
   analytics: {
     // Provider is swappable: see src/lib/analytics.ts and src/components/Analytics.astro.
     // TODO(verify): Umami Cloud EU hosting and free-tier limits.
     provider: 'umami',
     scriptSrc: 'https://cloud.umami.is/script.js',
+    // Hosts the script sends data to, for the CSP connect-src.
+    // TODO(verify): Umami Cloud's collect endpoint host (check the dashboard snippet).
+    connectSrc: ['https://cloud.umami.is'],
+  },
+  turnstile: {
+    scriptSrc: 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit',
+    origin: 'https://challenges.cloudflare.com',
   },
 } as const;
 

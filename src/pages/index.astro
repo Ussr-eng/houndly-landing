@@ -4,6 +4,7 @@ import { webApplication } from '../lib/seo/jsonld';
 import { site, siteUrl } from '../config/site';
 import Calculator from '../components/calculator/Calculator';
 import { t } from '../i18n';
+import Bridge from '../components/Bridge.astro';
 
 const title = 'EU incident reporting deadline calculator';
 const description = site.defaultDescription;
@@ -34,4 +35,5 @@ const description = site.defaultDescription;
   <noscript>
     <p class="noscript-note">{t('en').calculator.result.noscript}</p>
   </noscript>
+  <Bridge locale="en" />
 </BaseLayout>

@@ -1,0 +1,24 @@
+---
+import type { GetStaticPaths } from 'astro';
+import StatusPage from '../../components/StatusPage.astro';
+import { t } from '../../i18n';
+import type { ErrorReason } from '../../lib/forms/handler';
+
+export const getStaticPaths = (() =>
+  (['invalid', 'verification', 'unavailable'] as const).map((reason) => ({
+    params: { reason },
+  }))) satisfies GetStaticPaths;
+
+const reason = Astro.params.reason as ErrorReason;
+const s = t('en').formError;
+---
+
+<StatusPage
+  title={s[reason].title}
+  description={s.description}
+  body={s[reason].body}
+  links={[
+    { href: '/incident-kit/', label: s.backKit },
+    { href: '/pricing/', label: s.backPricing },
+  ]}
+/>

@@ -1,0 +1,13 @@
+---
+import StatusPage from '../../components/StatusPage.astro';
+import { t } from '../../i18n';
+
+const s = t('en').pricing.confirmed;
+---
+
+<StatusPage
+  title={s.title}
+  description={s.description}
+  body={s.body}
+  links={[{ href: '/', label: s.back }]}
+/>

@@ -1,0 +1,44 @@
+---
+// Legal notice. TODO(verify) before taking real payments: whether a postal address or
+// other details are required.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config/site';
+import { t } from '../i18n';
+
+const s = t('en').legal;
+const email = site.operator.email;
+---
+
+<BaseLayout title={s.title} description={s.description}>
+  <article class="prose legal-page">
+    <h1>{s.title}</h1>
+    <dl class="legal-list">
+      <dt>{s.operator}</dt>
+      <dd>{site.operator.name}</dd>
+      <dt>{s.country}</dt>
+      <dd>{site.operator.country}</dd>
+      <dt>{s.email}</dt>
+      <dd>{email ? <a href={`mailto:${email}`}>{email}</a> : s.emailPending}</dd>
+    </dl>
+  </article>
+</BaseLayout>
+
+<style>
+  .legal-page {
+    margin-block: var(--space-4) var(--space-12);
+  }
+
+  .legal-list {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: var(--space-2) var(--space-6);
+  }
+
+  .legal-list dt {
+    font-weight: var(--weight-bold);
+  }
+
+  .legal-list dd {
+    margin: 0;
+  }
+</style>

@@ -30,6 +30,16 @@ const commit = lock.backend_commit?.slice(0, 7);
     >
       {rulesLine}
     </p>
+    <nav aria-label={s.footer.links}>
+      <ul class="site-footer__links">
+        <li>
+          <a href="/privacy/">{s.footer.privacy}</a>
+        </li>
+        <li>
+          <a href="/legal/">{s.footer.legal}</a>
+        </li>
+      </ul>
+    </nav>
     <p>
       © {new Date().getFullYear()} {site.name}
     </p>
@@ -51,5 +61,12 @@ const commit = lock.backend_commit?.slice(0, 7);
   }
   .site-footer p {
     margin: 0;
+  }
+  .site-footer__links {
+    display: flex;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 </style>

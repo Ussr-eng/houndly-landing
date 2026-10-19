@@ -1,0 +1,41 @@
+---
+// Small noindex status page (after a form post without JavaScript, after confirming an email,
+// form errors). BaseLayout marks these paths noindex via NOINDEX_PATHS.
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  body: string;
+  hint?: string;
+  links: { href: string; label: string }[];
+}
+
+const { title, description, body, hint, links } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="prose status">
+    <h1>{title}</h1>
+    <p class="lead">{body}</p>
+    {hint && <p>{hint}</p>}
+    <ul class="status-links">
+      {links.map((l) => (
+        <li>
+          <a href={l.href}>{l.label}</a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</BaseLayout>
+
+<style>
+  .status {
+    margin-block: var(--space-8) var(--space-12);
+  }
+
+  .status-links {
+    padding: 0;
+    list-style: none;
+  }
+</style>

@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import { PLACEHOLDER_SITE_URL } from './src/config/site.ts';
+import { isNoindexByDesign } from './src/config/indexing.ts';
 
 const site = (process.env.PUBLIC_SITE_URL || PLACEHOLDER_SITE_URL).replace(/\/+$/, '');
 
@@ -20,7 +21,7 @@ export default defineConfig({
   integrations: [
     react(),
     sitemap({
-      filter: (page) => !new URL(page).pathname.startsWith('/404'),
+      filter: (page) => !isNoindexByDesign(new URL(page).pathname),
       // Turns on hreflang in the sitemap once a second locale is added.
       i18n: { defaultLocale: 'en', locales: { en: 'en' } },
     }),

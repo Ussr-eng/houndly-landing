@@ -1,0 +1,38 @@
+---
+// Privacy policy skeleton. TODO(text): the legal text is supplied before launch; each
+// section shows a placeholder until then.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { t } from '../i18n';
+
+const s = t('en').privacy;
+const slug = (heading: string) => heading.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+---
+
+<BaseLayout title={s.title} description={s.description}>
+  <article class="prose legal-page">
+    <h1>{s.title}</h1>
+    <p class="legal-updated">
+      {s.lastUpdated}: {s.notYet}
+    </p>
+    {s.sections.map((heading) => (
+      <section aria-labelledby={slug(heading)}>
+        <h2 id={slug(heading)}>{heading}</h2>
+        <p>{s.placeholder}</p>
+      </section>
+    ))}
+  </article>
+</BaseLayout>
+
+<style>
+  .legal-page {
+    margin-block: var(--space-4) var(--space-12);
+  }
+
+  .legal-page h2 {
+    font-size: var(--fs-lg);
+  }
+
+  .legal-updated {
+    color: var(--muted);
+  }
+</style>

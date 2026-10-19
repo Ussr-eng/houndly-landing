@@ -8,6 +8,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { buildSeo } from '../lib/seo/build';
 import { allowIndexing, site, siteUrl } from '../config/site';
+import { isNoindexByDesign } from '../config/indexing';
 import {
   defaultLocale,
   htmlLang,
@@ -52,8 +53,8 @@ const seo = buildSeo({
   ogType,
   ogLocale: ogLocale[locale],
   siteName: site.name,
-  // While the global switch is off, every page is noindex.
-  noindex: noindex || !allowIndexing(),
+  // While the global switch is off, every page is noindex; status pages always are.
+  noindex: noindex || !allowIndexing() || isNoindexByDesign(path),
   locales,
   defaultLocale,
   ...(neutralPath ? { neutralPath } : {}),

@@ -34,6 +34,38 @@ and noindex tags plus robots.txt that match `PUBLIC_ALLOW_INDEXING` (404 is alwa
 
 `check:dist` reads `PUBLIC_ALLOW_INDEXING` too: run it with the same environment as the build.
 
+## Forms (Incident Kit, early access)
+
+Both forms post to the Pages Function `POST /api/subscribe` (`functions/api/subscribe.ts`, logic in
+`src/lib/forms/`). Without JavaScript the function answers with a 303 to a status page; with
+JavaScript the form shows the result inline. Request bodies and email addresses are never logged.
+
+Cloudflare Pages environment variables (Settings → Environment variables), per environment:
+
+| Name                                            | Type     | Value                                                                                         |
+| ----------------------------------------------- | -------- | --------------------------------------------------------------------------------------------- |
+| `FORM_PROVIDER`                                 | variable | `brevo`, or `fake` (accepts everything, stores nothing). Unset: forms answer "not available". |
+| `BREVO_API_KEY`                                 | secret   | Brevo API key                                                                                 |
+| `BREVO_LIST_KIT`, `BREVO_LIST_WAITLIST`         | variable | Brevo list IDs                                                                                |
+| `BREVO_TEMPLATE_KIT`, `BREVO_TEMPLATE_WAITLIST` | variable | Brevo double opt-in template IDs                                                              |
+| `TURNSTILE_SECRET_KEY`                          | secret   | Turnstile secret key                                                                          |
+
+GitHub repository variable: `PUBLIC_TURNSTILE_SITE_KEY` (Turnstile site key; the widget is added
+only when it is set).
+
+Brevo contact attributes (create them in Brevo; text unless noted): `COMPANY`, `PRODUCT_TYPE`,
+`LAWS`, `CURRENT_PROCESS`, `PLAN`, `SOURCE`, `CONSENT_VERSION`, `NEWS_CONSENT` (boolean),
+`SIGNUP_AT`.
+
+The Incident Kit file is served from an unguessable path under `public/kit/` and linked only from
+the kit email. Replace the placeholder ZIP there with the real kit (same file name).
+
+## Content Security Policy
+
+`pnpm build` runs `scripts/csp.ts` after `astro build`: it adds the policy, with the sha256
+hashes of all inline scripts, to `dist/_headers`. `CSP_MODE=report` writes it as report-only
+(pull-request previews). `check:dist` fails if an inline script is not covered.
+
 ## Deploy
 
 GitHub Actions (`.github/workflows/ci.yml`) runs all checks, then deploys `dist/` to Cloudflare Pages
