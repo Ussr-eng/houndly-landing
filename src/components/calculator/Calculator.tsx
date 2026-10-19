@@ -5,7 +5,7 @@
 
 import { useEffect, useId, useRef, useState } from 'react';
 import { DateTime } from 'luxon';
-import { site } from '../../config/site';
+import { site, siteUrl } from '../../config/site';
 import { fill, t } from '../../i18n';
 import type { Locale } from '../../i18n/config';
 import { track } from '../../lib/analytics';
@@ -178,7 +178,8 @@ export default function Calculator({ locale }: Props) {
   const icsEvent = (row: DeadlineRow & { status: 'due' }, url: string): IcsEvent => {
     const name = `${deadlineName(row)} (${s.eventTypes[row.rule.event_type].toLowerCase()})`;
     return {
-      uid: `${row.rule.id}.${icsDate(row.dueAt)}.${shortHash(query)}@${window.location.host}`,
+      // UID host follows the configured site URL (PUBLIC_SITE_URL), not the host it runs on.
+      uid: `${row.rule.id}.${icsDate(row.dueAt)}.${shortHash(query)}@${new URL(siteUrl()).host}`,
       at: row.dueAt,
       summary: fill(s.ics.summary, { deadline: name }),
       description: [
@@ -199,7 +200,7 @@ export default function Calculator({ locale }: Props) {
       selection.map((r) => icsEvent(r, url)),
       {
         now: formatInstant(DateTime.utc()),
-        prodId: `-//${site.name}//Deadline calculator ${version}//EN`,
+        prodId: `-//${site.name}//Deadline calculator//EN`,
       },
     );
     const day = icsDate(selection[0]?.dueAt ?? '').slice(0, 8);

@@ -8,8 +8,8 @@ const articleInput = {
   image: 'https://example.com/og/default.png',
   datePublished: new Date('2026-10-01T00:00:00Z'),
   dateModified: new Date('2026-10-10T00:00:00Z'),
-  author: { name: 'Houndly team' },
-  publisher: { name: 'Houndly', url: 'https://example.com/' },
+  author: { name: 'Within24 team' },
+  publisher: { name: 'Within24', url: 'https://example.com/' },
   inLanguage: 'en',
 };
 
@@ -30,7 +30,7 @@ describe('JSON-LD builders', () => {
     expect(ld['@type']).toBe('Article');
     expect(ld['datePublished']).toBe('2026-10-01T00:00:00.000Z');
     expect(ld['dateModified']).toBe('2026-10-10T00:00:00.000Z');
-    expect(ld['author']).toEqual({ '@type': 'Person', name: 'Houndly team' });
+    expect(ld['author']).toEqual({ '@type': 'Person', name: 'Within24 team' });
   });
 
   it('includes the author URL when given', () => {

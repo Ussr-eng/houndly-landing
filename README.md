@@ -1,4 +1,4 @@
-# Houndly landing
+# Within24 landing
 
 Static marketing site (Astro). Project rules: [CLAUDE.md](CLAUDE.md). Status: [TASKS.md](TASKS.md).
 

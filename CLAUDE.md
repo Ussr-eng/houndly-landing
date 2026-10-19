@@ -1,6 +1,8 @@
-# Houndly — landing site (folder `landing/`, own git repository)
+# Within24 — landing site (folder `landing/`, own git repository)
 
-Houndly is a working codename. Keep the brand in one config file so it can be replaced in minutes.
+Within24 (written exactly like that) is the brand; the domain is within24.app. Keep the brand in one
+config file (`src/config/site.ts`) so it can be replaced in minutes. Infrastructure names (repository
+`houndly-landing`, Cloudflare Pages project `houndly-landing`) keep the old codename.
 
 ## Goal
 
