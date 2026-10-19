@@ -44,6 +44,14 @@ describe('buildCsp', () => {
   });
 });
 
+describe('buildCsp report-only', () => {
+  it('omits upgrade-insecure-requests, which browsers reject in report-only policies', () => {
+    const base = { scriptHashes: [], scriptHosts: [], connectHosts: [], frameHosts: [] };
+    expect(buildCsp(base)).toContain('upgrade-insecure-requests');
+    expect(buildCsp({ ...base, reportOnly: true })).not.toContain('upgrade-insecure-requests');
+  });
+});
+
 describe('insertCsp', () => {
   it('adds the header to the /* block', () => {
     const out = insertCsp(

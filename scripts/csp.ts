@@ -26,13 +26,14 @@ for (const file of htmlFiles(DIST)) {
 }
 
 const turnstile = site.turnstile.origin;
+const mode = process.env['CSP_MODE'] === 'report' ? 'report' : 'enforce';
 const policy = buildCsp({
+  reportOnly: mode === 'report',
   scriptHashes: [...hashes],
   scriptHosts: [originOf(site.analytics.scriptSrc), turnstile],
   connectHosts: [...site.analytics.connectSrc, turnstile],
   frameHosts: [turnstile],
 });
-const mode = process.env['CSP_MODE'] === 'report' ? 'report' : 'enforce';
 const header =
   mode === 'report' ? 'Content-Security-Policy-Report-Only' : 'Content-Security-Policy';
 

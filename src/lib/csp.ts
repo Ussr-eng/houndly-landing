@@ -7,6 +7,8 @@ export interface CspSources {
   scriptHosts: string[];
   connectHosts: string[];
   frameHosts: string[];
+  /** Report-only policies must not contain upgrade-insecure-requests (browsers warn). */
+  reportOnly?: boolean;
 }
 
 const NON_EXECUTABLE = /^(application\/(ld\+)?json|text\/plain)$/i;
@@ -44,7 +46,7 @@ export function buildCsp(sources: CspSources): string {
     "base-uri 'none'",
     "object-src 'none'",
     "frame-ancestors 'none'",
-    'upgrade-insecure-requests',
+    ...(sources.reportOnly ? [] : ['upgrade-insecure-requests']),
   ].join('; ');
 }
 
