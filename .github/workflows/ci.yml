@@ -26,6 +26,9 @@ jobs:
       PUBLIC_ALLOW_INDEXING: ${{ github.event_name == 'push' && vars.PUBLIC_ALLOW_INDEXING || 'false' }}
       PUBLIC_ANALYTICS_WEBSITE_ID: ${{ github.event_name == 'push' && vars.PUBLIC_ANALYTICS_WEBSITE_ID || '' }}
       PUBLIC_ANALYTICS_DOMAIN: ${{ github.event_name == 'push' && vars.PUBLIC_ANALYTICS_DOMAIN || '' }}
+      PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.PUBLIC_TURNSTILE_SITE_KEY }}
+      # The CSP is enforced on production and report-only on pull-request previews.
+      CSP_MODE: ${{ github.event_name == 'push' && 'enforce' || 'report' }}
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
@@ -37,6 +40,8 @@ jobs:
       - run: pnpm astro check
       - run: pnpm lint
       - run: pnpm test
+      - name: Bundle the Pages Function (catches errors before deploy)
+        run: pnpm exec wrangler pages functions build functions --outdir .wrangler/functions-check
       - run: pnpm build
       - run: pnpm check:dist
       - uses: actions/upload-artifact@v7

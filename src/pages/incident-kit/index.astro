@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SubscribeForm from '../../components/forms/SubscribeForm.astro';
+import { t } from '../../i18n';
+
+const s = t('en').kit;
+---
+
+<BaseLayout title={s.title} description={s.description}>
+  <div class="kit">
+    <div class="prose">
+      <h1>{s.title}</h1>
+      <p class="lead">{s.intro}</p>
+
+      <h2>{s.insideHeading}</h2>
+      <ul class="kit-items">
+        {s.items.map((item) => (
+          <li>
+            <strong>{item.name}.</strong> {item.text}
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <section class="kit-form" aria-labelledby="kit-form-heading">
+      <h2 id="kit-form-heading">{s.formHeading}</h2>
+      <SubscribeForm list="kit" locale="en" source="/incident-kit/" />
+    </section>
+
+    <section class="prose" aria-labelledby="kit-next-heading">
+      <h2 id="kit-next-heading">{s.nextHeading}</h2>
+      <ol>
+        {s.next.map((step) => (
+          <li>{step}</li>
+        ))}
+      </ol>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .kit {
+    display: grid;
+    gap: var(--space-8);
+    margin-block: var(--space-4) var(--space-12);
+  }
+
+  .kit h2 {
+    font-size: var(--fs-lg);
+  }
+
+  .kit-items {
+    padding-left: 1.25rem;
+  }
+
+  .kit-items li + li {
+    margin-top: var(--space-2);
+  }
+
+  .kit-form {
+    padding: var(--space-6) var(--space-4);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-panel);
+  }
+
+  @media (min-width: 48rem) {
+    .kit-form {
+      padding: var(--space-6);
+    }
+  }
+
+  .kit-form h2 {
+    margin-top: 0;
+  }
+</style>

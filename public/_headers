@@ -1,4 +1,5 @@
-# Cloudflare Pages headers. A Content-Security-Policy is added in L4 once the form provider is known.
+# Cloudflare Pages headers. The Content-Security-Policy is added to the /* block after the build
+# by scripts/csp.ts (it needs the hashes of the inline scripts).
 
 /*
   X-Content-Type-Options: nosniff
@@ -14,3 +15,8 @@ https://:version.:project.pages.dev/*
 
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
+
+# Incident Kit download: unguessable path, linked only from the kit email. Not for search.
+/kit/*
+  X-Robots-Tag: noindex
+  Cache-Control: public, max-age=3600

@@ -1,0 +1,149 @@
+/* Sign-up forms (Incident Kit, early access). Same control tokens as the calculator. */
+
+.form {
+  display: grid;
+  gap: var(--space-6);
+  max-width: 36rem;
+}
+
+.form-field {
+  display: grid;
+  gap: var(--space-1);
+  justify-items: start;
+}
+
+.form-field > label,
+.form fieldset > legend {
+  font-weight: var(--weight-bold);
+}
+
+.form-note {
+  font-weight: var(--weight-regular);
+  color: var(--muted);
+}
+
+.form input[type='email'],
+.form input[type='text'],
+.form select,
+.form textarea {
+  width: 100%;
+  max-width: 28rem;
+  min-height: var(--control-h);
+  padding: 0 var(--control-px);
+  font: inherit;
+  color: var(--text);
+  background-color: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--control-radius);
+}
+
+.form textarea {
+  min-height: 7rem;
+  padding-block: var(--space-2);
+  resize: vertical;
+}
+
+.form select {
+  appearance: none;
+  padding-right: calc(var(--control-px) * 3);
+  background-image:
+    linear-gradient(45deg, transparent 50%, currentColor 50%),
+    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position:
+    calc(100% - 1.15rem) 50%,
+    calc(100% - 0.8rem) 50%;
+  background-size: 0.35rem 0.35rem;
+  background-repeat: no-repeat;
+}
+
+.form [aria-invalid='true'] {
+  border-color: var(--overdue);
+}
+
+.form fieldset {
+  margin: 0;
+  padding: var(--space-3) var(--space-4) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+}
+
+.form-choice {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  padding-block: var(--space-1);
+}
+
+.form input[type='checkbox'] {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0.15em 0 0;
+  accent-color: var(--accent);
+}
+
+.form-hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: var(--fs-sm);
+}
+
+.form-error {
+  margin: 0;
+  color: var(--overdue);
+  font-size: var(--fs-sm);
+  font-weight: var(--weight-bold);
+}
+
+.form-summary {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border-left: 4px solid var(--overdue);
+  background: var(--surface-2);
+  font-weight: var(--weight-bold);
+}
+
+.form-status {
+  margin: 0;
+  font-weight: var(--weight-bold);
+}
+
+.form-status:empty {
+  display: none;
+}
+
+/* Honeypot: off-screen for people, still in the form for bots. */
+.form-hp {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--control-h);
+  padding: 0 var(--space-4);
+  font: inherit;
+  font-weight: var(--weight-bold);
+  color: var(--bg);
+  background: var(--text);
+  border: 1px solid var(--text);
+  border-radius: var(--control-radius);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button--secondary {
+  color: var(--text);
+  background: var(--surface);
+  border-color: var(--border-strong);
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}

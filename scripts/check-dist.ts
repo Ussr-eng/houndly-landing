@@ -3,6 +3,9 @@
 
 import { readdirSync, readFileSync, existsSync, statSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
+import { createHash } from 'node:crypto';
+import { isNoindexByDesign } from '../src/config/indexing.ts';
+import { inlineScripts } from '../src/lib/csp.ts';
 
 const DIST = join(import.meta.dirname, '..', 'dist');
 const TITLE_MAX = 60;
@@ -12,8 +15,10 @@ const DESCRIPTION_MAX = 155;
 const ALLOW_INDEXING = process.env.PUBLIC_ALLOW_INDEXING?.trim().toLowerCase() === 'true';
 // Keep in sync with PLACEHOLDER_SITE_URL in src/config/site.ts.
 const PLACEHOLDER_HOST = 'site-url-not-set.invalid';
-// Pages that are noindex regardless of the global switch.
-const NOINDEX_BY_DESIGN = new Set(['/404.html']);
+/** URL path of a built file: "/404.html" → "/404/", "/pricing/index.html" → "/pricing/". */
+function urlPath(page: string): string {
+  return page === '/404.html' ? '/404/' : page.replace(/index\.html$/, '');
+}
 
 function htmlFiles(dir: string): string[] {
   return readdirSync(dir).flatMap((name) => {
@@ -56,6 +61,15 @@ if (!existsSync(DIST)) {
 }
 
 const problems: string[] = [];
+
+// The CSP (written by scripts/csp.ts) must allow every inline script by hash.
+const headersPath = join(DIST, '_headers');
+const cspLine = existsSync(headersPath)
+  ? readFileSync(headersPath, 'utf8')
+      .split('\n')
+      .find((l) => /^\s+Content-Security-Policy(-Report-Only)?:/.test(l))
+  : undefined;
+if (!cspLine) problems.push('/_headers: no Content-Security-Policy (run the full `pnpm build`)');
 const titles = new Map<string, string>();
 const files = htmlFiles(DIST);
 
@@ -64,7 +78,7 @@ for (const file of files) {
   const html = readFileSync(file, 'utf8');
   const fail = (msg: string) => problems.push(`${page}: ${msg}`);
   const isNoindex = /noindex/.test(metaContent(html, 'name', 'robots') ?? '');
-  const byDesign = NOINDEX_BY_DESIGN.has(page);
+  const byDesign = isNoindexByDesign(urlPath(page));
 
   if (byDesign && !isNoindex) fail('must be noindex by design');
   else if (!byDesign && !ALLOW_INDEXING && !isNoindex)
@@ -118,6 +132,24 @@ for (const file of files) {
     } catch {
       fail('invalid JSON-LD');
     }
+  }
+
+  for (const body of inlineScripts(html)) {
+    const hash = createHash('sha256').update(body, 'utf8').digest('base64');
+    if (cspLine && !cspLine.includes(`'sha256-${hash}'`))
+      fail(`inline script not allowed by the CSP (sha256-${hash})`);
+  }
+
+  // Every visible form control has a <label for> (or aria-label / aria-labelledby).
+  const labelled = new Set(
+    (html.match(/<label\b[^>]*>/gi) ?? []).map((tag) => attr(tag, 'for')).filter(Boolean),
+  );
+  for (const tag of html.match(/<(input|select|textarea)\b[^>]*>/gi) ?? []) {
+    if (/\stype="?hidden/i.test(tag)) continue;
+    const id = attr(tag, 'id');
+    const wrapped = id === null && /type="?(checkbox|radio)/i.test(tag);
+    if (wrapped || attr(tag, 'aria-label') || attr(tag, 'aria-labelledby')) continue;
+    if (!id || !labelled.has(id)) fail(`form control without a label: ${tag.slice(0, 80)}`);
   }
 
   for (const tag of html.match(/<a\b[^>]*>/gi) ?? []) {
