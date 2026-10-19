@@ -1,4 +1,4 @@
-// Brand and site identity. "Houndly" is a working codename: rename it here only.
+// Brand and site identity. Change the brand here only.
 
 import { parseAllowIndexing } from './indexing.ts';
 
@@ -10,12 +10,12 @@ import { parseAllowIndexing } from './indexing.ts';
 export const PLACEHOLDER_SITE_URL = 'https://site-url-not-set.invalid';
 
 export const site = {
-  name: 'Houndly',
+  name: 'Within24',
   tagline: 'EU incident reporting deadlines, calculated',
   defaultDescription:
     'Calculate CRA, NIS2 and GDPR incident reporting deadlines in your time zone. Free, no sign-up.',
   defaultOgImage: '/og/default.png',
-  ogImageAlt: 'Houndly — EU incident reporting deadlines',
+  ogImageAlt: 'Within24 — EU incident reporting deadlines',
   twitterHandle: null as string | null,
   // Shown in Article JSON-LD on guides.
   author: { name: 'Dmytro Slobodin', url: null as string | null },
@@ -24,8 +24,7 @@ export const site = {
   operator: {
     name: 'Dmytro Slobodin',
     country: 'Ukraine',
-    // Placeholder until the production domain exists.
-    email: null as string | null,
+    email: 'hello@within24.app' as string | null,
   },
   analytics: {
     // Provider is swappable: see src/lib/analytics.ts and src/components/Analytics.astro.

@@ -43,7 +43,7 @@ describe('buildIcs', () => {
         url: 'https://example.com/?aware=2026-10-01T09:00Z&rules=v1',
       },
     ],
-    { now: '2026-10-01T10:00:00Z', prodId: '-//Houndly//Deadline calculator//EN' },
+    { now: '2026-10-01T10:00:00Z', prodId: '-//Within24//Deadline calculator//EN' },
   );
   const lines = ics.split('\r\n');
 
@@ -56,7 +56,7 @@ describe('buildIcs', () => {
     expect(lines.slice(0, 5)).toEqual([
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
-      'PRODID:-//Houndly//Deadline calculator//EN',
+      'PRODID:-//Within24//Deadline calculator//EN',
       'CALSCALE:GREGORIAN',
       'METHOD:PUBLISH',
     ]);

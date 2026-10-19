@@ -35,7 +35,7 @@ export const en = {
   },
   bridge: {
     heading: 'Deadlines calculated. Who wakes up at 3 a.m.?',
-    intro: 'Houndly keeps these clocks running for your team.',
+    intro: 'Within24 keeps these clocks running for your team.',
     steps: [
       'Log the incident once. Every legal clock that applies starts.',
       'Before each deadline, the on-call person is alerted until someone acknowledges.',
@@ -123,7 +123,7 @@ export const en = {
     description:
       'Plans for teams that must report CRA, NIS2 and GDPR incidents on time. Early access: no payment is taken.',
     intro:
-      'Houndly is in early access. Choose the plan that fits and leave your email: we contact you before launch, and you decide then whether to buy.',
+      'Within24 is in early access. Choose the plan that fits and leave your email: we contact you before launch, and you decide then whether to buy.',
     perMonth: '/ month',
     free: 'Free',
     noPayment: 'Early access. No payment is taken.',
@@ -170,7 +170,7 @@ export const en = {
     },
     confirmed: {
       title: "You're on the early-access list",
-      description: 'Your email address is confirmed for Houndly early access.',
+      description: 'Your email address is confirmed for Within24 early access.',
       body: "Thank you. We'll contact you before launch.",
       back: 'Back to the deadline calculator',
     },
@@ -194,7 +194,7 @@ export const en = {
   },
   privacy: {
     title: 'Privacy policy',
-    description: 'How Houndly handles data from the calculator, analytics and the sign-up forms.',
+    description: 'How Within24 handles data from the calculator, analytics and the sign-up forms.',
     lastUpdated: 'Last updated',
     notYet: 'not yet published',
     placeholder: 'This section will be completed before launch.',

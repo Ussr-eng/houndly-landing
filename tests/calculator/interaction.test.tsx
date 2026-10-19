@@ -181,6 +181,7 @@ describe('Calculator', () => {
     }) as typeof URL.createObjectURL;
     URL.revokeObjectURL = vi.fn();
     const click = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {});
+    vi.stubEnv('PUBLIC_SITE_URL', 'https://within24.app');
     const { user } = setup('?aware=2026-10-01T09:00Z&events=cra.actively_exploited_vulnerability');
 
     await user.click(
@@ -193,6 +194,11 @@ describe('Calculator', () => {
       t.replace(/\r\n /g, ''),
     );
     expect(one?.match(/BEGIN:VEVENT/g)).toHaveLength(1);
+    expect(one).toContain('PRODID:-//Within24//Deadline calculator//EN');
+    // UID host follows PUBLIC_SITE_URL, not the host the page runs on (localhost here).
+    expect(one).toMatch(
+      /UID:cra\.actively_exploited_vulnerability\.early_warning\.20261002T090000Z\.[0-9a-f]{8}@within24\.app/,
+    );
     expect(one).toContain('DTSTART:20261002T090000Z');
     // Waiting rows are not exported.
     expect(all?.match(/BEGIN:VEVENT/g)).toHaveLength(2);
@@ -202,6 +208,7 @@ describe('Calculator', () => {
       ['ics_downloaded', { scope: 'all' }],
     ]);
     click.mockRestore();
+    vi.unstubAllEnvs();
   });
 
   it('sends calculator_calculated once, 2 s after the last change, not on load', async () => {

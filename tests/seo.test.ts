@@ -9,7 +9,7 @@ const base: SeoInput = {
   ogImage: '/og/default.png',
   ogImageAlt: 'alt',
   ogLocale: 'en_GB',
-  siteName: 'Houndly',
+  siteName: 'Within24',
 };
 
 describe('buildSeo', () => {
