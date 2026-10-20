@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { handleSubscribe, type Deps, type SubscribeEnv } from '../../src/lib/forms/handler';
-import { brevoAttributes } from '../../src/lib/forms/provider';
+import { brevoAttributes, safeErrorText } from '../../src/lib/forms/provider';
 
 const BREVO_ENV: SubscribeEnv = {
   FORM_PROVIDER: 'brevo',
@@ -70,10 +70,6 @@ describe('handleSubscribe', () => {
       email: 'person@company.eu',
       attributes: {
         COMPANY: 'Acme',
-        PRODUCT_TYPE: '',
-        LAWS: '',
-        CURRENT_PROCESS: '',
-        PLAN: '',
         SOURCE: 'kit:/incident-kit/',
         CONSENT_VERSION: '2026-10-19',
         NEWS_CONSENT: false,
@@ -190,16 +186,77 @@ describe('handleSubscribe', () => {
     expect(res.status).toBe(503);
   });
 
-  it('maps provider errors to "unavailable" and logs only the status', async () => {
+  it('maps provider errors to "unavailable" and logs Brevo\'s code and message', async () => {
     const { d, log } = deps({
-      'https://api.brevo.com/': new Response('{"code":"x"}', { status: 400 }),
+      'https://api.brevo.com/': Response.json(
+        { code: 'invalid_parameter', message: 'Invalid template id' },
+        { status: 400 },
+      ),
     });
     const res = await handleSubscribe(request(valid), BREVO_ENV, d);
     expect(res.headers.get('location')).toBe('https://example.com/form-error/unavailable/');
     expect(log).toHaveBeenCalledWith('subscribe_provider_error', {
       provider: 'brevo',
       status: 400,
+      code: 'invalid_parameter',
+      message: 'Invalid template id',
     });
+  });
+
+  it("redacts email addresses in Brevo's error message", async () => {
+    const { d, log } = deps({
+      'https://api.brevo.com/': Response.json(
+        { code: 'invalid_parameter', message: 'Contact person@company.eu is blacklisted' },
+        { status: 400 },
+      ),
+    });
+    await handleSubscribe(request(valid), BREVO_ENV, d);
+    expect(log).toHaveBeenCalledWith(
+      'subscribe_provider_error',
+      expect.objectContaining({ message: 'Contact [redacted] is blacklisted' }),
+    );
+  });
+
+  it.each([
+    ['an empty body', () => new Response(null, { status: 400 })],
+    ['a non-JSON body', () => new Response('<html>Bad request</html>', { status: 400 })],
+    ['a body without code or message', () => Response.json({ error: 1 }, { status: 400 })],
+  ])('logs only the status for %s', async (_n, response) => {
+    const { d, log } = deps({ 'https://api.brevo.com/': response });
+    await handleSubscribe(request(valid), BREVO_ENV, d);
+    expect(log).toHaveBeenCalledWith('subscribe_provider_error', {
+      provider: 'brevo',
+      status: 400,
+    });
+  });
+
+  it('logs status 0 when the request to Brevo fails', async () => {
+    const { d, log } = deps({
+      'https://api.brevo.com/': () => {
+        throw new Error('network');
+      },
+    });
+    const res = await handleSubscribe(request(valid, true), BREVO_ENV, d);
+    expect(res.status).toBe(502);
+    expect(log).toHaveBeenCalledWith('subscribe_provider_error', { provider: 'brevo', status: 0 });
+  });
+
+  it('sends the fields with the types Brevo documents', async () => {
+    // POST /v3/contacts/doubleOptinConfirmation: email (string), includeListIds (array of
+    // integers), templateId (integer), redirectionUrl (absolute URL); attribute values are
+    // strings, integers, arrays of strings or booleans.
+    const { d, calls } = deps({ 'https://api.brevo.com/': ok201 });
+    await handleSubscribe(request([...valid, ['news', 'yes']]), BREVO_ENV, d);
+    const body = JSON.parse(String(calls[0]?.init?.body));
+    expect(Object.keys(body).sort()).toEqual(
+      ['attributes', 'email', 'includeListIds', 'redirectionUrl', 'templateId'].sort(),
+    );
+    expect(Number.isInteger(body.templateId)).toBe(true);
+    expect(body.includeListIds.every(Number.isInteger)).toBe(true);
+    expect(new URL(body.redirectionUrl).protocol).toBe('https:');
+    expect(body.attributes.NEWS_CONSENT).toBe(true);
+    for (const v of Object.values(body.attributes))
+      expect(typeof v === 'boolean' || (typeof v === 'string' && v !== '')).toBe(true);
   });
 
   it('accepts everything with the fake provider and calls nothing', async () => {
@@ -210,7 +267,10 @@ describe('handleSubscribe', () => {
   });
 
   it('never logs the email address or other fields', async () => {
-    const { d, log } = deps({ 'https://api.brevo.com/': new Response(null, { status: 500 }) });
+    const { d, log } = deps({
+      'https://api.brevo.com/': () =>
+        Response.json({ code: 'x', message: 'person@company.eu' }, { status: 500 }),
+    });
     await handleSubscribe(request([...valid, ['website', 'x']]), BREVO_ENV, d);
     await handleSubscribe(request(valid), BREVO_ENV, d);
     await handleSubscribe(request(valid), {}, d);
@@ -247,11 +307,32 @@ describe('brevoAttributes', () => {
         source: '/incident-kit/',
       },
     });
+    expect(attrs).not.toHaveProperty('COMPANY');
     expect(attrs).toMatchObject({
       NEWS_CONSENT: true,
       CONSENT_VERSION: '2026-10-19',
       LAWS: 'CRA,GDPR',
       PRODUCT_TYPE: 'software',
     });
+  });
+});
+
+describe('safeErrorText', () => {
+  it('redacts anything that looks like an email address', () => {
+    expect(safeErrorText('a.b+c@sub.example.co.uk and "x@y.z"')).toBe(
+      '[redacted] and "[redacted]"',
+    );
+  });
+
+  it('truncates to 200 characters', () => {
+    expect(safeErrorText('x'.repeat(500))).toHaveLength(200);
+  });
+
+  it('ignores empty and non-string values', () => {
+    expect([safeErrorText(''), safeErrorText(42), safeErrorText(null)]).toEqual([
+      undefined,
+      undefined,
+      undefined,
+    ]);
   });
 });

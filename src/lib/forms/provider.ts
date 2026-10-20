@@ -12,7 +12,15 @@ export interface SubscribeRequest {
   at: string;
 }
 
-export type SubscribeOutcome = { ok: true } | { ok: false; status: number };
+export type SubscribeOutcome =
+  | { ok: true }
+  | {
+      ok: false;
+      status: number;
+      /** Provider error code and message, already safe to log (see safeErrorText). */
+      code?: string;
+      message?: string;
+    };
 
 export interface FormProvider {
   readonly name: string;
@@ -36,10 +44,13 @@ export const fakeProvider: FormProvider = {
   },
 };
 
-/** Contact attributes as created in Brevo (names must exist there; see README). */
+/**
+ * Contact attributes as created in Brevo (names must exist there; see README). Empty strings are
+ * left out: they carry nothing, and an existing contact keeps its earlier values.
+ */
 export function brevoAttributes(req: SubscribeRequest): Record<string, string | boolean> {
   const d = req.data;
-  return {
+  const all: Record<string, string | boolean> = {
     COMPANY: d.company,
     PRODUCT_TYPE: d.productType,
     LAWS: d.laws.join(','),
@@ -50,6 +61,28 @@ export function brevoAttributes(req: SubscribeRequest): Record<string, string | 
     NEWS_CONSENT: d.newsConsent,
     SIGNUP_AT: req.at,
   };
+  return Object.fromEntries(Object.entries(all).filter(([, v]) => v !== ''));
+}
+
+const MAX_ERROR_TEXT = 200;
+const EMAIL_LIKE = /[^\s@"'<>(),;:]+@[^\s@"'<>(),;:]+/g;
+
+/** Provider error text for the log: email-like parts redacted, at most 200 characters. */
+export function safeErrorText(value: unknown): string | undefined {
+  if (typeof value !== 'string' || value === '') return undefined;
+  return value.replace(EMAIL_LIKE, '[redacted]').slice(0, MAX_ERROR_TEXT);
+}
+
+/** Reads Brevo's error body ({ code, message }) without ever failing. */
+async function brevoError(res: Response): Promise<{ code?: string; message?: string }> {
+  try {
+    const json = (await res.json()) as { code?: unknown; message?: unknown };
+    const code = safeErrorText(json.code);
+    const message = safeErrorText(json.message);
+    return { ...(code ? { code } : {}), ...(message ? { message } : {}) };
+  } catch {
+    return {};
+  }
 }
 
 const positiveInt = (v: string | undefined) => (v && /^\d+$/.test(v) ? Number(v) : null);
@@ -84,7 +117,8 @@ export function brevoProvider(env: ProviderEnv, fetchImpl: typeof fetch): FormPr
         }),
       });
       // 201 created; 204 has been seen for existing contacts. TODO(verify) against the API.
-      return res.ok ? { ok: true } : { ok: false, status: res.status };
+      if (res.ok) return { ok: true };
+      return { ok: false, status: res.status, ...(await brevoError(res)) };
     },
   };
 }
