@@ -3,7 +3,7 @@
 // - a plain form post gets a 303 redirect to a static page.
 // Never logs request bodies or email addresses.
 
-import { selectProvider, type ProviderEnv } from './provider';
+import { selectProvider, type ProviderEnv, type SubscribeOutcome } from './provider';
 import { validateSubscribe, type ListId, type FieldError, type SubscribeData } from './validate';
 
 export interface SubscribeEnv extends ProviderEnv {
@@ -145,7 +145,7 @@ export async function handleSubscribe(
   }
 
   const origin = new URL(request.url).origin;
-  let outcome;
+  let outcome: SubscribeOutcome;
   try {
     outcome = await provider.subscribe({
       data: result.data,
@@ -153,10 +153,15 @@ export async function handleSubscribe(
       at: deps.now().toISOString(),
     });
   } catch {
-    outcome = { ok: false as const, status: 0 };
+    outcome = { ok: false, status: 0 };
   }
   if (!outcome.ok) {
-    deps.log('subscribe_provider_error', { provider: provider.name, status: outcome.status });
+    deps.log('subscribe_provider_error', {
+      provider: provider.name,
+      status: outcome.status,
+      ...(outcome.code ? { code: outcome.code } : {}),
+      ...(outcome.message ? { message: outcome.message } : {}),
+    });
     return respond(request, {
       ok: false,
       reason: 'unavailable',
