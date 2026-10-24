@@ -54,7 +54,7 @@ GitHub repository variable: `PUBLIC_TURNSTILE_SITE_KEY` (Turnstile site key; the
 only when it is set).
 
 Brevo contact attributes (create them in Brevo; text unless noted): `COMPANY`, `PRODUCT_TYPE`,
-`LAWS`, `CURRENT_PROCESS`, `PLAN`, `SOURCE`, `CONSENT_VERSION`, `NEWS_CONSENT` (boolean),
+`LAWS`, `COMPANY_SIZE`, `CURRENT_PROCESS` (on-call tool), `SELLS_EU`, `NOTE`, `PLAN`, `SOURCE`, `CONSENT_VERSION`, `NEWS_CONSENT` (boolean),
 `SIGNUP_AT`.
 
 The Incident Kit file is served from an unguessable path under `public/kit/` and linked only from

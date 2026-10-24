@@ -11,7 +11,12 @@ and wakes the on-call person. The site has three jobs:
 
 1. Bring search traffic with a free deadline calculator and helpful articles.
 2. Turn readers into leads: the Incident Kit (report templates + checklists) in exchange for an email.
-3. Measure purchase intent: a pricing page with a "fake door" Buy button and an early-access form.
+3. Measure purchase intent: public prices with a "fake door" Choose button and an early-access form
+   with segmentation questions, on the home page and on `/pricing/`.
+
+The home page (`/`) is the entry to the funnel: positioning (on-call for small teams, EU reporting
+deadlines built in), how it works, pricing, trust, FAQ and the early-access form. The calculator lives
+on `/deadlines/`.
 
 Every page must be fully readable by Google without running JavaScript.
 
@@ -32,7 +37,7 @@ Every page must be fully readable by Google without running JavaScript.
    (`client:load` or `client:visible`), so the form, labels and an example result table exist in the HTML.
 2. Every page has a unique `<title>` (≤ 60 chars), meta description (≤ 155 chars), canonical URL, Open Graph
    and Twitter tags, and one `<h1>`.
-3. Clean URLs: `/` (calculator), `/guides/<slug>/`, `/pricing/`, `/incident-kit/`. Trailing slash, lowercase,
+3. Clean URLs: `/` (home), `/deadlines/` (calculator), `/guides/<slug>/`, `/pricing/`, `/incident-kit/`. Trailing slash, lowercase,
    English slugs. Locale prefix for future languages (`/de/...`); English has no prefix.
 4. `sitemap.xml` (via @astrojs/sitemap) and `robots.txt`. `hreflang` tags once a second language exists.
 5. JSON-LD: `WebApplication` on the calculator page, `Article` (with `datePublished`, `dateModified`, author)
@@ -84,8 +89,8 @@ Every page must be fully readable by Google without running JavaScript.
 
 - Incident Kit form: email (required), company, product type, applicable laws. Double opt-in.
   Provider is an open decision — propose options in the plan; keep it behind one small adapter.
-- Early-access form on the pricing page: email, company, product type, applicable laws, "how do you handle
-  this today" (free text).
+- Early-access form (home page and pricing page): email, then one-click answers for what you ship, company
+  size, on-call tool today and whether you sell in the EU, the plan, and an optional free-text note.
 - Custom analytics events: `calculator_opened`, `calculator_calculated`, `ics_downloaded`, `link_copied`,
   `kit_requested`, `buy_clicked` (with plan), `waitlist_submitted`.
 - No tracking cookies, no third-party scripts beyond the analytics tool and the form provider.

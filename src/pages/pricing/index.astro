@@ -1,11 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SubscribeForm from '../../components/forms/SubscribeForm.astro';
-import { plans } from '../../config/pricing';
-import { fill, t } from '../../i18n';
+import PlanList from '../../components/PlanList.astro';
+import { t } from '../../i18n';
 
 const s = t('en').pricing;
-const price = (amount: number) => `€${amount}`;
 ---
 
 <BaseLayout title={s.title} description={s.description}>
@@ -15,46 +14,10 @@ const price = (amount: number) => `€${amount}`;
       <p class="lead">{s.intro}</p>
     </div>
 
-    <ul class="plans">
-      {plans.map((plan) => {
-        const copy = s.plans[plan.id];
-        return (
-          <li class:list={['plan', { 'plan--highlighted': plan.highlighted }]}>
-            {plan.highlighted && <p class="plan-flag">{s.recommended}</p>}
-            <h2 class="plan-name">{copy.name}</h2>
-            <p class="plan-price">
-              {plan.price === 0 ? (
-                s.free
-              ) : (
-                <>
-                  <span class="plan-amount">{price(plan.price)}</span> {s.perMonth}
-                </>
-              )}
-            </p>
-            {plan.action === 'early-access' && <p class="plan-note">{s.noPayment}</p>}
-            <p>{copy.description}</p>
-            <ul class="plan-features">
-              {copy.features.map((feature) => (
-                <li>{feature}</li>
-              ))}
-            </ul>
-            {plan.action === 'early-access' ? (
-              <a
-                class:list={['button', { 'button--secondary': !plan.highlighted }]}
-                href={`/pricing/?plan=${plan.id}#early-access`}
-                data-choose-plan={plan.id}
-              >
-                {fill(s.choose, { plan: copy.name })}
-              </a>
-            ) : (
-              <a class="button button--secondary" href="/">
-                {s.useCalculator}
-              </a>
-            )}
-          </li>
-        );
-      })}
-    </ul>
+    <PlanList formPath="/pricing/" headingLevel={2} />
+    <p class="pricing-note">
+      {s.priceLock} {s.consultant}
+    </p>
 
     <section id="early-access" class="early-access" aria-labelledby="early-access-heading">
       <h2 id="early-access-heading">{s.formHeading}</h2>
@@ -76,87 +39,10 @@ const price = (amount: number) => `€${amount}`;
     margin-block: var(--space-4) var(--space-12);
   }
 
-  .plans {
-    display: grid;
-    gap: 0;
+  .pricing-note {
     margin: 0;
-    padding: 0;
-    list-style: none;
-    border-top: 1px solid var(--border);
-  }
-
-  @media (min-width: 48rem) {
-    .plans {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      border-top: 0;
-    }
-  }
-
-  @media (min-width: 64rem) {
-    .plans {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-  }
-
-  /* Columns separated by rules, not cards: the highlighted plan gets an accent top edge. */
-  .plan {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    padding: var(--space-6) var(--space-4);
-    border-bottom: 1px solid var(--border);
-  }
-
-  @media (min-width: 48rem) {
-    .plan {
-      border-top: 4px solid var(--border);
-      border-bottom: 0;
-    }
-  }
-
-  .plan--highlighted {
-    background: var(--surface);
-    border-top: 4px solid var(--accent);
-  }
-
-  .plan p {
-    margin: 0;
-  }
-
-  .plan-flag {
-    color: var(--accent);
-    font-size: var(--fs-sm);
-    font-weight: var(--weight-bold);
-  }
-
-  .plan-name {
-    margin: 0;
-    font-size: var(--fs-lg);
-  }
-
-  .plan-price {
-    font-size: var(--fs-md);
-  }
-
-  .plan-amount {
-    font-size: var(--fs-xl);
-    font-weight: var(--weight-bold);
-    font-variant-numeric: tabular-nums;
-  }
-
-  .plan-note {
     color: var(--muted);
     font-size: var(--fs-sm);
-  }
-
-  .plan-features {
-    flex: 1;
-    margin: var(--space-2) 0 var(--space-4);
-    padding-left: 1.25rem;
-  }
-
-  .plan .button {
-    align-self: flex-start;
   }
 
   .early-access {

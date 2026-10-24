@@ -1,8 +1,8 @@
-// Pricing fake door (/pricing/). Prices are placeholders the owner fills in; plan names,
+// Pricing fake door (/pricing/ and the home page). Prices are a hypothesis the owner may change; plan names,
 // descriptions and features are copy and live in src/i18n/en.ts under pricing.plans.
 // No Product/Offer structured data: these prices cannot be bought yet.
 
-export type PlanId = 'free' | 'starter' | 'team' | 'partner';
+export type PlanId = 'free' | 'starter' | 'team';
 
 export interface Plan {
   id: PlanId;
@@ -16,9 +16,8 @@ export interface Plan {
 
 export const plans: readonly Plan[] = [
   { id: 'free', price: 0, period: null, highlighted: false, action: 'calculator' },
-  { id: 'starter', price: 49, period: 'month', highlighted: false, action: 'early-access' },
-  { id: 'team', price: 149, period: 'month', highlighted: true, action: 'early-access' },
-  { id: 'partner', price: 399, period: 'month', highlighted: false, action: 'early-access' },
+  { id: 'starter', price: 29, period: 'month', highlighted: false, action: 'early-access' },
+  { id: 'team', price: 99, period: 'month', highlighted: true, action: 'early-access' },
 ];
 
 export const paidPlanIds = plans.filter((p) => p.action === 'early-access').map((p) => p.id);

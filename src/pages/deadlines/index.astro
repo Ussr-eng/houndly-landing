@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { webApplication } from '../../lib/seo/jsonld';
+import { site, siteUrl } from '../../config/site';
+import Calculator from '../../components/calculator/Calculator';
+import { t } from '../../i18n';
+import Bridge from '../../components/Bridge.astro';
+
+const title = 'EU incident reporting deadline calculator';
+const description = site.defaultDescription;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={[
+    webApplication({
+      name: `${site.name} deadline calculator`,
+      url: siteUrl() + '/deadlines/',
+      description,
+      inLanguage: 'en',
+    }),
+  ]}
+>
+  <div class="prose">
+    <h1>{title}</h1>
+    <p class="lead">
+      Enter when you became aware of an actively exploited vulnerability or incident. Get every
+      Cyber Resilience Act (CRA), NIS2 and GDPR reporting deadline in your time zone and the
+      authority's.
+    </p>
+  </div>
+  <!-- Server-rendered with the fixed example; hydrates without changing the rows. -->
+  <Calculator client:load locale="en" />
+  <noscript>
+    <p class="noscript-note">{t('en').calculator.result.noscript}</p>
+  </noscript>
+  <Bridge locale="en" />
+</BaseLayout>

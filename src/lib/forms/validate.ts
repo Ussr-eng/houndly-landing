@@ -6,8 +6,33 @@ import { isPaidPlanId, type PlanId } from '../../config/pricing';
 export const LISTS = ['kit', 'waitlist'] as const;
 export type ListId = (typeof LISTS)[number];
 
-export const PRODUCT_TYPES = ['device', 'software', 'mobile', 'other'] as const;
+export const PRODUCT_TYPES = [
+  'mobile',
+  'desktop',
+  'self_hosted',
+  'iot',
+  'sdk',
+  'saas',
+  'other',
+] as const;
 export type ProductType = (typeof PRODUCT_TYPES)[number];
+
+/** Early-access segmentation: one click each, all optional. */
+export const COMPANY_SIZES = ['1-9', '10-49', '50-249', '250+'] as const;
+export type CompanySize = (typeof COMPANY_SIZES)[number];
+
+export const ONCALL_TOOLS = [
+  'pagerduty',
+  'opsgenie',
+  'grafana_oncall',
+  'other_tool',
+  'phone_chat',
+  'nobody',
+] as const;
+export type OncallTool = (typeof ONCALL_TOOLS)[number];
+
+export const SELLS_EU = ['yes', 'no', 'unsure'] as const;
+export type SellsEu = (typeof SELLS_EU)[number];
 
 export const LAWS = ['CRA', 'NIS2', 'GDPR', 'unsure'] as const;
 export type Law = (typeof LAWS)[number];
@@ -15,7 +40,7 @@ export type Law = (typeof LAWS)[number];
 /** Bumped whenever the consent wording next to the forms changes. */
 export const CONSENT_VERSION = '2026-10-19';
 
-export const LIMITS = { email: 254, company: 200, currentProcess: 1000 } as const;
+export const LIMITS = { email: 254, company: 200, note: 300 } as const;
 
 export type FieldError = 'required' | 'invalid' | 'too_long';
 
@@ -26,7 +51,10 @@ export interface SubscribeData {
   productType: ProductType | '';
   laws: Law[];
   /** Early access only. */
-  currentProcess: string;
+  companySize: CompanySize | '';
+  currentProcess: OncallTool | '';
+  sellsEu: SellsEu | '';
+  note: string;
   plan: PlanId | '';
   /** Incident Kit only: optional, unticked "Also send me product news". */
   newsConsent: boolean;
@@ -45,6 +73,13 @@ export interface FormLike {
 }
 
 const text = (v: unknown) => (typeof v === 'string' ? v.trim() : '');
+
+/** One value from a closed set: '' when empty, null when not in the set. */
+function choice<T extends string>(raw: string, options: readonly T[]): T | '' | null {
+  if (!raw) return '';
+  return (options as readonly string[]).includes(raw) ? (raw as T) : null;
+}
+
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function validateSubscribe(form: FormLike): ValidationResult {
@@ -61,11 +96,8 @@ export function validateSubscribe(form: FormLike): ValidationResult {
   const company = text(form.get('company'));
   if (company.length > LIMITS.company) errors.company = 'too_long';
 
-  const productTypeRaw = text(form.get('product_type'));
-  const productType = (PRODUCT_TYPES as readonly string[]).includes(productTypeRaw)
-    ? (productTypeRaw as ProductType)
-    : '';
-  if (productTypeRaw && !productType) errors.productType = 'invalid';
+  const productType = choice(text(form.get('product_type')), PRODUCT_TYPES);
+  if (productType === null) errors.productType = 'invalid';
 
   const lawsRaw = form.getAll('laws').map(text).filter(Boolean);
   const laws = [...new Set(lawsRaw)].filter((l): l is Law =>
@@ -73,10 +105,17 @@ export function validateSubscribe(form: FormLike): ValidationResult {
   );
   if (laws.length !== new Set(lawsRaw).size) errors.laws = 'invalid';
 
-  const currentProcess = list === 'waitlist' ? text(form.get('current_process')) : '';
-  if (currentProcess.length > LIMITS.currentProcess) errors.currentProcess = 'too_long';
+  const waitlist = list === 'waitlist';
+  const companySize = waitlist ? choice(text(form.get('company_size')), COMPANY_SIZES) : '';
+  if (companySize === null) errors.companySize = 'invalid';
+  const currentProcess = waitlist ? choice(text(form.get('current_process')), ONCALL_TOOLS) : '';
+  if (currentProcess === null) errors.currentProcess = 'invalid';
+  const sellsEu = waitlist ? choice(text(form.get('sells_eu')), SELLS_EU) : '';
+  if (sellsEu === null) errors.sellsEu = 'invalid';
+  const note = waitlist ? text(form.get('note')) : '';
+  if (note.length > LIMITS.note) errors.note = 'too_long';
 
-  const planRaw = list === 'waitlist' ? text(form.get('plan')) : '';
+  const planRaw = waitlist ? text(form.get('plan')) : '';
   const plan = isPaidPlanId(planRaw) ? planRaw : '';
   if (planRaw && !plan) errors.plan = 'invalid';
 
@@ -84,7 +123,15 @@ export function validateSubscribe(form: FormLike): ValidationResult {
   const sourceRaw = text(form.get('source'));
   const source = /^\/[a-z0-9/-]{0,80}$/.test(sourceRaw) ? sourceRaw : '';
 
-  if (!list || Object.keys(errors).length) return { ok: false, list, errors };
+  if (
+    !list ||
+    Object.keys(errors).length ||
+    productType === null ||
+    companySize === null ||
+    currentProcess === null ||
+    sellsEu === null
+  )
+    return { ok: false, list, errors };
   return {
     ok: true,
     data: {
@@ -93,7 +140,10 @@ export function validateSubscribe(form: FormLike): ValidationResult {
       company,
       productType,
       laws,
+      companySize,
       currentProcess,
+      sellsEu,
+      note,
       plan,
       newsConsent,
       source,

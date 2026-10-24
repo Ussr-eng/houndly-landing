@@ -4,6 +4,7 @@ export const en = {
   skipToContent: 'Skip to content',
   nav: {
     label: 'Main',
+    home: 'Home',
     calculator: 'Deadline calculator',
     guides: 'Guides',
     kit: 'Incident Kit',
@@ -14,6 +15,7 @@ export const en = {
     rulesUnverified: 'not yet verified against the official texts',
     rulesVerified: 'verified {date}',
     notLegalAdvice: 'This site is not legal advice.',
+    notAffiliated: 'Not affiliated with ENISA or the European Commission.',
     links: 'Legal',
     privacy: 'Privacy',
     legal: 'Legal notice',
@@ -51,11 +53,35 @@ export const en = {
     productType: 'Product type',
     productTypeNone: 'Choose…',
     productTypes: {
-      device: 'Connected device or IoT',
-      software: 'Software or SaaS',
       mobile: 'Mobile app',
+      desktop: 'Desktop software',
+      self_hosted: 'Self-hosted or on-prem software',
+      iot: 'Connected device or IoT',
+      sdk: 'SDK or library',
+      saas: 'SaaS only',
       other: 'Other',
     },
+    productTypeQuestion: 'What do you ship?',
+    companySize: 'Company size',
+    companySizes: {
+      '1-9': '1–9',
+      '10-49': '10–49',
+      '50-249': '50–249',
+      '250+': '250+',
+    },
+    oncallTool: 'On-call today',
+    oncallTools: {
+      pagerduty: 'PagerDuty',
+      opsgenie: 'Opsgenie',
+      grafana_oncall: 'Grafana OnCall',
+      other_tool: 'Another tool',
+      phone_chat: 'Phone or chat',
+      nobody: 'Nobody is on call',
+    },
+    sellsEu: 'Do you sell in the EU?',
+    sellsEuOptions: { yes: 'Yes', no: 'No', unsure: 'Not sure' },
+    note: 'Anything else?',
+    noteHint: 'For example, what hurts most in your on-call today. Up to 300 characters.',
     laws: 'Applicable laws',
     lawLabels: { CRA: 'CRA', NIS2: 'NIS2', GDPR: 'GDPR', unsure: 'Not sure' },
     honeypot: 'Leave this field empty',
@@ -125,41 +151,49 @@ export const en = {
     intro:
       'Within24 is in early access. Choose the plan that fits and leave your email: we contact you before launch, and you decide then whether to buy.',
     perMonth: '/ month',
-    free: 'Free',
     noPayment: 'Early access. No payment is taken.',
     choose: 'Choose {plan}',
     useCalculator: 'Use the calculator',
+    priceLock: 'Early-access teams keep this price for 12 months after launch.',
+    consultant: 'Consultant with several clients? Tell us in the form.',
     recommended: 'Recommended',
     plans: {
       free: {
         name: 'Free',
-        description: 'Calculator and guides.',
+        description: 'Tools for working out what applies to you.',
         features: ['Deadline calculator', 'Guides'],
       },
       starter: {
         name: 'Starter',
-        description: 'For one product team.',
-        features: ['1 product', 'Up to 3 responders', 'Telegram and email alerts'],
+        description: 'For one small product team.',
+        features: [
+          'Up to 5 people on call',
+          '1 product',
+          'Alert webhooks',
+          'Telegram and email escalation',
+          'CRA, NIS2 and GDPR clocks',
+        ],
       },
       team: {
         name: 'Team',
-        description: 'For companies with several products.',
-        features: ['Up to 10 products', 'Phone calls', 'Escalation', 'Audit export'],
-      },
-      partner: {
-        name: 'Partner',
-        description: 'For consultants managing several clients.',
-        features: ['Several client workspaces'],
+        description: 'For teams with support staff and several products.',
+        features: [
+          'Up to 20 people on call',
+          'Unlimited products',
+          'Phone calls',
+          'AI triage and report drafts',
+          '"Call a developer" button for support',
+          'Opsgenie import',
+          'Audit export',
+        ],
       },
     },
-    formHeading: 'Request early access',
-    formIntro: 'No payment is taken. We use your answers to build the right first version.',
+    formHeading: 'Get early access',
+    formIntro:
+      "We'll email you when your plan is ready. Four quick clicks, so we build the right thing first. No payment is taken.",
     plan: 'Plan',
     planNone: 'Not sure yet',
-    currentProcess: 'How do you handle this today?',
-    currentProcessHint:
-      'For example: a spreadsheet, a calendar reminder, a consultant. Up to 1000 characters.',
-    submit: 'Request early access',
+    submit: 'Join early access',
     success:
       "Check your inbox to confirm. We'll contact you before launch; you decide then whether to buy.",
     thanks: {
@@ -173,6 +207,130 @@ export const en = {
       description: 'Your email address is confirmed for Within24 early access.',
       body: "Thank you. We'll contact you before launch.",
       back: 'Back to the deadline calculator',
+    },
+  },
+  home: {
+    title: 'On-call for small teams, with EU reporting deadlines',
+    description:
+      'Within24 wakes the right person when an alert fires and, if it may fall under the Cyber Resilience Act, starts the 24-hour clock and drafts the report.',
+    eyebrow: 'On-call for small software teams',
+    heading: 'Wake the right person. Never miss an EU reporting deadline.',
+    intro:
+      'Within24 routes alerts from PagerDuty, Opsgenie or Grafana to whoever is on call. If the incident may fall under the Cyber Resilience Act, it starts the 24-hour clock and drafts your ENISA report. You review it and submit.',
+    primary: 'Calculate your reporting deadlines',
+    secondary: 'Join early access',
+    status:
+      'Early access: we are building Within24 now. Not legal advice. Not affiliated with ENISA.',
+    pain: {
+      heading: 'The alert does not wait for Monday',
+      items: [
+        '3:12 a.m., Saturday. An alert fires. Is it just downtime, or an actively exploited vulnerability?',
+        'Under the CRA, the 24-hour early warning counts from when you become aware, not from Monday morning.',
+        'Small teams have the same obligation as large ones, without a security team to own it.',
+      ],
+    },
+    how: {
+      heading: 'How it works',
+      steps: [
+        {
+          name: 'Alert arrives',
+          text: 'A webhook from PagerDuty, Opsgenie, Grafana or Sentry, or a support agent presses "Call a developer".',
+        },
+        {
+          name: 'The right person wakes up',
+          text: 'Phone call, Telegram and email, escalating down the rota until someone taps "I\'m on it".',
+        },
+        {
+          name: 'The legal clock starts',
+          text: 'AI flags alerts that look reportable under the CRA, NIS2 or GDPR. Your engineer confirms, and the 24-hour, 72-hour and final-report timers start.',
+        },
+        {
+          name: 'Your report is drafted',
+          text: 'Within24 drafts each report from the incident timeline, with a source for every statement. You edit it and submit it to the ENISA Single Reporting Platform yourself.',
+        },
+      ],
+    },
+    modes: {
+      heading: 'One tool for every incident',
+      badge: 'In development',
+      caption: 'What Within24 does every day and when the law applies',
+      columns: { aspect: 'Aspect', daily: 'Every day', legal: 'When the law applies' },
+      rows: [
+        {
+          aspect: 'What it is',
+          daily: 'Simple on-call: rotas, escalation, calls',
+          legal: 'Parallel legal clocks for each incident',
+        },
+        {
+          aspect: 'Who uses it',
+          daily: 'Engineers and support staff',
+          legal: 'Whoever owns the report',
+        },
+        {
+          aspect: 'Highlights',
+          daily: '"Call a developer" button, alert webhooks, Opsgenie import',
+          legal: '24-hour, 72-hour and final-report timers, AI drafts, audit log',
+        },
+      ],
+      // TODO(verify): Opsgenie end-of-life date before launch.
+      opsgenie: 'Moving off Opsgenie before April 2027? Bring your schedules with you.',
+    },
+    pricing: {
+      heading: 'Pricing',
+      intro: 'Prices for early access. Choose a plan to join the list; no payment is taken.',
+      more: 'More about plans',
+    },
+    trust: {
+      heading: 'What you can rely on',
+      items: [
+        {
+          name: 'Built by an on-call engineer',
+          text: 'Dmytro spent two years on call for a customer-support platform and built Within24 for the 3 a.m. alert he used to get.',
+        },
+        {
+          name: 'A person always decides',
+          text: 'Within24 never submits to ENISA and never tells you a report is not needed.',
+        },
+        {
+          name: 'Every answer has a source',
+          text: 'Article numbers and links to the official texts. Where there is no source, we say it is unclear.',
+        },
+        {
+          name: 'Your data stays minimal',
+          text: 'No tracking cookies. We keep your email only with your consent.',
+        },
+      ],
+      privacy: 'Read the privacy policy',
+    },
+    faq: {
+      heading: 'Questions',
+      items: [
+        {
+          q: 'Does the Cyber Resilience Act apply to SaaS?',
+          // TODO(verify): wording against the CRA scope articles and the Commission guidance.
+          a: 'Often not directly: the CRA covers products with digital elements. A cloud service can be in scope as remote data processing for such a product, and software you ship to customers usually is. Check your own case against the official text.',
+        },
+        {
+          q: 'When does CRA reporting start?',
+          a: 'Reporting of actively exploited vulnerabilities and severe incidents applies from 11 September 2026. The other requirements apply from 11 December 2027.',
+        },
+        {
+          q: 'Do you submit reports to ENISA for us?',
+          a: 'No. The ENISA Single Reporting Platform has no API, and the decision to report stays with a person. Within24 wakes the right person and prepares the text.',
+        },
+        {
+          q: 'What data does the AI see?',
+          a: 'Only what you send it: alert payloads and the incident timeline. Personal data is masked before it reaches the model, and the AI never decides on its own.',
+        },
+        {
+          q: 'We are moving off Opsgenie. Can we use Within24 without the CRA part?',
+          a: 'Yes. The legal clocks start only when you mark an incident as reportable.',
+        },
+        {
+          q: 'When can I use it?',
+          a: "We're building the core now and will onboard early-access teams in small groups.",
+        },
+      ],
     },
   },
   formError: {
