@@ -299,9 +299,12 @@ describe('brevoAttributes', () => {
         list: 'kit',
         email: 'a@b.eu',
         company: '',
-        productType: 'software',
+        productType: 'saas',
         laws: ['CRA', 'GDPR'],
+        companySize: '',
         currentProcess: '',
+        sellsEu: '',
+        note: '',
         plan: '',
         newsConsent: true,
         source: '/incident-kit/',
@@ -312,8 +315,39 @@ describe('brevoAttributes', () => {
       NEWS_CONSENT: true,
       CONSENT_VERSION: '2026-10-19',
       LAWS: 'CRA,GDPR',
-      PRODUCT_TYPE: 'software',
+      PRODUCT_TYPE: 'saas',
     });
+  });
+
+  it('stores the early-access segmentation', () => {
+    const attrs = brevoAttributes({
+      at: '2026-10-24T10:00:00.000Z',
+      redirectionUrl: 'https://example.com/pricing/confirmed/',
+      data: {
+        list: 'waitlist',
+        email: 'a@b.eu',
+        company: '',
+        productType: 'mobile',
+        laws: [],
+        companySize: '50-249',
+        currentProcess: 'pagerduty',
+        sellsEu: 'yes',
+        note: 'Support calls us on WhatsApp',
+        plan: 'starter',
+        newsConsent: false,
+        source: '/',
+      },
+    });
+    expect(attrs).toMatchObject({
+      PRODUCT_TYPE: 'mobile',
+      COMPANY_SIZE: '50-249',
+      CURRENT_PROCESS: 'pagerduty',
+      SELLS_EU: 'yes',
+      NOTE: 'Support calls us on WhatsApp',
+      PLAN: 'starter',
+      SOURCE: 'waitlist:/',
+    });
+    expect(attrs).not.toHaveProperty('LAWS');
   });
 });
 

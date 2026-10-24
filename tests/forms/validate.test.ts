@@ -23,7 +23,10 @@ describe('validateSubscribe', () => {
         company: '',
         productType: '',
         laws: [],
+        companySize: '',
         currentProcess: '',
+        sellsEu: '',
+        note: '',
         plan: '',
         newsConsent: false,
         source: '',
@@ -37,12 +40,15 @@ describe('validateSubscribe', () => {
         ['list', 'waitlist'],
         ['email', 'a@b.eu'],
         ['company', 'Acme'],
-        ['product_type', 'device'],
+        ['product_type', 'iot'],
         ['laws', 'CRA'],
         ['laws', 'NIS2'],
         ['laws', 'CRA'],
         ['plan', 'team'],
-        ['current_process', 'A spreadsheet'],
+        ['company_size', '10-49'],
+        ['current_process', 'opsgenie'],
+        ['sells_eu', 'unsure'],
+        ['note', ' Night alerts '],
         ['source', '/pricing/'],
         ['news', 'yes'],
       ]),
@@ -51,8 +57,11 @@ describe('validateSubscribe', () => {
       list: 'waitlist',
       laws: ['CRA', 'NIS2'],
       plan: 'team',
-      currentProcess: 'A spreadsheet',
-      productType: 'device',
+      companySize: '10-49',
+      currentProcess: 'opsgenie',
+      sellsEu: 'unsure',
+      note: 'Night alerts',
+      productType: 'iot',
       source: '/pricing/',
       // news consent exists only on the kit form
       newsConsent: false,
@@ -76,10 +85,15 @@ describe('validateSubscribe', () => {
         ['list', 'kit'],
         ['email', 'a@b.eu'],
         ['plan', 'team'],
-        ['current_process', 'x'],
+        ['company_size', '1-9'],
+        ['current_process', 'opsgenie'],
+        ['sells_eu', 'yes'],
+        ['note', 'x'],
       ]),
     );
-    expect(r.ok && [r.data.plan, r.data.currentProcess]).toEqual(['', '']);
+    expect(
+      r.ok && [r.data.plan, r.data.companySize, r.data.currentProcess, r.data.sellsEu, r.data.note],
+    ).toEqual(['', '', '', '', '']);
   });
 
   it.each([
@@ -137,13 +151,40 @@ describe('validateSubscribe', () => {
       { plan: 'invalid' },
     ],
     [
-      'long answer',
+      'unknown company size',
       [
         ['list', 'waitlist'],
         ['email', 'a@b.eu'],
-        ['current_process', 'x'.repeat(1001)],
+        ['company_size', '1000'],
       ],
-      { currentProcess: 'too_long' },
+      { companySize: 'invalid' },
+    ],
+    [
+      'unknown on-call tool',
+      [
+        ['list', 'waitlist'],
+        ['email', 'a@b.eu'],
+        ['current_process', 'A spreadsheet'],
+      ],
+      { currentProcess: 'invalid' },
+    ],
+    [
+      'unknown EU answer',
+      [
+        ['list', 'waitlist'],
+        ['email', 'a@b.eu'],
+        ['sells_eu', 'maybe'],
+      ],
+      { sellsEu: 'invalid' },
+    ],
+    [
+      'long note',
+      [
+        ['list', 'waitlist'],
+        ['email', 'a@b.eu'],
+        ['note', 'x'.repeat(301)],
+      ],
+      { note: 'too_long' },
     ],
   ] as [string, [string, string][], Record<string, string>][])(
     'rejects %s',

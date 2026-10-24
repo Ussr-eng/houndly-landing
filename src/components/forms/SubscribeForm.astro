@@ -5,7 +5,15 @@
 import '../../styles/forms.css';
 import { t } from '../../i18n';
 import type { Locale } from '../../i18n/config';
-import { LAWS, LIMITS, PRODUCT_TYPES, type ListId } from '../../lib/forms/validate';
+import {
+  COMPANY_SIZES,
+  LAWS,
+  LIMITS,
+  ONCALL_TOOLS,
+  PRODUCT_TYPES,
+  SELLS_EU,
+  type ListId,
+} from '../../lib/forms/validate';
 import { HONEYPOT_FIELD } from '../../lib/forms/handler';
 import { paidPlanIds } from '../../config/pricing';
 
@@ -25,6 +33,18 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
 const success = list === 'kit' ? all.kit.success : p.success;
 const submit = list === 'kit' ? all.kit.submit : p.submit;
 const privacyParts = f.privacyNote.split('{link}');
+// Early-access segmentation: one radio group per question, one click each.
+const choiceGroups = [
+  {
+    name: 'product_type',
+    legend: f.productTypeQuestion,
+    options: PRODUCT_TYPES,
+    labels: f.productTypes,
+  },
+  { name: 'company_size', legend: f.companySize, options: COMPANY_SIZES, labels: f.companySizes },
+  { name: 'current_process', legend: f.oncallTool, options: ONCALL_TOOLS, labels: f.oncallTools },
+  { name: 'sells_eu', legend: f.sellsEu, options: SELLS_EU, labels: f.sellsEuOptions },
+] as const;
 ---
 
 <form
@@ -64,45 +84,64 @@ const privacyParts = f.privacyNote.split('{link}');
     <p class="form-error" id={id('email-error')} hidden></p>
   </div>
 
-  <div class="form-field">
-    <label for={id('company')}>
-      {f.company} <span class="form-note">{f.optional}</span>
-    </label>
-    <input
-      type="text"
-      id={id('company')}
-      name="company"
-      autocomplete="organization"
-      maxlength={LIMITS.company}
-    />
-  </div>
+  {list === 'kit' && (
+    <>
+      <div class="form-field">
+        <label for={id('company')}>
+          {f.company} <span class="form-note">{f.optional}</span>
+        </label>
+        <input
+          type="text"
+          id={id('company')}
+          name="company"
+          autocomplete="organization"
+          maxlength={LIMITS.company}
+        />
+      </div>
 
-  <div class="form-field">
-    <label for={id('product_type')}>
-      {f.productType} <span class="form-note">{f.optional}</span>
-    </label>
-    <select id={id('product_type')} name="product_type">
-      <option value="">{f.productTypeNone}</option>
-      {PRODUCT_TYPES.map((v) => (
-        <option value={v}>{f.productTypes[v]}</option>
-      ))}
-    </select>
-  </div>
+      <div class="form-field">
+        <label for={id('product_type')}>
+          {f.productType} <span class="form-note">{f.optional}</span>
+        </label>
+        <select id={id('product_type')} name="product_type">
+          <option value="">{f.productTypeNone}</option>
+          {PRODUCT_TYPES.map((v) => (
+            <option value={v}>{f.productTypes[v]}</option>
+          ))}
+        </select>
+      </div>
 
-  <fieldset>
-    <legend>
-      {f.laws} <span class="form-note">{f.optional}</span>
-    </legend>
-    {LAWS.map((law) => (
-      <label class="form-choice">
-        <input type="checkbox" name="laws" value={law} />
-        {f.lawLabels[law]}
-      </label>
-    ))}
-  </fieldset>
+      <fieldset>
+        <legend>
+          {f.laws} <span class="form-note">{f.optional}</span>
+        </legend>
+        {LAWS.map((law) => (
+          <label class="form-choice">
+            <input type="checkbox" name="laws" value={law} />
+            {f.lawLabels[law]}
+          </label>
+        ))}
+      </fieldset>
+    </>
+  )}
 
   {list === 'waitlist' && (
     <>
+      {choiceGroups.map((group) => (
+        <fieldset class="form-pills">
+          <legend>
+            {group.legend} <span class="form-note">{f.optional}</span>
+          </legend>
+          <div class="form-pills__options">
+            {group.options.map((v) => (
+              <label class="form-pill">
+                <input type="radio" name={group.name} value={v} />
+                <span>{(group.labels as Record<string, string>)[v]}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      ))}
       <div class="form-field">
         <label for={id('plan')}>
           {p.plan} <span class="form-note">{f.optional}</span>
@@ -115,17 +154,17 @@ const privacyParts = f.privacyNote.split('{link}');
         </select>
       </div>
       <div class="form-field">
-        <label for={id('current_process')}>
-          {p.currentProcess} <span class="form-note">{f.optional}</span>
+        <label for={id('note')}>
+          {f.note} <span class="form-note">{f.optional}</span>
         </label>
         <textarea
-          id={id('current_process')}
-          name="current_process"
-          maxlength={LIMITS.currentProcess}
-          aria-describedby={id('current_process-hint')}
+          id={id('note')}
+          name="note"
+          maxlength={LIMITS.note}
+          aria-describedby={id('note-hint')}
         />
-        <p class="form-hint" id={id('current_process-hint')}>
-          {p.currentProcessHint}
+        <p class="form-hint" id={id('note-hint')}>
+          {f.noteHint}
         </p>
       </div>
     </>

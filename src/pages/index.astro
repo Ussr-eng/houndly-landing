@@ -1,39 +1,300 @@
 ---
+// Home: the entry to the funnel. Positioning, how it works, pricing and the early-access form.
+// The deadline calculator lives on /deadlines/; old shared calculator links are forwarded there.
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { webApplication } from '../lib/seo/jsonld';
-import { site, siteUrl } from '../config/site';
-import Calculator from '../components/calculator/Calculator';
+import PlanList from '../components/PlanList.astro';
+import SubscribeForm from '../components/forms/SubscribeForm.astro';
 import { t } from '../i18n';
-import Bridge from '../components/Bridge.astro';
 
-const title = 'EU incident reporting deadline calculator';
-const description = site.defaultDescription;
+const all = t('en');
+const s = all.home;
+const p = all.pricing;
 ---
 
-<BaseLayout
-  title={title}
-  description={description}
-  jsonLd={[
-    webApplication({
-      name: `${site.name} deadline calculator`,
-      url: siteUrl() + '/',
-      description,
-      inLanguage: 'en',
-    }),
-  ]}
->
-  <div class="prose">
-    <h1>{title}</h1>
-    <p class="lead">
-      Enter when you became aware of an actively exploited vulnerability or incident. Get every
-      Cyber Resilience Act (CRA), NIS2 and GDPR reporting deadline in your time zone and the
-      authority's.
+<BaseLayout title={s.title} description={s.description}>
+  <section class="hero" aria-labelledby="hero-heading">
+    <p class="hero-eyebrow">{s.eyebrow}</p>
+    <h1 id="hero-heading">{s.heading}</h1>
+    <p class="lead">{s.intro}</p>
+    <div class="hero-actions">
+      <a class="button" href="/deadlines/">
+        {s.primary}
+      </a>
+      <a class="button button--secondary" href="#early-access">
+        {s.secondary}
+      </a>
+    </div>
+    <p class="hero-status">{s.status}</p>
+  </section>
+
+  <section class="home-section" aria-labelledby="pain-heading">
+    <h2 id="pain-heading">{s.pain.heading}</h2>
+    <ul class="pain">
+      {s.pain.items.map((item) => (
+        <li>{item}</li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="home-section" aria-labelledby="how-heading">
+    <h2 id="how-heading">{s.how.heading}</h2>
+    <ol class="steps">
+      {s.how.steps.map((step) => (
+        <li class="step">
+          <h3>{step.name}</h3>
+          <p>{step.text}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="home-section" aria-labelledby="modes-heading">
+    <h2 id="modes-heading">
+      {s.modes.heading} <span class="badge">{s.modes.badge}</span>
+    </h2>
+    <div class="table-scroll">
+      <table class="modes">
+        <caption class="visually-hidden">{s.modes.caption}</caption>
+        <thead>
+          <tr>
+            <th scope="col">
+              <span class="visually-hidden">{s.modes.columns.aspect}</span>
+            </th>
+            <th scope="col">{s.modes.columns.daily}</th>
+            <th scope="col">{s.modes.columns.legal}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {s.modes.rows.map((row) => (
+            <tr>
+              <th scope="row">{row.aspect}</th>
+              <td>{row.daily}</td>
+              <td>{row.legal}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p>{s.modes.opsgenie}</p>
+  </section>
+
+  <section class="home-section" aria-labelledby="pricing-heading">
+    <h2 id="pricing-heading">{s.pricing.heading}</h2>
+    <p>{s.pricing.intro}</p>
+    <PlanList formPath="/" headingLevel={3} />
+    <p class="note">
+      {p.priceLock} {p.consultant}
     </p>
-  </div>
-  <!-- Server-rendered with the fixed example; hydrates without changing the rows. -->
-  <Calculator client:load locale="en" />
-  <noscript>
-    <p class="noscript-note">{t('en').calculator.result.noscript}</p>
-  </noscript>
-  <Bridge locale="en" />
+  </section>
+
+  <section class="home-section" aria-labelledby="trust-heading">
+    <h2 id="trust-heading">{s.trust.heading}</h2>
+    <ul class="trust">
+      {s.trust.items.map((item) => (
+        <li>
+          <h3>{item.name}</h3>
+          <p>{item.text}</p>
+        </li>
+      ))}
+    </ul>
+    <p>
+      <a href="/privacy/">{s.trust.privacy}</a>
+    </p>
+  </section>
+
+  <section class="home-section prose" aria-labelledby="faq-heading">
+    <h2 id="faq-heading">{s.faq.heading}</h2>
+    <dl class="faq">
+      {s.faq.items.map((item) => (
+        <>
+          <dt>{item.q}</dt>
+          <dd>{item.a}</dd>
+        </>
+      ))}
+    </dl>
+  </section>
+
+  <section
+    id="early-access"
+    class="home-section early-access"
+    aria-labelledby="early-access-heading"
+  >
+    <h2 id="early-access-heading">{p.formHeading}</h2>
+    <p>{p.formIntro}</p>
+    <SubscribeForm list="waitlist" locale="en" source="/" />
+  </section>
 </BaseLayout>
+
+<script>
+  import { enhancePlanButtons } from '../scripts/pricing';
+  import { forwardCalculatorLink } from '../scripts/home';
+  forwardCalculatorLink();
+  enhancePlanButtons();
+</script>
+
+<style>
+  .hero {
+    max-width: var(--measure);
+    margin-block: var(--space-8) var(--space-12);
+  }
+
+  .hero h1 {
+    margin-top: var(--space-2);
+  }
+
+  .hero-eyebrow {
+    margin: 0;
+    color: var(--accent);
+    font-weight: var(--weight-bold);
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+
+  .hero-status {
+    margin: var(--space-4) 0 0;
+    color: var(--muted);
+    font-size: var(--fs-sm);
+  }
+
+  .home-section {
+    margin-block: var(--space-12);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--border);
+    scroll-margin-top: var(--space-4);
+  }
+
+  .home-section > h2 {
+    margin-top: 0;
+  }
+
+  .pain {
+    display: grid;
+    gap: var(--space-3);
+    max-width: var(--measure);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--fs-md);
+  }
+
+  .pain li {
+    padding-left: var(--space-4);
+    border-left: 4px solid var(--border-strong);
+  }
+
+  .pain li:first-child {
+    border-left-color: var(--overdue);
+  }
+
+  .steps {
+    display: grid;
+    gap: var(--space-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+  }
+
+  @media (min-width: 48rem) {
+    .steps {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .step {
+    counter-increment: step;
+    padding-top: var(--space-3);
+    border-top: 4px solid var(--accent);
+  }
+
+  .step h3::before {
+    content: counter(step) '. ';
+    color: var(--accent);
+  }
+
+  .step h3,
+  .trust h3 {
+    margin: 0 0 var(--space-2);
+    font-size: var(--fs-md);
+  }
+
+  .step p,
+  .trust p {
+    margin: 0;
+  }
+
+  .badge {
+    display: inline-block;
+    margin-left: var(--space-2);
+    padding: 0 var(--space-2);
+    color: var(--soon);
+    font-size: var(--fs-sm);
+    font-weight: var(--weight-bold);
+    vertical-align: middle;
+    border: 1px solid currentColor;
+    border-radius: var(--control-radius);
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+  }
+
+  .modes {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .modes th,
+  .modes td {
+    padding: var(--space-3);
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .modes thead th {
+    border-bottom: 2px solid var(--border-strong);
+  }
+
+  .modes tbody th {
+    color: var(--muted);
+    font-weight: var(--weight-regular);
+  }
+
+  .note {
+    color: var(--muted);
+    font-size: var(--fs-sm);
+  }
+
+  .trust {
+    display: grid;
+    gap: var(--space-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 48rem) {
+    .trust {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .faq dt {
+    margin-top: var(--space-6);
+    font-weight: var(--weight-bold);
+  }
+
+  .faq dd {
+    margin: var(--space-2) 0 0;
+  }
+
+  .early-access {
+    max-width: 40rem;
+  }
+</style>

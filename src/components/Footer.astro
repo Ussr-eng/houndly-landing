@@ -23,7 +23,9 @@ const commit = lock.backend_commit?.slice(0, 7);
 
 <footer class="site-footer">
   <div class="container site-footer__inner">
-    <p>{s.footer.notLegalAdvice}</p>
+    <p>
+      {s.footer.notLegalAdvice} {s.footer.notAffiliated}
+    </p>
     <p
       data-rules-version={currentRuleSet.rule_set_version}
       title={commit && `Rules commit ${commit}`}

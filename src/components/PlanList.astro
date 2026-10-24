@@ -1,0 +1,132 @@
+---
+// Plan columns for the pricing fake door. Used on /pricing/ and the home page; "Choose {plan}"
+// links to the early-access form on the same page (src/scripts/pricing.ts enhances it).
+import { plans } from '../config/pricing';
+import { fill, t } from '../i18n';
+
+interface Props {
+  /** Page that holds the #early-access form. */
+  formPath: string;
+  headingLevel: 2 | 3;
+}
+
+const { formPath, headingLevel } = Astro.props;
+const Heading = headingLevel === 2 ? 'h2' : 'h3';
+const s = t('en').pricing;
+const price = (amount: number) => `€${amount}`;
+---
+
+<ul class="plans">
+  {plans.map((plan) => {
+    const copy = s.plans[plan.id];
+    return (
+      <li class:list={['plan', { 'plan--highlighted': plan.highlighted }]}>
+        {plan.highlighted && <p class="plan-flag">{s.recommended}</p>}
+        <Heading class="plan-name">{copy.name}</Heading>
+        <p class="plan-price">
+          <span class="plan-amount">{price(plan.price)}</span>
+          {plan.price > 0 && ` ${s.perMonth}`}
+        </p>
+        {plan.action === 'early-access' && <p class="plan-note">{s.noPayment}</p>}
+        <p>{copy.description}</p>
+        <ul class="plan-features">
+          {copy.features.map((feature) => (
+            <li>{feature}</li>
+          ))}
+        </ul>
+        {plan.action === 'early-access' ? (
+          <a
+            class:list={['button', { 'button--secondary': !plan.highlighted }]}
+            href={`${formPath}?plan=${plan.id}#early-access`}
+            data-choose-plan={plan.id}
+          >
+            {fill(s.choose, { plan: copy.name })}
+          </a>
+        ) : (
+          <a class="button button--secondary" href="/deadlines/">
+            {s.useCalculator}
+          </a>
+        )}
+      </li>
+    );
+  })}
+</ul>
+
+<style>
+  .plans {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--border);
+  }
+
+  @media (min-width: 48rem) {
+    .plans {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      border-top: 0;
+    }
+  }
+
+  /* Columns separated by rules, not cards: the highlighted plan gets an accent top edge. */
+  .plan {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-6) var(--space-4);
+    border-bottom: 1px solid var(--border);
+  }
+
+  @media (min-width: 48rem) {
+    .plan {
+      border-top: 4px solid var(--border);
+      border-bottom: 0;
+    }
+  }
+
+  .plan--highlighted {
+    background: var(--surface);
+    border-top: 4px solid var(--accent);
+  }
+
+  .plan p {
+    margin: 0;
+  }
+
+  .plan-flag {
+    color: var(--accent);
+    font-size: var(--fs-sm);
+    font-weight: var(--weight-bold);
+  }
+
+  .plan-name {
+    margin: 0;
+    font-size: var(--fs-lg);
+  }
+
+  .plan-price {
+    font-size: var(--fs-md);
+  }
+
+  .plan-amount {
+    font-size: var(--fs-xl);
+    font-weight: var(--weight-bold);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .plan-note {
+    color: var(--muted);
+    font-size: var(--fs-sm);
+  }
+
+  .plan-features {
+    flex: 1;
+    margin: var(--space-2) 0 var(--space-4);
+    padding-left: 1.25rem;
+  }
+
+  .plan .button {
+    align-self: flex-start;
+  }
+</style>
