@@ -172,6 +172,7 @@ export const en = {
           'Alert webhooks',
           'Telegram and email escalation',
           'CRA, NIS2 and GDPR clocks',
+          'AI drafts of every report',
         ],
       },
       team: {
@@ -181,7 +182,7 @@ export const en = {
           'Up to 20 people on call',
           'Unlimited products',
           'Phone calls',
-          'AI triage and report drafts',
+          'AI triage of every alert',
           '"Call a developer" button for support',
           'Opsgenie import',
           'Audit export',
@@ -210,13 +211,13 @@ export const en = {
     },
   },
   home: {
-    title: 'On-call for small teams, with EU reporting deadlines',
+    title: 'CRA incident reporting for small teams',
     description:
-      'Within24 wakes the right person when an alert fires and, if it may fall under the Cyber Resilience Act, starts the 24-hour clock and drafts the report.',
-    eyebrow: 'On-call for small software teams',
-    heading: 'Wake the right person. Never miss an EU reporting deadline.',
+      'AI drafts of your 24-hour, 72-hour and final CRA reports, clocks that start from the alert, and alerts that wake someone up. Early access.',
+    eyebrow: 'CRA incident reporting for small software teams',
+    heading: 'File every CRA report on time, with the draft already written.',
     intro:
-      'Within24 routes alerts from PagerDuty, Opsgenie or Grafana to whoever is on call. If the incident may fall under the Cyber Resilience Act, it starts the 24-hour clock and drafts your ENISA report. You review it and submit.',
+      'When an alert may be a reportable CRA incident, Within24 starts the 24-hour, 72-hour and final-report clocks, wakes whoever is on call, and drafts each report for the ENISA Single Reporting Platform with a source for every statement. You review it and submit.',
     primary: 'Calculate your reporting deadlines',
     secondary: 'Join early access',
     status:
@@ -233,43 +234,34 @@ export const en = {
       heading: 'How it works',
       steps: [
         {
-          name: 'Alert arrives',
-          text: 'A webhook from PagerDuty, Opsgenie, Grafana or Sentry, or a support agent presses "Call a developer".',
+          name: 'An alert may be reportable',
+          text: 'A webhook arrives from PagerDuty, Opsgenie, Grafana or Sentry. AI flags alerts that look reportable under the CRA, NIS2 or GDPR.',
         },
         {
-          name: 'The right person wakes up',
+          name: 'The legal clocks start',
+          text: 'Your engineer confirms, and the 24-hour, 72-hour and final-report timers start from the moment you became aware.',
+        },
+        {
+          name: 'Someone is awake to act',
           text: 'Phone call, Telegram and email, escalating down the rota until someone taps "I\'m on it".',
         },
         {
-          name: 'The legal clock starts',
-          text: 'AI flags alerts that look reportable under the CRA, NIS2 or GDPR. Your engineer confirms, and the 24-hour, 72-hour and final-report timers start.',
-        },
-        {
-          name: 'Your report is drafted',
-          text: 'Within24 drafts each report from the incident timeline, with a source for every statement. You edit it and submit it to the ENISA Single Reporting Platform yourself.',
+          name: 'Each report is drafted',
+          text: 'Before each deadline, a draft is ready from the incident timeline, with a source for every statement. You edit it and submit it to the ENISA Single Reporting Platform yourself.',
         },
       ],
     },
-    modes: {
-      heading: 'One tool for every incident',
+    oncall: {
+      heading: 'Works with your on-call, or replaces it',
       badge: 'In development',
-      caption: 'What Within24 does every day and when the law applies',
-      columns: { aspect: 'Aspect', daily: 'Every day', legal: 'When the law applies' },
-      rows: [
+      items: [
         {
-          aspect: 'What it is',
-          daily: 'Simple on-call: rotas, escalation, calls',
-          legal: 'Parallel legal clocks for each incident',
+          name: 'You already use PagerDuty, Opsgenie or Grafana',
+          text: 'Keep it. Send alerts to Within24 by webhook: your tool keeps paging the team, and Within24 runs the legal clocks and drafts the reports.',
         },
         {
-          aspect: 'Who uses it',
-          daily: 'Engineers and support staff',
-          legal: 'Whoever owns the report',
-        },
-        {
-          aspect: 'Highlights',
-          daily: '"Call a developer" button, alert webhooks, Opsgenie import',
-          legal: '24-hour, 72-hour and final-report timers, AI drafts, audit log',
+          name: 'Nobody is on call yet',
+          text: 'Within24 wakes the right person itself: rotas, escalation, phone calls, and a "Call a developer" button for support staff.',
         },
       ],
       // TODO(verify): Opsgenie end-of-life date before launch.
@@ -321,6 +313,10 @@ export const en = {
         {
           q: 'What data does the AI see?',
           a: 'Only what you send it: alert payloads and the incident timeline. Personal data is masked before it reaches the model, and the AI never decides on its own.',
+        },
+        {
+          q: 'We already use PagerDuty. Do we need to switch?',
+          a: 'No. Send your alerts to Within24 by webhook. PagerDuty keeps waking your team; Within24 adds the legal clocks and the report drafts.',
         },
         {
           q: 'We are moving off Opsgenie. Can we use Within24 without the CRA part?',

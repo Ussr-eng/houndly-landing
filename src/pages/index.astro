@@ -48,34 +48,19 @@ const p = all.pricing;
     </ol>
   </section>
 
-  <section class="home-section" aria-labelledby="modes-heading">
-    <h2 id="modes-heading">
-      {s.modes.heading} <span class="badge">{s.modes.badge}</span>
+  <section class="home-section" aria-labelledby="oncall-heading">
+    <h2 id="oncall-heading">
+      {s.oncall.heading} <span class="badge">{s.oncall.badge}</span>
     </h2>
-    <div class="table-scroll">
-      <table class="modes">
-        <caption class="visually-hidden">{s.modes.caption}</caption>
-        <thead>
-          <tr>
-            <th scope="col">
-              <span class="visually-hidden">{s.modes.columns.aspect}</span>
-            </th>
-            <th scope="col">{s.modes.columns.daily}</th>
-            <th scope="col">{s.modes.columns.legal}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {s.modes.rows.map((row) => (
-            <tr>
-              <th scope="row">{row.aspect}</th>
-              <td>{row.daily}</td>
-              <td>{row.legal}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-    <p>{s.modes.opsgenie}</p>
+    <ul class="oncall">
+      {s.oncall.items.map((item) => (
+        <li>
+          <h3>{item.name}</h3>
+          <p>{item.text}</p>
+        </li>
+      ))}
+    </ul>
+    <p>{s.oncall.opsgenie}</p>
   </section>
 
   <section class="home-section" aria-labelledby="pricing-heading">
@@ -218,12 +203,14 @@ const p = all.pricing;
   }
 
   .step h3,
+  .oncall h3,
   .trust h3 {
     margin: 0 0 var(--space-2);
     font-size: var(--fs-md);
   }
 
   .step p,
+  .oncall p,
   .trust p {
     margin: 0;
   }
@@ -240,37 +227,12 @@ const p = all.pricing;
     border-radius: var(--control-radius);
   }
 
-  .table-scroll {
-    overflow-x: auto;
-  }
-
-  .modes {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  .modes th,
-  .modes td {
-    padding: var(--space-3);
-    text-align: left;
-    vertical-align: top;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .modes thead th {
-    border-bottom: 2px solid var(--border-strong);
-  }
-
-  .modes tbody th {
-    color: var(--muted);
-    font-weight: var(--weight-regular);
-  }
-
   .note {
     color: var(--muted);
     font-size: var(--fs-sm);
   }
 
+  .oncall,
   .trust {
     display: grid;
     gap: var(--space-6);
@@ -280,6 +242,7 @@ const p = all.pricing;
   }
 
   @media (min-width: 48rem) {
+    .oncall,
     .trust {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
