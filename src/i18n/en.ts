@@ -215,10 +215,9 @@ export const en = {
     title: 'CRA incident reporting for small teams',
     description:
       'AI drafts of your 24-hour, 72-hour and final CRA reports, clocks that start from the alert, and alerts that wake someone up. Early access.',
-    eyebrow: 'CRA incident reporting for small software teams',
-    heading: 'File every CRA report on time, with the draft already written.',
+    heading: 'We take care of your CRA reporting.',
     intro:
-      'When an alert may be a reportable CRA incident, Within24 starts the 24-hour, 72-hour and final-report clocks, wakes whoever is on call, and drafts each report for the ENISA Single Reporting Platform with a source for every statement. You review it and submit.',
+      'Our AI writes every CRA report from your incident timeline, with a source for each statement. Within24 starts the legal clocks and wakes whoever is on call.',
     primary: 'Calculate your reporting deadlines',
     secondary: 'Join early access',
     status:
