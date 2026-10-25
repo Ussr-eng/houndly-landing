@@ -1,6 +1,7 @@
 ---
 import { site } from '../config/site';
 import type { Locale } from '../i18n/config';
+import { localizedPath } from '../i18n/config';
 import { fill, t } from '../i18n';
 import { currentRuleSet, verificationSummary } from '../lib/deadlines/rules';
 import lock from '../../rules.lock.json';
@@ -19,32 +20,66 @@ const rulesLine = [
     : s.footer.rulesUnverified,
 ].join(' · ');
 const commit = lock.backend_commit?.slice(0, 7);
+const home = localizedPath(locale, '/');
+const columns = [
+  {
+    heading: s.footer.craHeading,
+    links: [
+      { href: `${home}#cra`, label: s.footer.craLinks.asks },
+      { href: `${home}#cra-dates`, label: s.footer.craLinks.dates },
+      { href: `${home}#reports`, label: s.footer.craLinks.reports },
+      { href: `${home}#scope`, label: s.footer.craLinks.scope },
+    ],
+  },
+  {
+    heading: s.footer.toolsHeading,
+    links: [
+      { href: localizedPath(locale, '/deadlines/'), label: s.nav.calculator },
+      { href: localizedPath(locale, '/incident-kit/'), label: s.nav.kit },
+      { href: localizedPath(locale, '/pricing/'), label: s.nav.pricing },
+      { href: `${home}#early-access`, label: s.nav.earlyAccess },
+    ],
+  },
+  {
+    heading: s.footer.links,
+    links: [
+      { href: localizedPath(locale, '/privacy/'), label: s.footer.privacy },
+      { href: localizedPath(locale, '/legal/'), label: s.footer.legal },
+    ],
+  },
+];
 ---
 
 <footer class="site-footer">
-  <div class="container site-footer__inner">
-    <p>
-      {s.footer.notLegalAdvice} {s.footer.notAffiliated}
-    </p>
-    <p
-      data-rules-version={currentRuleSet.rule_set_version}
-      title={commit && `Rules commit ${commit}`}
-    >
-      {rulesLine}
-    </p>
-    <nav aria-label={s.footer.links}>
-      <ul class="site-footer__links">
-        <li>
-          <a href="/privacy/">{s.footer.privacy}</a>
-        </li>
-        <li>
-          <a href="/legal/">{s.footer.legal}</a>
-        </li>
-      </ul>
-    </nav>
-    <p>
-      © {new Date().getFullYear()} {site.name}
-    </p>
+  <div class="container">
+    <div class="site-footer__columns">
+      {columns.map((column) => (
+        <nav aria-label={column.heading}>
+          <h2 class="site-footer__heading">{column.heading}</h2>
+          <ul class="site-footer__links">
+            {column.links.map((link) => (
+              <li>
+                <a href={link.href}>{link.label}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      ))}
+    </div>
+    <div class="site-footer__inner">
+      <p>
+        {s.footer.notLegalAdvice} {s.footer.notAffiliated}
+      </p>
+      <p
+        data-rules-version={currentRuleSet.rule_set_version}
+        title={commit && `Rules commit ${commit}`}
+      >
+        {rulesLine}
+      </p>
+      <p>
+        © {new Date().getFullYear()} {site.name}
+      </p>
+    </div>
   </div>
 </footer>
 
@@ -55,20 +90,39 @@ const commit = lock.backend_commit?.slice(0, 7);
     color: var(--muted);
     font-size: var(--fs-sm);
   }
+  .site-footer__columns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: var(--space-8);
+    padding-block: var(--space-12) var(--space-8);
+  }
+  .site-footer__heading {
+    margin: 0 0 var(--space-3);
+    color: var(--text);
+    font-size: var(--fs-sm);
+    font-weight: var(--weight-bold);
+  }
   .site-footer__inner {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2) var(--space-6);
     padding-block: var(--space-6);
+    border-top: 1px solid var(--border);
   }
   .site-footer p {
     margin: 0;
   }
   .site-footer__links {
-    display: flex;
-    gap: var(--space-4);
+    display: grid;
+    gap: var(--space-2);
     margin: 0;
     padding: 0;
     list-style: none;
+  }
+  .site-footer__links a {
+    color: var(--muted);
+  }
+  .site-footer__links a:hover {
+    color: var(--accent);
   }
 </style>
