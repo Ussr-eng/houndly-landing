@@ -111,7 +111,7 @@ main:focus {
 
 .button--large {
   min-height: 3.25rem;
-  padding-inline: var(--space-6);
+  padding-inline: var(--space-4);
   font-size: var(--fs-md);
 }
 
