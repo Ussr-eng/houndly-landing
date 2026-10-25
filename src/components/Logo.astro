@@ -1,0 +1,27 @@
+---
+// The Within24 mark: a "W" stroke in the text colour and a dot in the brand colour.
+// Decorative: the brand name is always written next to it.
+interface Props {
+  size?: number;
+}
+
+const { size = 28 } = Astro.props;
+---
+
+<svg class="logo" width={size} height={size} viewBox="0 0 300 300" aria-hidden="true">
+  <path
+    d="M62 92L104 212L150 120L196 212L222 140"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="30"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  ></path>
+  <circle cx="236" cy="100" r="24" fill="var(--brand)"></circle>
+</svg>
+
+<style>
+  .logo {
+    flex: none;
+  }
+</style>

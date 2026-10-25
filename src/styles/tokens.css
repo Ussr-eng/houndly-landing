@@ -1,6 +1,7 @@
-/* Design tokens: "night shift". Cool neutrals, ink for content, one blue accent for interaction
-   and focus. Status colours (overdue, soon) are used only for deadline state. Contrast ratios
-   (WCAG) are noted for the pairs that carry text or UI boundaries. */
+/* Design tokens: "night shift". Light pages for reading, a deep-navy night palette for the dark
+   theme and for night bands (the home hero), one brand blue for primary actions and an ink-blue
+   accent for links and focus. Status colours (overdue, soon) are used only for deadline state.
+   Contrast ratios (WCAG) are noted for the pairs that carry text or UI boundaries. */
 
 :root {
   /* Type */
@@ -9,6 +10,7 @@
   --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
   --weight-regular: 400;
   --weight-bold: 700;
+  --weight-heavy: 800;
 
   --fs-xs: 0.8125rem;
   --fs-sm: 0.875rem;
@@ -16,8 +18,10 @@
   --fs-md: 1.125rem;
   --fs-lg: 1.375rem;
   --fs-xl: clamp(1.75rem, 1.45rem + 1.3vw, 2.25rem);
+  --fs-2xl: clamp(2.25rem, 1.6rem + 3vw, 3.75rem);
   --lh-body: 1.55;
   --lh-heading: 1.2;
+  --lh-display: 1.06;
 
   /* Space and shape */
   --space-1: 0.25rem;
@@ -27,14 +31,17 @@
   --space-6: 1.5rem;
   --space-8: 2rem;
   --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
 
-  --container-max: 72rem;
+  --container-max: 75rem;
   --measure: 68ch;
   --radius-panel: 4px;
+  --radius-card: 14px;
 
   /* Controls: inputs, selects and buttons share these */
   --control-h: 2.75rem;
-  --control-radius: 6px;
+  --control-radius: 8px;
   --control-px: 0.75rem;
   --focus-ring: 3px;
 
@@ -42,8 +49,26 @@
   --lane-h: 3.5rem;
   --marker: 0.875rem;
 
+  /* Night palette: the dark theme, and bands that stay dark in both themes (.night) */
+  --night-bg: #0a0f1c;
+  --night-bg-2: #0d1426;
+  --night-surface: #10172a;
+  --night-surface-2: #172140;
+  --night-text: #e8ecf4; /* 16.2:1 on bg */
+  --night-muted: #a9b3c7; /* 8.5:1 on surface */
+  --night-border: #222d4c;
+  --night-border-strong: #6b7896; /* 4.0:1 on surface */
+  --night-accent: #8db2ff; /* 8.4:1 on surface */
+  --night-brand: #3563f0; /* white text 5.0:1 */
+  --night-brand-hover: #4a74f5;
+  --night-overdue: #ff8b80; /* 8.1:1 on bg-2 */
+  --night-soon: #f2b64b; /* 8.7:1 on surface-2 */
+  --night-ok: #5ee0a0;
+  --night-glow: #13204a;
+
   /* Colour: light */
   --bg: #f5f6f8;
+  --bg-2: #eceef2;
   --surface: #ffffff;
   --surface-2: #eceef2;
   --text: #12161c; /* 16.8:1 on bg */
@@ -52,27 +77,63 @@
   --border-strong: #7a8391; /* 3.8:1 on surface */
   --accent: #1a4fd6; /* 6.2:1 on bg */
   --accent-contrast: #ffffff;
+  --brand: #1a4fd6; /* white text 6.7:1 */
+  --brand-hover: #123fb4;
+  --brand-contrast: #ffffff;
   --focus: var(--accent);
   --now: #12161c;
   --overdue: #b3261e; /* 6.0:1 on bg */
   --soon: #8a5300; /* 5.9:1 on bg */
+  --ok: #0b6b3a;
+  --shadow-panel: 0 1.5rem 4rem rgb(10 15 28 / 0.18);
 
   color-scheme: light dark;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0d1015;
-    --surface: #151a21;
-    --surface-2: #1d232c;
-    --text: #e7eaee; /* 15.8:1 on bg */
-    --muted: #a3acb9; /* 8.3:1 on bg */
-    --border: #2b323c;
-    --border-strong: #6e7886; /* 3.9:1 on surface */
-    --accent: #8db2ff; /* 9.0:1 on bg */
-    --accent-contrast: #0d1015;
+    --bg: var(--night-bg);
+    --bg-2: var(--night-bg-2);
+    --surface: var(--night-surface);
+    --surface-2: var(--night-surface-2);
+    --text: var(--night-text);
+    --muted: var(--night-muted);
+    --border: var(--night-border);
+    --border-strong: var(--night-border-strong);
+    --accent: var(--night-accent);
+    --accent-contrast: var(--night-bg);
+    --brand: var(--night-brand);
+    --brand-hover: var(--night-brand-hover);
     --now: #ffffff;
-    --overdue: #ff8b80; /* 8.4:1 on bg */
-    --soon: #f2b64b; /* 10.5:1 on bg */
+    --overdue: var(--night-overdue);
+    --soon: var(--night-soon);
+    --ok: var(--night-ok);
+    --shadow-panel: 0 1.5rem 4rem rgb(0 0 0 / 0.45);
   }
+}
+
+/* A band that is dark in both themes. Re-points the colour tokens, so everything inside it
+   (buttons, links, focus) follows without extra rules. */
+.night {
+  --bg: var(--night-bg);
+  --bg-2: var(--night-bg-2);
+  --surface: var(--night-surface);
+  --surface-2: var(--night-surface-2);
+  --text: var(--night-text);
+  --muted: var(--night-muted);
+  --border: var(--night-border);
+  --border-strong: var(--night-border-strong);
+  --accent: var(--night-accent);
+  --accent-contrast: var(--night-bg);
+  --brand: var(--night-brand);
+  --brand-hover: var(--night-brand-hover);
+  --now: #ffffff;
+  --overdue: var(--night-overdue);
+  --soon: var(--night-soon);
+  --ok: var(--night-ok);
+  --shadow-panel: 0 1.5rem 4rem rgb(0 0 0 / 0.45);
+
+  color-scheme: dark;
+  background: var(--bg);
+  color: var(--text);
 }

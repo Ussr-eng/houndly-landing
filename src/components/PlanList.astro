@@ -55,39 +55,33 @@ const price = (amount: number) => `€${amount}`;
 <style>
   .plans {
     display: grid;
-    gap: 0;
+    gap: var(--space-4);
     margin: 0;
     padding: 0;
     list-style: none;
-    border-top: 1px solid var(--border);
   }
 
   @media (min-width: 48rem) {
     .plans {
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      border-top: 0;
+      align-items: stretch;
     }
   }
 
-  /* Columns separated by rules, not cards: the highlighted plan gets an accent top edge. */
+  /* Bordered columns; the highlighted plan gets the brand border and a raised surface. */
   .plan {
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
-    padding: var(--space-6) var(--space-4);
-    border-bottom: 1px solid var(--border);
-  }
-
-  @media (min-width: 48rem) {
-    .plan {
-      border-top: 4px solid var(--border);
-      border-bottom: 0;
-    }
+    padding: var(--space-6);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
   }
 
   .plan--highlighted {
     background: var(--surface);
-    border-top: 4px solid var(--accent);
+    border: 2px solid var(--brand);
+    box-shadow: var(--shadow-panel);
   }
 
   .plan p {
@@ -95,9 +89,13 @@ const price = (amount: number) => `€${amount}`;
   }
 
   .plan-flag {
+    align-self: flex-start;
+    padding: 0 var(--space-2);
     color: var(--accent);
     font-size: var(--fs-sm);
     font-weight: var(--weight-bold);
+    border: 1px solid currentColor;
+    border-radius: 999px;
   }
 
   .plan-name {
@@ -107,11 +105,14 @@ const price = (amount: number) => `€${amount}`;
 
   .plan-price {
     font-size: var(--fs-md);
+    color: var(--muted);
   }
 
   .plan-amount {
-    font-size: var(--fs-xl);
-    font-weight: var(--weight-bold);
+    font-size: var(--fs-2xl);
+    font-weight: var(--weight-heavy);
+    line-height: 1.1;
+    color: var(--text);
     font-variant-numeric: tabular-nums;
   }
 
@@ -126,7 +127,11 @@ const price = (amount: number) => `€${amount}`;
     padding-left: 1.25rem;
   }
 
+  .plan-features li + li {
+    margin-top: var(--space-1);
+  }
+
   .plan .button {
-    align-self: flex-start;
+    width: 100%;
   }
 </style>

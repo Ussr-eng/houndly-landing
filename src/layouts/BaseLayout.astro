@@ -29,6 +29,10 @@ interface Props {
   ogType?: 'website' | 'article';
   noindex?: boolean;
   jsonLd?: Record<string, unknown>[];
+  /** Full-width page: sections set their own containers (the home page). */
+  bleed?: boolean;
+  /** Dark header in both themes, for a page that opens with a night band. */
+  nightHeader?: boolean;
 }
 
 const {
@@ -40,6 +44,8 @@ const {
   ogType = 'website',
   noindex = false,
   jsonLd = [],
+  bleed = false,
+  nightHeader = false,
 } = Astro.props;
 
 const path = Astro.url.pathname === '/404.html' ? '/404/' : normalizePath(Astro.url.pathname);
@@ -78,8 +84,8 @@ const s = t(locale);
     <a class="skip-link" href="#main">
       {s.skipToContent}
     </a>
-    <Header locale={locale} />
-    <main id="main" class="container" tabindex="-1">
+    <Header locale={locale} night={nightHeader} />
+    <main id="main" class:list={[{ container: !bleed }]} tabindex="-1">
       <slot />
     </main>
     <Footer locale={locale} />

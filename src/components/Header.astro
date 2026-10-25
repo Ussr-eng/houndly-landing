@@ -2,22 +2,26 @@
 import { site } from '../config/site';
 import { localizedPath, type Locale } from '../i18n/config';
 import { t } from '../i18n';
+import Logo from './Logo.astro';
 
 interface Props {
   locale: Locale;
+  /** Dark in both themes, to sit on a night band (the home hero). */
+  night?: boolean;
 }
 
-const { locale } = Astro.props;
+const { locale, night = false } = Astro.props;
 const s = t(locale);
 const home = localizedPath(locale, '/');
 ---
 
-<header class="site-header">
+<header class:list={['site-header', { night }]}>
   <div class="container site-header__inner">
     <a class="site-header__brand" href={home}>
+      <Logo />
       {site.name}
     </a>
-    <nav aria-label={s.nav.label}>
+    <nav aria-label={s.nav.label} class="site-header__navwrap">
       <ul class="site-header__nav">
         <li>
           <a href={localizedPath(locale, '/deadlines/')}>{s.nav.calculator}</a>
@@ -30,6 +34,9 @@ const home = localizedPath(locale, '/');
         </li>
       </ul>
     </nav>
+    <a class="button button--secondary site-header__cta" href={`${home}#early-access`}>
+      {s.nav.earlyAccess}
+    </a>
   </div>
 </header>
 
@@ -41,22 +48,48 @@ const home = localizedPath(locale, '/');
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
-    gap: var(--space-2) var(--space-4);
-    min-height: 3.5rem;
-    padding-block: var(--space-2);
+    gap: var(--space-2) var(--space-6);
+    min-height: 4rem;
+    padding-block: var(--space-3);
   }
   .site-header__brand {
-    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-right: auto;
+    font-size: var(--fs-md);
+    font-weight: var(--weight-heavy);
     color: var(--text);
     text-decoration: none;
   }
   .site-header__nav {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-1) var(--space-4);
+    gap: var(--space-1) var(--space-6);
     margin: 0;
     padding: 0;
     list-style: none;
+  }
+  .site-header__nav a {
+    color: var(--text);
+    text-decoration: none;
+  }
+  .site-header__nav a:hover {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+  .site-header__cta {
+    min-height: 2.5rem;
+    padding-inline: var(--space-4);
+  }
+  /* Phones: brand and button on one row, the links on the next. */
+  @media (max-width: 47.99rem) {
+    .site-header__navwrap {
+      order: 3;
+      width: 100%;
+    }
+    .site-header__nav {
+      gap: var(--space-1) var(--space-4);
+    }
   }
 </style>

@@ -73,6 +73,48 @@ main:focus {
   font-size: var(--fs-md);
 }
 
+/* Buttons and button-styled links. Used on every page (header), so they live here. */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--control-h);
+  padding: var(--space-2) var(--space-6);
+  font: inherit;
+  line-height: 1.25;
+  text-align: center;
+  font-weight: var(--weight-bold);
+  color: var(--brand-contrast);
+  background: var(--brand);
+  border: 1px solid var(--brand);
+  border-radius: var(--control-radius);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 120ms ease-out;
+}
+
+.button:hover {
+  background: var(--brand-hover);
+  border-color: var(--brand-hover);
+}
+
+.button--secondary {
+  color: var(--text);
+  background: transparent;
+  border-color: var(--border-strong);
+}
+
+.button--secondary:hover {
+  background: var(--surface-2);
+  border-color: var(--border-strong);
+}
+
+.button--large {
+  min-height: 3.25rem;
+  padding-inline: var(--space-6);
+  font-size: var(--fs-md);
+}
+
 .skip-link {
   position: absolute;
   top: var(--space-2);
