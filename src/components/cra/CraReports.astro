@@ -1,0 +1,116 @@
+---
+// The three CRA reports, one lane per stage. The detailed version adds what each report covers.
+import { t } from '../../i18n';
+
+interface Props {
+  detailed?: boolean;
+}
+
+const { detailed = false } = Astro.props;
+const s = t('en').cra.reports;
+---
+
+<ol class:list={['reports', { 'reports--detailed': detailed }]}>
+  {s.stages.map((stage, i) => (
+    <li class:list={['report', `report--${i + 1}`]}>
+      <div class="report__head">
+        <h3>{stage.name}</h3>
+        <p class="report__due">
+          <span class="visually-hidden">{s.due}: </span>
+          {stage.due}
+        </p>
+      </div>
+      <dl class="report__body">
+        {detailed && (
+          <div>
+            <dt>{s.covers}</dt>
+            <dd>{stage.covers}</dd>
+          </div>
+        )}
+        <div>
+          <dt>{s.within24}</dt>
+          <dd>{stage.within24}</dd>
+        </div>
+      </dl>
+    </li>
+  ))}
+</ol>
+<p class="note">{s.users}</p>
+
+<style>
+  /* Three reports: one lane per stage, coloured like the lanes in the hero. */
+  .reports {
+    display: grid;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .report {
+    display: grid;
+    gap: var(--space-4) var(--space-8);
+    padding: var(--space-6);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--lane, var(--accent));
+    border-radius: var(--radius-panel);
+  }
+
+  .report--1 {
+    --lane: var(--overdue);
+  }
+
+  .report--2 {
+    --lane: var(--soon);
+  }
+
+  .report--3 {
+    --lane: var(--accent);
+  }
+
+  @media (min-width: 64rem) {
+    .report {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+    }
+  }
+
+  .report__due {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+  }
+
+  .report__body {
+    display: grid;
+    gap: var(--space-4) var(--space-8);
+    margin: 0;
+  }
+
+  @media (min-width: 48rem) {
+    .reports--detailed .report__body {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .report__body dt {
+    color: var(--muted);
+    font-size: var(--fs-sm);
+    font-weight: var(--weight-bold);
+  }
+
+  .report__body dd {
+    margin: var(--space-1) 0 0;
+  }
+
+  .report h3 {
+    margin: 0 0 var(--space-2);
+    font-size: var(--fs-md);
+  }
+
+  .note {
+    margin: var(--space-6) 0 0;
+    color: var(--muted);
+    font-size: var(--fs-sm);
+  }
+</style>

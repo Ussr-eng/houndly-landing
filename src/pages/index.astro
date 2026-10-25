@@ -5,29 +5,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PlanList from '../components/PlanList.astro';
 import HeroIncident from '../components/HeroIncident.astro';
 import SubscribeForm from '../components/forms/SubscribeForm.astro';
-import { DateTime } from 'luxon';
-import { fill, t } from '../i18n';
-import { milestoneStatus } from '../lib/milestone';
+import CraFacts from '../components/cra/CraFacts.astro';
+import CraReports from '../components/cra/CraReports.astro';
+import { t } from '../i18n';
 
 const all = t('en');
 const s = all.home;
 const p = all.pricing;
-
-// Worked out at build time, so the page reads correctly without JavaScript.
-const buildTime = DateTime.utc();
-const dates = s.cra.dates.map((d) => {
-  const status = milestoneStatus(d.date, buildTime);
-  return {
-    ...d,
-    done: status.kind === 'done',
-    status:
-      status.kind === 'done'
-        ? d.done
-        : status.months < 1
-          ? s.cra.upcomingSoon
-          : fill(s.cra.upcoming, { months: status.months }),
-  };
-});
+const cra = all.cra;
 ---
 
 <BaseLayout title={s.title} description={s.description} bleed nightHeader>
@@ -68,74 +53,21 @@ const dates = s.cra.dates.map((d) => {
     </div>
   </section>
 
-  <section id="cra" class="band" aria-labelledby="cra-heading">
+  <section class="band" aria-labelledby="cra-heading">
     <div class="container">
-      <h2 id="cra-heading">{s.cra.heading}</h2>
-      <p class="band__intro">{s.cra.intro}</p>
-      <dl class="facts">
-        {s.cra.facts.map((fact) => (
-          <div class="fact">
-            <dt>{fact.name}</dt>
-            <dd>
-              {fact.text}
-              <span class="ref">{fact.ref}</span>
-            </dd>
-          </div>
-        ))}
-      </dl>
-
-      <h3 id="cra-dates" class="dates__heading">
-        {s.cra.datesHeading}
-      </h3>
-      <ol class="dates">
-        {dates.map((d) => (
-          <li class:list={['date', { 'date--done': d.done }]}>
-            <span class="date__marker" aria-hidden="true" />
-            <time datetime={d.date} class="date__when">
-              {d.label}
-            </time>
-            <span class="date__status">{d.status}</span>
-            <p>
-              {d.text}
-              {d.ref && <span class="ref">{d.ref}</span>}
-            </p>
-          </li>
-        ))}
-      </ol>
-      <p>
-        <a href="/deadlines/">{s.cra.link}</a>
+      <h2 id="cra-heading">{s.brief.heading}</h2>
+      <CraFacts />
+      <p class="brief__link">
+        <a href="/cra/">{s.brief.link}</a>
       </p>
     </div>
   </section>
 
-  <section id="reports" class="band band--tint" aria-labelledby="reports-heading">
+  <section class="band band--tint" aria-labelledby="reports-heading">
     <div class="container">
-      <h2 id="reports-heading">{s.reports.heading}</h2>
-      <p class="band__intro">{s.reports.intro}</p>
-      <ol class="reports">
-        {s.reports.stages.map((stage, i) => (
-          <li class:list={['report', `report--${i + 1}`]}>
-            <div class="report__head">
-              <h3>{stage.name}</h3>
-              <p class="report__due">
-                <span class="visually-hidden">{s.reports.due}: </span>
-                {stage.due}
-              </p>
-            </div>
-            <dl class="report__body">
-              <div>
-                <dt>{s.reports.covers}</dt>
-                <dd>{stage.covers}</dd>
-              </div>
-              <div>
-                <dt>{s.reports.within24}</dt>
-                <dd>{stage.within24}</dd>
-              </div>
-            </dl>
-          </li>
-        ))}
-      </ol>
-      <p class="note">{s.reports.users}</p>
+      <h2 id="reports-heading">{cra.reports.heading}</h2>
+      <p class="band__intro">{cra.reports.intro}</p>
+      <CraReports />
     </div>
   </section>
 
@@ -173,33 +105,7 @@ const dates = s.cra.dates.map((d) => {
     </div>
   </section>
 
-  <section id="scope" class="band" aria-labelledby="scope-heading">
-    <div class="container">
-      <h2 id="scope-heading">{s.scope.heading}</h2>
-      <p class="band__intro">{s.scope.intro}</p>
-      <table class="scope">
-        <thead>
-          <tr>
-            <th scope="col">{s.scope.shipHeading}</th>
-            <th scope="col">{s.scope.usuallyHeading}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {s.scope.items.map((item) => (
-            <tr>
-              <th scope="row">{item.name}</th>
-              <td>{item.text}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <p class="scope__link">
-        <a href="/deadlines/">{s.scope.link}</a>
-      </p>
-    </div>
-  </section>
-
-  <section class="band band--tint" aria-labelledby="pricing-heading">
+  <section class="band" aria-labelledby="pricing-heading">
     <div class="container">
       <h2 id="pricing-heading">{s.pricing.heading}</h2>
       <p class="band__intro">{s.pricing.intro}</p>
@@ -210,7 +116,7 @@ const dates = s.cra.dates.map((d) => {
     </div>
   </section>
 
-  <section class="band" aria-labelledby="trust-heading">
+  <section class="band band--tint" aria-labelledby="trust-heading">
     <div class="container">
       <h2 id="trust-heading">{s.trust.heading}</h2>
       <ul class="trust">
@@ -227,7 +133,7 @@ const dates = s.cra.dates.map((d) => {
     </div>
   </section>
 
-  <section class="band band--tint" aria-labelledby="faq-heading">
+  <section class="band" aria-labelledby="faq-heading">
     <div class="container faq-layout">
       <h2 id="faq-heading">{s.faq.heading}</h2>
       <dl class="faq">
@@ -497,254 +403,8 @@ const dates = s.cra.dates.map((d) => {
     color: var(--muted);
   }
 
-  /* The CRA: four facts, then the key dates as stops on one line. */
-  .ref {
-    display: block;
-    margin-top: var(--space-1);
-    color: var(--muted);
-    font-family: var(--font-mono);
-    font-size: var(--fs-xs);
-  }
-
-  .facts {
-    display: grid;
-    gap: var(--space-6) var(--space-8);
-    margin: 0;
-  }
-
-  @media (min-width: 48rem) {
-    .facts {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media (min-width: 64rem) {
-    .facts {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-  }
-
-  .fact {
-    padding-left: var(--space-4);
-    border-left: 2px solid var(--brand);
-  }
-
-  .fact dt {
-    font-size: var(--fs-md);
-    font-weight: var(--weight-bold);
-  }
-
-  .fact dd {
-    margin: var(--space-1) 0 0;
-  }
-
-  .band .dates__heading {
-    margin: var(--space-16) 0 var(--space-8);
-    font-size: var(--fs-lg);
-  }
-
-  .dates {
-    display: grid;
-    gap: var(--space-8) var(--space-6);
-    margin: 0 0 var(--space-8);
-    padding: 0;
-    list-style: none;
-  }
-
-  .date {
-    position: relative;
-    padding-left: var(--space-8);
-  }
-
-  /* Phones: a vertical line down the left; wider screens: one horizontal line. */
-  .date::before {
-    content: '';
-    position: absolute;
-    top: 0.5rem;
-    bottom: calc(-1 * var(--space-8));
-    left: calc(var(--marker) / 2 - 1px);
-    border-left: 2px solid var(--border);
-  }
-
-  .date:last-child::before {
-    display: none;
-  }
-
-  .date__marker {
-    position: absolute;
-    top: 0.25rem;
-    left: 0;
-    width: var(--marker);
-    height: var(--marker);
-    background: var(--bg);
-    border: 2px solid var(--soon);
-    border-radius: 50%;
-  }
-
-  .date--done .date__marker {
-    background: var(--ok);
-    border-color: var(--ok);
-  }
-
-  @media (min-width: 48rem) {
-    .dates {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      padding-top: var(--space-8);
-      border-top: 2px solid var(--border);
-    }
-    .date {
-      padding-left: 0;
-    }
-    .date::before {
-      display: none;
-    }
-    .date__marker {
-      top: calc(-1 * var(--space-8) - var(--marker) / 2 - 1px);
-    }
-  }
-
-  .date__when {
-    display: block;
-    font-family: var(--font-mono);
-    font-weight: var(--weight-bold);
-  }
-
-  .date__status {
-    display: inline-block;
-    margin-top: var(--space-1);
-    padding: 0 var(--space-2);
-    color: var(--soon);
-    font-size: var(--fs-sm);
-    font-weight: var(--weight-bold);
-    border: 1px solid currentColor;
-    border-radius: 999px;
-  }
-
-  .date--done .date__status {
-    color: var(--ok);
-  }
-
-  .date p {
-    margin: var(--space-2) 0 0;
-    color: var(--muted);
-  }
-
-  /* Three reports: one lane per stage, coloured like the lanes in the hero. */
-  .reports {
-    display: grid;
-    gap: var(--space-4);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .report {
-    display: grid;
-    gap: var(--space-4) var(--space-8);
-    padding: var(--space-6);
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-left: 4px solid var(--lane, var(--accent));
-    border-radius: var(--radius-panel);
-  }
-
-  .report--1 {
-    --lane: var(--overdue);
-  }
-
-  .report--2 {
-    --lane: var(--soon);
-  }
-
-  .report--3 {
-    --lane: var(--accent);
-  }
-
-  @media (min-width: 64rem) {
-    .report {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
-    }
-  }
-
-  .report__due {
-    margin: 0;
-    font-family: var(--font-mono);
-    font-size: var(--fs-sm);
-  }
-
-  .report__body {
-    display: grid;
-    gap: var(--space-4) var(--space-8);
-    margin: 0;
-  }
-
-  @media (min-width: 48rem) {
-    .report__body {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  .report__body dt {
-    color: var(--muted);
-    font-size: var(--fs-sm);
-    font-weight: var(--weight-bold);
-  }
-
-  .report__body dd {
-    margin: var(--space-1) 0 0;
-  }
-
-  /* Does it apply: a plain two-column table that stacks on phones. */
-  .scope {
-    width: 100%;
-    border-collapse: collapse;
-    border-top: 1px solid var(--border);
-  }
-
-  .scope thead {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-  }
-
-  .scope th,
-  .scope td {
-    display: block;
-    padding: 0;
-    text-align: left;
-    vertical-align: top;
-  }
-
-  .scope tr {
-    display: block;
-    padding-block: var(--space-4);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .scope tbody th {
-    font-weight: var(--weight-bold);
-  }
-
-  .scope td {
-    margin-top: var(--space-1);
-    color: var(--muted);
-  }
-
-  @media (min-width: 48rem) {
-    .scope tr {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-      gap: var(--space-8);
-    }
-    .scope td {
-      margin-top: 0;
-    }
-  }
-
-  .scope__link {
-    margin: var(--space-6) 0 0;
+  .brief__link {
+    margin: var(--space-8) 0 0;
   }
 
   .early-access__inner {

@@ -21,14 +21,15 @@ const rulesLine = [
 ].join(' · ');
 const commit = lock.backend_commit?.slice(0, 7);
 const home = localizedPath(locale, '/');
+const cra = localizedPath(locale, '/cra/');
 const columns = [
   {
     heading: s.footer.craHeading,
     links: [
-      { href: `${home}#cra`, label: s.footer.craLinks.asks },
-      { href: `${home}#cra-dates`, label: s.footer.craLinks.dates },
-      { href: `${home}#reports`, label: s.footer.craLinks.reports },
-      { href: `${home}#scope`, label: s.footer.craLinks.scope },
+      { href: cra, label: s.footer.craLinks.asks },
+      { href: `${cra}#dates`, label: s.footer.craLinks.dates },
+      { href: `${cra}#reports`, label: s.footer.craLinks.reports },
+      { href: `${cra}#scope`, label: s.footer.craLinks.scope },
     ],
   },
   {
