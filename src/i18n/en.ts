@@ -5,6 +5,7 @@ export const en = {
   nav: {
     label: 'Main',
     home: 'Home',
+    cra: 'The CRA',
     calculator: 'Deadline calculator',
     guides: 'Guides',
     kit: 'Incident Kit',
@@ -20,6 +21,14 @@ export const en = {
     links: 'Legal',
     privacy: 'Privacy',
     legal: 'Legal notice',
+    craHeading: 'The CRA',
+    craLinks: {
+      asks: 'What the CRA asks',
+      dates: 'Key dates',
+      reports: 'Three reports',
+      scope: 'Does it apply to you',
+    },
+    toolsHeading: 'Tools',
   },
   breadcrumbs: { label: 'Breadcrumb', home: 'Home', guides: 'Guides' },
   guide: {
@@ -250,6 +259,138 @@ export const en = {
         'Small teams have the same obligation as large ones, without a security team to own it.',
       ],
     },
+    // TODO(verify): every article reference and legal statement in cra, reports and scope
+    // against the official text of Regulation (EU) 2024/2847 before relying on it.
+    cra: {
+      heading: 'What the Cyber Resilience Act asks of you',
+      intro:
+        'The Cyber Resilience Act (Regulation (EU) 2024/2847) sets security rules for hardware and software sold in the EU. Most of it is about how you build and maintain a product. One part is about what happens when something goes wrong: you report it, on a clock.',
+      facts: [
+        {
+          name: 'Who',
+          text: 'Manufacturers of products with digital elements made available on the EU market.',
+          ref: 'Article 2 and Article 3',
+        },
+        {
+          name: 'What to report',
+          text: 'Actively exploited vulnerabilities in your product, and severe incidents that affect its security.',
+          ref: 'Article 14(1) and 14(3)',
+        },
+        {
+          name: 'To whom',
+          text: 'The CSIRT designated as coordinator and ENISA, at the same time, through the ENISA Single Reporting Platform.',
+          ref: 'Article 14(1) and Article 16',
+        },
+        {
+          name: 'How fast',
+          text: 'An early warning within 24 hours of becoming aware, a notification within 72 hours, then a final report.',
+          ref: 'Article 14(2) and 14(4)',
+        },
+      ],
+      datesHeading: 'Key dates',
+      // The status of each date is worked out when the site is built.
+      upcoming: 'In {months} months',
+      upcomingSoon: 'In less than a month',
+      dates: [
+        {
+          date: '2024-12-10',
+          label: '10 December 2024',
+          done: 'In force',
+          text: 'The Regulation entered into force.',
+        },
+        {
+          date: '2026-06-11',
+          label: '11 June 2026',
+          done: 'Applies',
+          text: 'Rules for conformity assessment bodies start to apply.',
+          ref: 'Article 71(2)',
+        },
+        {
+          date: '2026-09-11',
+          label: '11 September 2026',
+          done: 'Applies now',
+          text: 'Reporting starts. Article 14 applies from this date, also to products placed on the market before 2027.',
+          ref: 'Article 71(2) and 69(3)',
+        },
+        {
+          date: '2027-12-11',
+          label: '11 December 2027',
+          done: 'Applies',
+          text: 'Everything else applies: essential requirements, conformity assessment and CE marking.',
+          ref: 'Article 71(2)',
+        },
+      ],
+      link: 'Calculate your reporting deadlines',
+    },
+    reports: {
+      heading: 'Three reports, three clocks',
+      intro:
+        'Article 14 sets three stages. Within24 runs a clock for each one and has a draft ready before it ends. You review each draft and submit it on the ENISA Single Reporting Platform yourself.',
+      due: 'Due',
+      covers: 'What the report covers',
+      within24: 'What Within24 does',
+      stages: [
+        {
+          name: 'Early warning',
+          due: '24 hours after you become aware.',
+          covers:
+            'That it happened, and the Member States where your product is available. For incidents, whether it looks caused by an unlawful or malicious act.',
+          within24:
+            'Starts the clock when your engineer confirms the alert. Calls the on-call person until someone answers. Drafts the warning from the alert and the first notes.',
+        },
+        {
+          name: 'Notification',
+          due: '72 hours after you become aware.',
+          covers:
+            'What is known so far, what you have done, what users can do to mitigate it, and how sensitive the information is.',
+          within24:
+            'Builds the incident timeline as you work: alerts, notes, status changes. Drafts the notification with a source for each statement.',
+        },
+        {
+          name: 'Final report',
+          due: 'Vulnerability: 14 days after a fix or mitigation is available. Incident: one month after the notification.',
+          covers: 'Description, severity and impact, root cause, and the fix or measures taken.',
+          within24:
+            'Waits for “fix available at” and starts the last clock then. Drafts the final report from the closed incident.',
+        },
+      ],
+      users:
+        'You also have to tell affected users about the issue and what they can do (Article 14(8)). Within24 drafts that message too.',
+    },
+    scope: {
+      heading: 'Does the CRA apply to you?',
+      intro:
+        'It depends on what you ship, not on how big you are. Use this as a first check, then read your case against the official text.',
+      shipHeading: 'If you ship',
+      usuallyHeading: 'Usually',
+      items: [
+        {
+          name: 'Mobile apps, desktop or self-hosted software',
+          text: 'In scope: these are products with digital elements.',
+        },
+        {
+          name: 'Connected devices and firmware',
+          text: 'In scope. Some device types are listed as important or critical and need a stricter conformity assessment (Articles 7 and 8).',
+        },
+        {
+          name: 'SDKs and libraries you sell',
+          text: 'In scope when you make them available commercially.',
+        },
+        {
+          name: 'SaaS only',
+          text: 'Often not in scope on its own. A backend is covered when it is remote data processing a product needs to work, like the server behind your app (Article 3(2)).',
+        },
+        {
+          name: 'Open source with no commercial activity',
+          text: 'Not in scope. Organisations that support open source meant for commercial use have lighter duties as open-source software stewards (Article 24).',
+        },
+        {
+          name: 'From outside the EU',
+          text: 'The CRA applies to products sold in the EU, wherever you are based.',
+        },
+      ],
+      link: 'Check which deadlines apply to your product',
+    },
     how: {
       heading: 'How it works',
       steps: [
@@ -282,6 +423,10 @@ export const en = {
         {
           name: 'Nobody is on call yet',
           text: 'Within24 wakes the right person itself: rotas, escalation, phone calls, and a "Call a developer" button for support staff.',
+        },
+        {
+          name: 'Not every alert is a legal incident',
+          text: 'Most alerts are outages. They page the rota, escalate and close with a note. Only the alerts you mark as reportable start legal clocks.',
         },
       ],
       // TODO(verify): Opsgenie end-of-life date before launch.
@@ -325,6 +470,15 @@ export const en = {
         {
           q: 'When does CRA reporting start?',
           a: 'Reporting of actively exploited vulnerabilities and severe incidents applies from 11 September 2026. The other requirements apply from 11 December 2027.',
+        },
+        {
+          q: 'Does CRA reporting apply to products sold before 2027?',
+          // TODO(verify): Article 69(3) against the official text.
+          a: 'Yes. The reporting obligations apply from 11 September 2026 to all products with digital elements on the market, including those placed on the market earlier (Article 69(3)).',
+        },
+        {
+          q: 'How is this different from NIS2 and GDPR reporting?',
+          a: 'Each law has its own trigger, authority and clock. NIS2 covers incidents at essential and important entities. GDPR covers personal data breaches. One incident can fall under all three, and Within24 runs their clocks side by side.',
         },
         {
           q: 'Do you submit reports to ENISA for us?',
