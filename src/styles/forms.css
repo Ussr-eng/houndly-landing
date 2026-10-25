@@ -154,28 +154,6 @@
   overflow: hidden;
 }
 
-.button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: var(--control-h);
-  padding: 0 var(--space-4);
-  font: inherit;
-  font-weight: var(--weight-bold);
-  color: var(--bg);
-  background: var(--text);
-  border: 1px solid var(--text);
-  border-radius: var(--control-radius);
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.button--secondary {
-  color: var(--text);
-  background: var(--surface);
-  border-color: var(--border-strong);
-}
-
 .button:disabled {
   opacity: 0.6;
   cursor: progress;

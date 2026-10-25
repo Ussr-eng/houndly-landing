@@ -9,6 +9,7 @@ export const en = {
     guides: 'Guides',
     kit: 'Incident Kit',
     pricing: 'Pricing',
+    earlyAccess: 'Join early access',
   },
   footer: {
     rulesVersion: 'Rules {version}',
@@ -222,8 +223,28 @@ export const en = {
     secondary: 'Join early access',
     status:
       'Early access: we are building Within24 now. Not legal advice. Not affiliated with ENISA.',
+    // Illustration of the product in the hero. Static example, not a calculation.
+    example: {
+      caption: 'Example incident: three CRA reporting clocks, 9 hours after the alert.',
+      badge: 'Example',
+      id: 'INC-0412',
+      name: 'Actively exploited vulnerability',
+      status: 'Clocks running',
+      axis: ['Sat 03:12', '+24 h', '+48 h', '+72 h'],
+      now: 'Now',
+      lanes: {
+        earlyWarning: 'Early warning',
+        earlyWarningValue: '14:47:12 left',
+        notification: 'Notification',
+        notificationValue: 'Due Tue 03:12',
+        finalReport: 'Final report',
+        finalReportValue: 'Waiting for “fix available at”',
+      },
+      draft: 'Early warning draft ready: 9 statements, 9 sources',
+    },
     pain: {
       heading: 'The alert does not wait for Monday',
+      markers: ['03:12', '24 h', 'Same rules'],
       items: [
         '3:12 a.m., Saturday. An alert fires. Is it just downtime, or an actively exploited vulnerability?',
         'Under the CRA, the 24-hour early warning counts from when you become aware, not from Monday morning.',

@@ -3,6 +3,7 @@
 // The deadline calculator lives on /deadlines/; old shared calculator links are forwarded there.
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PlanList from '../components/PlanList.astro';
+import HeroIncident from '../components/HeroIncident.astro';
 import SubscribeForm from '../components/forms/SubscribeForm.astro';
 import { t } from '../i18n';
 
@@ -11,102 +12,134 @@ const s = all.home;
 const p = all.pricing;
 ---
 
-<BaseLayout title={s.title} description={s.description}>
-  <section class="hero" aria-labelledby="hero-heading">
-    <p class="hero-eyebrow">{s.eyebrow}</p>
-    <h1 id="hero-heading">{s.heading}</h1>
-    <p class="lead">{s.intro}</p>
-    <div class="hero-actions">
-      <a class="button" href="/deadlines/">
-        {s.primary}
-      </a>
-      <a class="button button--secondary" href="#early-access">
-        {s.secondary}
-      </a>
+<BaseLayout title={s.title} description={s.description} bleed nightHeader>
+  <section class="hero night" aria-labelledby="hero-heading">
+    <div class="container hero__inner">
+      <div class="hero__copy">
+        <p class="hero__eyebrow">
+          <span class="hero__eyebrow-dot" aria-hidden="true"></span>
+          {s.eyebrow}
+        </p>
+        <h1 id="hero-heading">{s.heading}</h1>
+        <p class="hero__intro">{s.intro}</p>
+        <div class="hero__actions">
+          <a class="button button--large" href="/deadlines/">
+            {s.primary}
+          </a>
+          <a class="button button--large button--secondary" href="#early-access">
+            {s.secondary}
+          </a>
+        </div>
+        <p class="hero__status">{s.status}</p>
+      </div>
+      <div class="hero__visual">
+        <HeroIncident />
+      </div>
     </div>
-    <p class="hero-status">{s.status}</p>
   </section>
 
-  <section class="home-section" aria-labelledby="pain-heading">
-    <h2 id="pain-heading">{s.pain.heading}</h2>
-    <ul class="pain">
-      {s.pain.items.map((item) => (
-        <li>{item}</li>
-      ))}
-    </ul>
+  <section class="band band--tint" aria-labelledby="pain-heading">
+    <div class="container">
+      <h2 id="pain-heading">{s.pain.heading}</h2>
+      <ul class="pain">
+        {s.pain.items.map((item, i) => (
+          <li class:list={['pain__item', `pain__item--${i + 1}`]}>
+            <span class="pain__marker" aria-hidden="true">
+              {s.pain.markers[i]}
+            </span>
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
   </section>
 
-  <section class="home-section" aria-labelledby="how-heading">
-    <h2 id="how-heading">{s.how.heading}</h2>
-    <ol class="steps">
-      {s.how.steps.map((step) => (
-        <li class="step">
-          <h3>{step.name}</h3>
-          <p>{step.text}</p>
-        </li>
-      ))}
-    </ol>
+  <section class="band" aria-labelledby="how-heading">
+    <div class="container">
+      <h2 id="how-heading">{s.how.heading}</h2>
+      <ol class="steps">
+        {s.how.steps.map((step, i) => (
+          <li class="step">
+            <span class="step__num" aria-hidden="true">
+              {i + 1}
+            </span>
+            <h3>{step.name}</h3>
+            <p>{step.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
   </section>
 
-  <section class="home-section" aria-labelledby="oncall-heading">
-    <h2 id="oncall-heading">
-      {s.oncall.heading} <span class="badge">{s.oncall.badge}</span>
-    </h2>
-    <ul class="oncall">
-      {s.oncall.items.map((item) => (
-        <li>
-          <h3>{item.name}</h3>
-          <p>{item.text}</p>
-        </li>
-      ))}
-    </ul>
-    <p>{s.oncall.opsgenie}</p>
+  <section class="band band--tint" aria-labelledby="oncall-heading">
+    <div class="container">
+      <h2 id="oncall-heading">
+        {s.oncall.heading} <span class="badge">{s.oncall.badge}</span>
+      </h2>
+      <ul class="panels">
+        {s.oncall.items.map((item) => (
+          <li class="panel">
+            <h3>{item.name}</h3>
+            <p>{item.text}</p>
+          </li>
+        ))}
+      </ul>
+      <p class="note">{s.oncall.opsgenie}</p>
+    </div>
   </section>
 
-  <section class="home-section" aria-labelledby="pricing-heading">
-    <h2 id="pricing-heading">{s.pricing.heading}</h2>
-    <p>{s.pricing.intro}</p>
-    <PlanList formPath="/" headingLevel={3} />
-    <p class="note">
-      {p.priceLock} {p.consultant}
-    </p>
+  <section class="band" aria-labelledby="pricing-heading">
+    <div class="container">
+      <h2 id="pricing-heading">{s.pricing.heading}</h2>
+      <p class="band__intro">{s.pricing.intro}</p>
+      <PlanList formPath="/" headingLevel={3} />
+      <p class="note">
+        {p.priceLock} {p.consultant}
+      </p>
+    </div>
   </section>
 
-  <section class="home-section" aria-labelledby="trust-heading">
-    <h2 id="trust-heading">{s.trust.heading}</h2>
-    <ul class="trust">
-      {s.trust.items.map((item) => (
-        <li>
-          <h3>{item.name}</h3>
-          <p>{item.text}</p>
-        </li>
-      ))}
-    </ul>
-    <p>
-      <a href="/privacy/">{s.trust.privacy}</a>
-    </p>
+  <section class="band band--tint" aria-labelledby="trust-heading">
+    <div class="container">
+      <h2 id="trust-heading">{s.trust.heading}</h2>
+      <ul class="trust">
+        {s.trust.items.map((item) => (
+          <li>
+            <h3>{item.name}</h3>
+            <p>{item.text}</p>
+          </li>
+        ))}
+      </ul>
+      <p>
+        <a href="/privacy/">{s.trust.privacy}</a>
+      </p>
+    </div>
   </section>
 
-  <section class="home-section prose" aria-labelledby="faq-heading">
-    <h2 id="faq-heading">{s.faq.heading}</h2>
-    <dl class="faq">
-      {s.faq.items.map((item) => (
-        <>
-          <dt>{item.q}</dt>
-          <dd>{item.a}</dd>
-        </>
-      ))}
-    </dl>
+  <section class="band" aria-labelledby="faq-heading">
+    <div class="container faq-layout">
+      <h2 id="faq-heading">{s.faq.heading}</h2>
+      <dl class="faq">
+        {s.faq.items.map((item) => (
+          <div class="faq__item">
+            <dt>{item.q}</dt>
+            <dd>{item.a}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
   </section>
 
-  <section
-    id="early-access"
-    class="home-section early-access"
-    aria-labelledby="early-access-heading"
-  >
-    <h2 id="early-access-heading">{p.formHeading}</h2>
-    <p>{p.formIntro}</p>
-    <SubscribeForm list="waitlist" locale="en" source="/" />
+  <section id="early-access" class="band night early-access" aria-labelledby="early-access-heading">
+    <div class="container early-access__inner">
+      <div class="early-access__copy">
+        <h2 id="early-access-heading">{p.formHeading}</h2>
+        <p>{p.formIntro}</p>
+      </div>
+      <div class="early-access__form">
+        <SubscribeForm list="waitlist" locale="en" source="/" />
+      </div>
+    </div>
   </section>
 </BaseLayout>
 
@@ -118,101 +151,201 @@ const p = all.pricing;
 </script>
 
 <style>
+  /* Hero: a night band in both themes, with the incident illustration beside the copy. */
   .hero {
-    max-width: var(--measure);
-    margin-block: var(--space-8) var(--space-12);
+    background:
+      radial-gradient(60rem 30rem at 80% 20%, var(--night-glow) 0%, transparent 70%), var(--bg);
+  }
+
+  .hero__inner {
+    display: grid;
+    gap: var(--space-12);
+    align-items: center;
+    padding-block: var(--space-16) var(--space-24);
+  }
+
+  @media (min-width: 64rem) {
+    .hero__inner {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    }
+  }
+
+  .hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0;
+    padding: var(--space-1) var(--space-3);
+    font-size: var(--fs-sm);
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+  }
+
+  .hero__eyebrow-dot {
+    flex: none;
+    width: 0.5rem;
+    height: 0.5rem;
+    background: var(--soon);
+    border-radius: 50%;
   }
 
   .hero h1 {
-    margin-top: var(--space-2);
+    margin: var(--space-6) 0 0;
+    font-size: var(--fs-2xl);
+    font-weight: var(--weight-heavy);
+    line-height: var(--lh-display);
+    letter-spacing: -0.02em;
   }
 
-  .hero-eyebrow {
-    margin: 0;
-    color: var(--accent);
-    font-weight: var(--weight-bold);
+  .hero__intro {
+    max-width: 38rem;
+    margin: var(--space-6) 0 0;
+    font-size: var(--fs-md);
+    line-height: 1.6;
+    color: var(--muted);
   }
 
-  .hero-actions {
+  .hero__actions {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-3);
-    margin-top: var(--space-6);
+    margin-top: var(--space-8);
   }
 
-  .hero-status {
+  .hero__status {
     margin: var(--space-4) 0 0;
     color: var(--muted);
     font-size: var(--fs-sm);
   }
 
-  .home-section {
-    margin-block: var(--space-12);
-    padding-top: var(--space-8);
-    border-top: 1px solid var(--border);
+  /* Sections: full-width bands, alternating with a tinted background. */
+  .band {
+    padding-block: var(--space-16);
     scroll-margin-top: var(--space-4);
   }
 
-  .home-section > h2 {
-    margin-top: 0;
+  .band--tint {
+    background: var(--bg-2);
+    border-block: 1px solid var(--border);
   }
 
-  .pain {
-    display: grid;
-    gap: var(--space-3);
+  .band h2 {
+    margin: 0 0 var(--space-8);
+    font-size: var(--fs-xl);
+    font-weight: var(--weight-heavy);
+    letter-spacing: -0.01em;
+  }
+
+  .band__intro {
     max-width: var(--measure);
-    margin: 0;
-    padding: 0;
-    list-style: none;
+    margin: calc(-1 * var(--space-6)) 0 var(--space-8);
+    color: var(--muted);
     font-size: var(--fs-md);
   }
 
-  .pain li {
-    padding-left: var(--space-4);
-    border-left: 4px solid var(--border-strong);
+  .band h3 {
+    margin: 0 0 var(--space-2);
+    font-size: var(--fs-md);
   }
 
-  .pain li:first-child {
-    border-left-color: var(--overdue);
+  .band li > p {
+    margin: 0;
   }
 
-  .steps {
+  .pain,
+  .steps,
+  .panels,
+  .trust {
     display: grid;
-    gap: var(--space-6);
+    gap: var(--space-8);
     margin: 0;
     padding: 0;
     list-style: none;
-    counter-reset: step;
+  }
+
+  @media (min-width: 48rem) {
+    .pain {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .panels {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-6);
+    }
+    .trust {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .trust {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .pain__item {
+    font-size: var(--fs-md);
+  }
+
+  .pain__marker {
+    display: block;
+    margin-bottom: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xl);
+    line-height: 1.2;
+  }
+
+  .pain__item--1 .pain__marker {
+    color: var(--overdue);
+  }
+
+  .pain__item--2 .pain__marker {
+    color: var(--soon);
+  }
+
+  .pain__item--3 .pain__marker {
+    color: var(--accent);
+  }
+
+  /* How it works: numbered stops on one line, like a timeline. */
+  .steps {
+    gap: var(--space-8) var(--space-6);
   }
 
   @media (min-width: 48rem) {
     .steps {
       grid-template-columns: repeat(4, minmax(0, 1fr));
+      padding-top: 1.125rem;
+      border-top: 2px solid var(--border);
+    }
+    .step__num {
+      margin-top: calc(-1.125rem - 1.125rem - 1px);
     }
   }
 
-  .step {
-    counter-increment: step;
-    padding-top: var(--space-3);
-    border-top: 4px solid var(--accent);
-  }
-
-  .step h3::before {
-    content: counter(step) '. ';
-    color: var(--accent);
-  }
-
-  .step h3,
-  .oncall h3,
-  .trust h3 {
-    margin: 0 0 var(--space-2);
-    font-size: var(--fs-md);
+  .step__num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    margin-bottom: var(--space-4);
+    font-weight: var(--weight-heavy);
+    color: var(--brand-contrast);
+    background: var(--brand);
+    border-radius: 50%;
   }
 
   .step p,
-  .oncall p,
   .trust p {
-    margin: 0;
+    color: var(--muted);
+  }
+
+  .panel {
+    padding: var(--space-6);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
   }
 
   .badge {
@@ -224,40 +357,66 @@ const p = all.pricing;
     font-weight: var(--weight-bold);
     vertical-align: middle;
     border: 1px solid currentColor;
-    border-radius: var(--control-radius);
+    border-radius: 999px;
+    letter-spacing: 0;
   }
 
   .note {
+    margin: var(--space-6) 0 0;
     color: var(--muted);
     font-size: var(--fs-sm);
   }
 
-  .oncall,
-  .trust {
-    display: grid;
-    gap: var(--space-6);
-    margin: 0;
-    padding: 0;
-    list-style: none;
+  .trust li {
+    padding-top: var(--space-4);
+    border-top: 2px solid var(--brand);
   }
 
-  @media (min-width: 48rem) {
-    .oncall,
-    .trust {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+  /* FAQ: heading on the left, questions on the right on wide screens. */
+  @media (min-width: 64rem) {
+    .faq-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+      gap: var(--space-12);
     }
   }
 
+  .faq {
+    margin: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .faq__item {
+    padding-block: var(--space-6);
+    border-bottom: 1px solid var(--border);
+  }
+
   .faq dt {
-    margin-top: var(--space-6);
+    font-size: var(--fs-md);
     font-weight: var(--weight-bold);
   }
 
   .faq dd {
+    max-width: var(--measure);
     margin: var(--space-2) 0 0;
+    color: var(--muted);
   }
 
-  .early-access {
-    max-width: 40rem;
+  .early-access__inner {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 64rem) {
+    .early-access__inner {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+      gap: var(--space-16);
+    }
+  }
+
+  .early-access__copy p {
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--fs-md);
   }
 </style>

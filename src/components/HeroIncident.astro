@@ -1,0 +1,250 @@
+---
+// Home hero illustration: one incident with the CRA clocks as parallel lanes and "now" on them.
+// A static example (no live time, no calculation); the real thing is the calculator on /deadlines/.
+// Lanes share one 72-hour scale: the early warning ends at 24 h (1/3), "now" sits 9 h 13 min in.
+import { t } from '../i18n';
+
+const e = t('en').home.example;
+const now = (9 + 13 / 60) / 72;
+---
+
+<figure class="incident" style={`--now-at: ${now}`}>
+  <div class="incident__head">
+    <span class="incident__id">{e.id}</span>
+    <span class="incident__name">{e.name}</span>
+    <span class="incident__status">{e.status}</span>
+  </div>
+  <div class="incident__body">
+    <div class="incident__axis" aria-hidden="true">
+      {e.axis.map((tick) => (
+        <span>{tick}</span>
+      ))}
+    </div>
+    <div class="incident__plot">
+      <ul class="incident__lanes">
+        <li class="lane">
+          <span class="lane__name">{e.lanes.earlyWarning}</span>
+          <span class="lane__track">
+            <span class="lane__bar lane__bar--soon" style="--end: 0.3333"></span>
+            <span class="lane__value lane__value--soon">{e.lanes.earlyWarningValue}</span>
+          </span>
+        </li>
+        <li class="lane">
+          <span class="lane__name">{e.lanes.notification}</span>
+          <span class="lane__track">
+            <span class="lane__bar" style="--end: 1"></span>
+            <span class="lane__value lane__value--end">{e.lanes.notificationValue}</span>
+          </span>
+        </li>
+        <li class="lane">
+          <span class="lane__name">{e.lanes.finalReport}</span>
+          <span class="lane__track lane__track--waiting">
+            <span class="lane__value">{e.lanes.finalReportValue}</span>
+          </span>
+        </li>
+      </ul>
+      <div class="incident__now" aria-hidden="true">
+        <span>{e.now}</span>
+      </div>
+    </div>
+    <p class="incident__draft">
+      <span class="incident__dot" aria-hidden="true"></span>
+      {e.draft}
+    </p>
+  </div>
+  <figcaption class="incident__caption">
+    <span class="incident__badge">{e.badge}</span>
+    {e.caption}
+  </figcaption>
+</figure>
+
+<style>
+  .incident {
+    --name-w: 8.5rem;
+
+    margin: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-panel);
+  }
+
+  .incident__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-3);
+    padding: var(--space-4) var(--space-6);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .incident__id {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--muted);
+  }
+
+  .incident__name {
+    font-weight: var(--weight-bold);
+  }
+
+  .incident__status {
+    margin-left: auto;
+    padding: 0 var(--space-3);
+    font-size: var(--fs-sm);
+    color: var(--soon);
+    border: 1px solid currentColor;
+    border-radius: 999px;
+  }
+
+  .incident__body {
+    padding: var(--space-6);
+  }
+
+  .incident__axis {
+    display: flex;
+    justify-content: space-between;
+    margin-left: var(--name-w);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--muted);
+  }
+
+  .incident__plot {
+    position: relative;
+    margin-top: var(--space-2);
+  }
+
+  .incident__lanes {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .lane {
+    display: grid;
+    grid-template-columns: var(--name-w) minmax(0, 1fr);
+    align-items: center;
+  }
+
+  .lane__name {
+    font-size: var(--fs-sm);
+  }
+
+  .lane__track {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 2.25rem;
+    background: var(--surface-2);
+    border-radius: 6px;
+  }
+
+  .lane__track--waiting {
+    padding-inline: var(--space-3);
+    background: transparent;
+    border: 1px dashed var(--border-strong);
+  }
+
+  .lane__bar {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: calc(var(--end) * 100%);
+    background: var(--brand);
+    border-radius: 6px;
+  }
+
+  .lane__bar--soon {
+    background: var(--soon);
+  }
+
+  .lane__value {
+    position: relative;
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--muted);
+  }
+
+  .lane__value--soon {
+    margin-left: calc(33.33% + var(--space-3));
+    color: var(--soon);
+  }
+
+  .lane__value--end {
+    margin-left: auto;
+    padding-right: var(--space-3);
+    color: var(--brand-contrast);
+  }
+
+  /* "Now": one vertical line across every lane at the same moment. */
+  .incident__now {
+    position: absolute;
+    top: calc(-1 * var(--space-2));
+    bottom: calc(-1 * var(--space-2));
+    left: calc(var(--name-w) + (100% - var(--name-w)) * var(--now-at));
+    width: 2px;
+    background: var(--now);
+  }
+
+  .incident__now span {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: var(--fs-xs);
+    font-weight: var(--weight-bold);
+    color: var(--now);
+  }
+
+  .incident__draft {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin: var(--space-6) 0 0;
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--fs-sm);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+
+  .incident__dot {
+    flex: none;
+    width: 0.625rem;
+    height: 0.625rem;
+    background: var(--ok);
+    border-radius: 50%;
+  }
+
+  .incident__caption {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-6);
+    font-size: var(--fs-xs);
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+  }
+
+  .incident__badge {
+    font-weight: var(--weight-bold);
+    color: var(--text);
+  }
+
+  @media (max-width: 29.99rem) {
+    .incident {
+      --name-w: 6.5rem;
+    }
+    .incident__body,
+    .incident__head,
+    .incident__caption {
+      padding-inline: var(--space-4);
+    }
+    .incident__axis span:nth-child(even) {
+      visibility: hidden;
+    }
+  }
+</style>
