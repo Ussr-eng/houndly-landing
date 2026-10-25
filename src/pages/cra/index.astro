@@ -1,6 +1,6 @@
 ---
-// The CRA overview: the law in detail, kept off the home page. Every legal statement is
-// TODO(verify) in src/i18n/en.ts until checked against the official text.
+// The CRA overview: the law in detail, kept off the home page. Statements are checked against
+// the text of Regulation (EU) 2024/2847; the verification date is in src/i18n/en.ts (cra.verified).
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CraFacts from '../../components/cra/CraFacts.astro';
 import CraDates from '../../components/cra/CraDates.astro';
@@ -27,7 +27,7 @@ const s = all.cra;
     <div class="prose">
       <h1>{s.title}</h1>
       <p class="lead">{s.asks.intro}</p>
-      <p class="cra__status">{s.notVerified}</p>
+      <p class="cra__status">{s.verified}</p>
     </div>
 
     <section aria-labelledby="asks-heading">

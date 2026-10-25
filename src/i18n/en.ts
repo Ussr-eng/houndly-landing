@@ -363,10 +363,9 @@ export const en = {
     description:
       'What the EU Cyber Resilience Act asks when something goes wrong: who reports, to whom, the 24-hour, 72-hour and final-report deadlines, and key dates.',
     breadcrumb: 'The CRA',
-    notVerified:
-      'Article references are not yet verified against the official text. This page is not legal advice.',
-    // TODO(verify): every article reference and legal statement in cra, reports and scope
-    // against the official text of Regulation (EU) 2024/2847 before relying on it.
+    // Checked against the text of Regulation (EU) 2024/2847 in the Official Journal (OJ L, 20.11.2024).
+    verified:
+      'Last verified: 25 October 2026, against the text published in the Official Journal on 20 November 2024. This page is not legal advice.',
     asks: {
       heading: 'What the Cyber Resilience Act asks of you',
       intro:
@@ -375,7 +374,7 @@ export const en = {
         {
           name: 'Who',
           text: 'Manufacturers of products with digital elements made available on the EU market.',
-          ref: 'Article 2 and Article 3',
+          ref: 'Article 2(1), Article 3(1) and (13)',
         },
         {
           name: 'What to report',
@@ -385,11 +384,11 @@ export const en = {
         {
           name: 'To whom',
           text: 'The CSIRT designated as coordinator and ENISA, at the same time, through the ENISA Single Reporting Platform.',
-          ref: 'Article 14(1) and Article 16',
+          ref: 'Article 14(1), 14(7) and Article 16',
         },
         {
           name: 'How fast',
-          text: 'An early warning within 24 hours of becoming aware, a notification within 72 hours, then a final report.',
+          text: 'Without undue delay: an early warning within 24 hours of becoming aware, a notification within 72 hours, then a final report.',
           ref: 'Article 14(2) and 14(4)',
         },
       ],
@@ -403,12 +402,13 @@ export const en = {
           label: '10 December 2024',
           done: 'In force',
           text: 'The Regulation entered into force.',
+          ref: 'Article 71(1)',
         },
         {
           date: '2026-06-11',
           label: '11 June 2026',
           done: 'Applies',
-          text: 'Rules for conformity assessment bodies start to apply.',
+          text: 'Rules for notifying conformity assessment bodies start to apply (Chapter IV, Articles 35 to 51).',
           ref: 'Article 71(2)',
         },
         {
@@ -438,7 +438,7 @@ export const en = {
       stages: [
         {
           name: 'Early warning',
-          due: '24 hours after you become aware.',
+          due: 'Without undue delay, at the latest 24 hours after you become aware.',
           covers:
             'That it happened, and the Member States where your product is available. For incidents, whether it looks caused by an unlawful or malicious act.',
           within24:
@@ -446,7 +446,7 @@ export const en = {
         },
         {
           name: 'Notification',
-          due: '72 hours after you become aware.',
+          due: 'Without undue delay, at the latest 72 hours after you become aware.',
           covers:
             'What is known so far, what you have done, what users can do to mitigate it, and how sensitive the information is.',
           within24:
@@ -454,8 +454,9 @@ export const en = {
         },
         {
           name: 'Final report',
-          due: 'Vulnerability: 14 days after a fix or mitigation is available. Incident: one month after the notification.',
-          covers: 'Description, severity and impact, root cause, and the fix or measures taken.',
+          due: 'Vulnerability: 14 days after a fix or mitigation is available. Incident: one month after you submit the notification.',
+          covers:
+            'A description with severity and impact. For a vulnerability: the malicious actor, if known, and the security update. For an incident: the likely root cause and the mitigation measures.',
           within24:
             'Waits for “fix available at” and starts the last clock then. Drafts the final report from the closed incident.',
         },
@@ -472,27 +473,27 @@ export const en = {
       items: [
         {
           name: 'Mobile apps, desktop or self-hosted software',
-          text: 'In scope: these are products with digital elements.',
+          text: 'In scope when they can connect to a device or network, which nearly all do (Article 2(1)).',
         },
         {
           name: 'Connected devices and firmware',
-          text: 'In scope. Some device types are listed as important or critical and need a stricter conformity assessment (Articles 7 and 8).',
+          text: 'In scope. Some product categories are listed as important or critical (Annexes III and IV) and need a stricter conformity assessment (Articles 7 and 8).',
         },
         {
-          name: 'SDKs and libraries you sell',
-          text: 'In scope when you make them available commercially.',
+          name: 'SDKs and libraries',
+          text: 'In scope when you supply them as part of a commercial activity, paid or free (Article 3(22)).',
         },
         {
           name: 'SaaS only',
-          text: 'Often not in scope on its own. A backend is covered when it is remote data processing a product needs to work, like the server behind your app (Article 3(2)).',
+          text: 'Not in scope on its own: cloud services fall under NIS2 instead. A backend is covered when it is remote data processing a product needs to work, like the server behind your app (Article 3(2), recital 12).',
         },
         {
           name: 'Open source with no commercial activity',
-          text: 'Not in scope. Organisations that support open source meant for commercial use have lighter duties as open-source software stewards (Article 24).',
+          text: 'Not in scope (recital 18). Organisations that support open source meant for commercial use have lighter duties as open-source software stewards (Article 24).',
         },
         {
           name: 'From outside the EU',
-          text: 'The CRA applies to products sold in the EU, wherever you are based.',
+          text: 'In scope for products made available on the EU market, wherever you are based. Article 14(7) sets which CSIRT you report to.',
         },
       ],
       link: 'Check which deadlines apply to your product',
@@ -502,8 +503,7 @@ export const en = {
       items: [
         {
           q: 'Does the Cyber Resilience Act apply to SaaS?',
-          // TODO(verify): wording against the CRA scope articles and the Commission guidance.
-          a: 'Often not directly: the CRA covers products with digital elements. A cloud service can be in scope as remote data processing for such a product, and software you ship to customers usually is. Check your own case against the official text.',
+          a: 'Usually not directly. The CRA covers products with digital elements, and recital 12 points cloud services to NIS2. A cloud backend is in scope when it is remote data processing for a product you ship, such as the server an app or device needs to work (Article 3(1) and (2)).',
         },
         {
           q: 'When does CRA reporting start?',
@@ -511,7 +511,6 @@ export const en = {
         },
         {
           q: 'Does CRA reporting apply to products sold before 2027?',
-          // TODO(verify): Article 69(3) against the official text.
           a: 'Yes. The reporting obligations apply from 11 September 2026 to all products with digital elements on the market, including those placed on the market earlier (Article 69(3)).',
         },
         {
