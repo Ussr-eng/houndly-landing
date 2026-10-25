@@ -1,0 +1,222 @@
+---
+// The CRA overview: the law in detail, kept off the home page. Every legal statement is
+// TODO(verify) in src/i18n/en.ts until checked against the official text.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CraFacts from '../../components/cra/CraFacts.astro';
+import CraDates from '../../components/cra/CraDates.astro';
+import CraReports from '../../components/cra/CraReports.astro';
+import { breadcrumbList } from '../../lib/seo/jsonld';
+import { siteUrl } from '../../config/site';
+import { t } from '../../i18n';
+
+const all = t('en');
+const s = all.cra;
+---
+
+<BaseLayout
+  title={s.title}
+  description={s.description}
+  jsonLd={[
+    breadcrumbList([
+      { name: all.breadcrumbs.home, url: siteUrl() + '/' },
+      { name: s.breadcrumb, url: siteUrl() + '/cra/' },
+    ]),
+  ]}
+>
+  <div class="cra">
+    <div class="prose">
+      <h1>{s.title}</h1>
+      <p class="lead">{s.asks.intro}</p>
+      <p class="cra__status">{s.notVerified}</p>
+    </div>
+
+    <section aria-labelledby="asks-heading">
+      <h2 id="asks-heading">{s.asks.heading}</h2>
+      <CraFacts refs />
+    </section>
+
+    <section id="dates" aria-labelledby="dates-heading">
+      <h2 id="dates-heading">{s.asks.datesHeading}</h2>
+      <CraDates />
+    </section>
+
+    <section id="reports" aria-labelledby="reports-heading">
+      <h2 id="reports-heading">{s.reports.heading}</h2>
+      <p class="cra__intro">{s.reports.intro}</p>
+      <CraReports detailed />
+    </section>
+
+    <section id="scope" aria-labelledby="scope-heading">
+      <h2 id="scope-heading">{s.scope.heading}</h2>
+      <p class="cra__intro">{s.scope.intro}</p>
+      <table class="scope">
+        <thead>
+          <tr>
+            <th scope="col">{s.scope.shipHeading}</th>
+            <th scope="col">{s.scope.usuallyHeading}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {s.scope.items.map((item) => (
+            <tr>
+              <th scope="row">{item.name}</th>
+              <td>{item.text}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p class="scope__link">
+        <a href="/deadlines/">{s.scope.link}</a>
+      </p>
+    </section>
+
+    <section aria-labelledby="faq-heading">
+      <h2 id="faq-heading">{s.faq.heading}</h2>
+      <dl class="faq">
+        {s.faq.items.map((item) => (
+          <div class="faq__item">
+            <dt>{item.q}</dt>
+            <dd>{item.a}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <section aria-labelledby="sources-heading">
+      <h2 id="sources-heading">{s.sourcesHeading}</h2>
+      <ul>
+        {s.sources.map((source) => (
+          <li>
+            <a href={source.url} rel="external">
+              {source.name}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="cra__next" aria-labelledby="next-heading">
+      <h2 id="next-heading">{s.next.heading}</h2>
+      <div class="cra__actions">
+        <a class="button" href="/deadlines/">
+          {s.next.calculator}
+        </a>
+        <a class="button button--secondary" href="/#early-access">
+          {s.next.earlyAccess}
+        </a>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .cra {
+    display: grid;
+    gap: var(--space-16);
+    margin-block: var(--space-4) var(--space-12);
+  }
+
+  .cra section {
+    scroll-margin-top: var(--space-4);
+  }
+
+  .cra h2 {
+    margin: 0 0 var(--space-8);
+    font-size: var(--fs-xl);
+    font-weight: var(--weight-heavy);
+    letter-spacing: -0.01em;
+  }
+
+  .cra__status {
+    margin: var(--space-4) 0 0;
+    color: var(--muted);
+    font-size: var(--fs-sm);
+  }
+
+  .cra__intro {
+    max-width: var(--measure);
+    margin: calc(-1 * var(--space-6)) 0 var(--space-8);
+    color: var(--muted);
+    font-size: var(--fs-md);
+  }
+
+  .faq {
+    margin: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .faq__item {
+    padding-block: var(--space-6);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .faq dt {
+    font-size: var(--fs-md);
+    font-weight: var(--weight-bold);
+  }
+
+  .faq dd {
+    max-width: var(--measure);
+    margin: var(--space-2) 0 0;
+    color: var(--muted);
+  }
+
+  .cra__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  /* Does it apply: a plain two-column table that stacks on phones. */
+  .scope {
+    width: 100%;
+    border-collapse: collapse;
+    border-top: 1px solid var(--border);
+  }
+
+  .scope thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .scope th,
+  .scope td {
+    display: block;
+    padding: 0;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .scope tr {
+    display: block;
+    padding-block: var(--space-4);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .scope tbody th {
+    font-weight: var(--weight-bold);
+  }
+
+  .scope td {
+    margin-top: var(--space-1);
+    color: var(--muted);
+  }
+
+  @media (min-width: 48rem) {
+    .scope tr {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+      gap: var(--space-8);
+    }
+    .scope td {
+      margin-top: 0;
+    }
+  }
+
+  .scope__link {
+    margin: var(--space-6) 0 0;
+  }
+</style>

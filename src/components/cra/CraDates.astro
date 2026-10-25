@@ -1,0 +1,135 @@
+---
+// Key CRA dates as stops on one line. The status of each date is worked out at build time,
+// so the page reads correctly without JavaScript.
+import { DateTime } from 'luxon';
+import { fill, t } from '../../i18n';
+import { milestoneStatus } from '../../lib/milestone';
+
+const s = t('en').cra.asks;
+const buildTime = DateTime.utc();
+const dates = s.dates.map((d) => {
+  const status = milestoneStatus(d.date, buildTime);
+  return {
+    ...d,
+    done: status.kind === 'done',
+    status:
+      status.kind === 'done'
+        ? d.done
+        : status.months < 1
+          ? s.upcomingSoon
+          : fill(s.upcoming, { months: status.months }),
+  };
+});
+---
+
+<ol class="dates">
+  {dates.map((d) => (
+    <li class:list={['date', { 'date--done': d.done }]}>
+      <span class="date__marker" aria-hidden="true" />
+      <time datetime={d.date} class="date__when">
+        {d.label}
+      </time>
+      <span class="date__status">{d.status}</span>
+      <p>
+        {d.text}
+        {d.ref && <span class="ref">{d.ref}</span>}
+      </p>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .ref {
+    display: block;
+    margin-top: var(--space-1);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+  }
+
+  .dates {
+    display: grid;
+    gap: var(--space-8) var(--space-6);
+    margin: 0 0 var(--space-8);
+    padding: 0;
+    list-style: none;
+  }
+
+  .date {
+    position: relative;
+    padding-left: var(--space-8);
+  }
+
+  /* Phones: a vertical line down the left; wider screens: one horizontal line. */
+  .date::before {
+    content: '';
+    position: absolute;
+    top: 0.5rem;
+    bottom: calc(-1 * var(--space-8));
+    left: calc(var(--marker) / 2 - 1px);
+    border-left: 2px solid var(--border);
+  }
+
+  .date:last-child::before {
+    display: none;
+  }
+
+  .date__marker {
+    position: absolute;
+    top: 0.25rem;
+    left: 0;
+    width: var(--marker);
+    height: var(--marker);
+    background: var(--bg);
+    border: 2px solid var(--soon);
+    border-radius: 50%;
+  }
+
+  .date--done .date__marker {
+    background: var(--ok);
+    border-color: var(--ok);
+  }
+
+  @media (min-width: 48rem) {
+    .dates {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      padding-top: var(--space-8);
+      border-top: 2px solid var(--border);
+    }
+    .date {
+      padding-left: 0;
+    }
+    .date::before {
+      display: none;
+    }
+    .date__marker {
+      top: calc(-1 * var(--space-8) - var(--marker) / 2 - 1px);
+    }
+  }
+
+  .date__when {
+    display: block;
+    font-family: var(--font-mono);
+    font-weight: var(--weight-bold);
+  }
+
+  .date__status {
+    display: inline-block;
+    margin-top: var(--space-1);
+    padding: 0 var(--space-2);
+    color: var(--soon);
+    font-size: var(--fs-sm);
+    font-weight: var(--weight-bold);
+    border: 1px solid currentColor;
+    border-radius: 999px;
+  }
+
+  .date--done .date__status {
+    color: var(--ok);
+  }
+
+  .date p {
+    margin: var(--space-2) 0 0;
+    color: var(--muted);
+  }
+</style>

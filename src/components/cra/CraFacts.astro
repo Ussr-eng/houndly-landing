@@ -1,0 +1,66 @@
+---
+// The four CRA facts: who reports, what, to whom and how fast.
+import { t } from '../../i18n';
+
+interface Props {
+  /** Show the article reference under each fact. */
+  refs?: boolean;
+}
+
+const { refs = false } = Astro.props;
+const s = t('en').cra.asks;
+---
+
+<dl class="facts">
+  {s.facts.map((fact) => (
+    <div class="fact">
+      <dt>{fact.name}</dt>
+      <dd>
+        {fact.text}
+        {refs && <span class="ref">{fact.ref}</span>}
+      </dd>
+    </div>
+  ))}
+</dl>
+
+<style>
+  .ref {
+    display: block;
+    margin-top: var(--space-1);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+  }
+
+  .facts {
+    display: grid;
+    gap: var(--space-6) var(--space-8);
+    margin: 0;
+  }
+
+  @media (min-width: 48rem) {
+    .facts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .facts {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .fact {
+    padding-left: var(--space-4);
+    border-left: 2px solid var(--brand);
+  }
+
+  .fact dt {
+    font-size: var(--fs-md);
+    font-weight: var(--weight-bold);
+  }
+
+  .fact dd {
+    margin: var(--space-1) 0 0;
+  }
+</style>

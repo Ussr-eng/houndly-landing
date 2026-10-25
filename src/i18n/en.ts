@@ -259,9 +259,115 @@ export const en = {
         'Small teams have the same obligation as large ones, without a security team to own it.',
       ],
     },
+    // A short version of the CRA page; the facts themselves come from cra.facts.
+    brief: {
+      heading: 'CRA reporting has applied since 11 September 2026',
+      link: 'Read the CRA overview: key dates, the three reports and who is in scope',
+    },
+    how: {
+      heading: 'How it works',
+      steps: [
+        {
+          name: 'An alert may be reportable',
+          text: 'A webhook arrives from PagerDuty, Opsgenie, Grafana or Sentry. AI flags alerts that look reportable under the CRA, NIS2 or GDPR.',
+        },
+        {
+          name: 'The legal clocks start',
+          text: 'Your engineer confirms, and the 24-hour, 72-hour and final-report timers start from the moment you became aware.',
+        },
+        {
+          name: 'Someone is awake to act',
+          text: 'Phone call, Telegram and email, escalating down the rota until someone taps "I\'m on it".',
+        },
+        {
+          name: 'Each report is drafted',
+          text: 'Before each deadline, a draft is ready from the incident timeline, with a source for every statement. You edit it and submit it to the ENISA Single Reporting Platform yourself.',
+        },
+      ],
+    },
+    oncall: {
+      heading: 'Works with your on-call, or replaces it',
+      badge: 'In development',
+      items: [
+        {
+          name: 'You already use PagerDuty, Opsgenie or Grafana',
+          text: 'Keep it. Send alerts to Within24 by webhook: your tool keeps paging the team, and Within24 runs the legal clocks and drafts the reports.',
+        },
+        {
+          name: 'Nobody is on call yet',
+          text: 'Within24 wakes the right person itself: rotas, escalation, phone calls, and a "Call a developer" button for support staff.',
+        },
+        {
+          name: 'Not every alert is a legal incident',
+          text: 'Most alerts are outages. They page the rota, escalate and close with a note. Only the alerts you mark as reportable start legal clocks.',
+        },
+      ],
+      // TODO(verify): Opsgenie end-of-life date before launch.
+      opsgenie: 'Moving off Opsgenie before April 2027? Bring your schedules with you.',
+    },
+    pricing: {
+      heading: 'Pricing',
+      intro: 'Prices for early access. Choose a plan to join the list; no payment is taken.',
+      more: 'More about plans',
+    },
+    trust: {
+      heading: 'What you can rely on',
+      items: [
+        {
+          name: 'Built by an on-call engineer',
+          text: 'Dmytro spent two years on call for a customer-support platform and built Within24 for the 3 a.m. alert he used to get.',
+        },
+        {
+          name: 'A person always decides',
+          text: 'Within24 never submits to ENISA and never tells you a report is not needed.',
+        },
+        {
+          name: 'Every answer has a source',
+          text: 'Article numbers and links to the official texts. Where there is no source, we say it is unclear.',
+        },
+        {
+          name: 'Your data stays minimal',
+          text: 'No tracking cookies. We keep your email only with your consent.',
+        },
+      ],
+      privacy: 'Read the privacy policy',
+    },
+    faq: {
+      heading: 'Questions',
+      items: [
+        {
+          q: 'Do you submit reports to ENISA for us?',
+          a: 'No. The ENISA Single Reporting Platform has no API, and the decision to report stays with a person. Within24 wakes the right person and prepares the text.',
+        },
+        {
+          q: 'What data does the AI see?',
+          a: 'Only what you send it: alert payloads and the incident timeline. Personal data is masked before it reaches the model, and the AI never decides on its own.',
+        },
+        {
+          q: 'We already use PagerDuty. Do we need to switch?',
+          a: 'No. Send your alerts to Within24 by webhook. PagerDuty keeps waking your team; Within24 adds the legal clocks and the report drafts.',
+        },
+        {
+          q: 'We are moving off Opsgenie. Can we use Within24 without the CRA part?',
+          a: 'Yes. The legal clocks start only when you mark an incident as reportable.',
+        },
+        {
+          q: 'When can I use it?',
+          a: "We're building the core now and will onboard early-access teams in small groups.",
+        },
+      ],
+    },
+  },
+  cra: {
+    title: 'Cyber Resilience Act: what to report and when',
+    description:
+      'What the EU Cyber Resilience Act asks when something goes wrong: who reports, to whom, the 24-hour, 72-hour and final-report deadlines, and key dates.',
+    breadcrumb: 'The CRA',
+    notVerified:
+      'Article references are not yet verified against the official text. This page is not legal advice.',
     // TODO(verify): every article reference and legal statement in cra, reports and scope
     // against the official text of Regulation (EU) 2024/2847 before relying on it.
-    cra: {
+    asks: {
       heading: 'What the Cyber Resilience Act asks of you',
       intro:
         'The Cyber Resilience Act (Regulation (EU) 2024/2847) sets security rules for hardware and software sold in the EU. Most of it is about how you build and maintain a product. One part is about what happens when something goes wrong: you report it, on a clock.',
@@ -391,74 +497,6 @@ export const en = {
       ],
       link: 'Check which deadlines apply to your product',
     },
-    how: {
-      heading: 'How it works',
-      steps: [
-        {
-          name: 'An alert may be reportable',
-          text: 'A webhook arrives from PagerDuty, Opsgenie, Grafana or Sentry. AI flags alerts that look reportable under the CRA, NIS2 or GDPR.',
-        },
-        {
-          name: 'The legal clocks start',
-          text: 'Your engineer confirms, and the 24-hour, 72-hour and final-report timers start from the moment you became aware.',
-        },
-        {
-          name: 'Someone is awake to act',
-          text: 'Phone call, Telegram and email, escalating down the rota until someone taps "I\'m on it".',
-        },
-        {
-          name: 'Each report is drafted',
-          text: 'Before each deadline, a draft is ready from the incident timeline, with a source for every statement. You edit it and submit it to the ENISA Single Reporting Platform yourself.',
-        },
-      ],
-    },
-    oncall: {
-      heading: 'Works with your on-call, or replaces it',
-      badge: 'In development',
-      items: [
-        {
-          name: 'You already use PagerDuty, Opsgenie or Grafana',
-          text: 'Keep it. Send alerts to Within24 by webhook: your tool keeps paging the team, and Within24 runs the legal clocks and drafts the reports.',
-        },
-        {
-          name: 'Nobody is on call yet',
-          text: 'Within24 wakes the right person itself: rotas, escalation, phone calls, and a "Call a developer" button for support staff.',
-        },
-        {
-          name: 'Not every alert is a legal incident',
-          text: 'Most alerts are outages. They page the rota, escalate and close with a note. Only the alerts you mark as reportable start legal clocks.',
-        },
-      ],
-      // TODO(verify): Opsgenie end-of-life date before launch.
-      opsgenie: 'Moving off Opsgenie before April 2027? Bring your schedules with you.',
-    },
-    pricing: {
-      heading: 'Pricing',
-      intro: 'Prices for early access. Choose a plan to join the list; no payment is taken.',
-      more: 'More about plans',
-    },
-    trust: {
-      heading: 'What you can rely on',
-      items: [
-        {
-          name: 'Built by an on-call engineer',
-          text: 'Dmytro spent two years on call for a customer-support platform and built Within24 for the 3 a.m. alert he used to get.',
-        },
-        {
-          name: 'A person always decides',
-          text: 'Within24 never submits to ENISA and never tells you a report is not needed.',
-        },
-        {
-          name: 'Every answer has a source',
-          text: 'Article numbers and links to the official texts. Where there is no source, we say it is unclear.',
-        },
-        {
-          name: 'Your data stays minimal',
-          text: 'No tracking cookies. We keep your email only with your consent.',
-        },
-      ],
-      privacy: 'Read the privacy policy',
-    },
     faq: {
       heading: 'Questions',
       items: [
@@ -480,27 +518,19 @@ export const en = {
           q: 'How is this different from NIS2 and GDPR reporting?',
           a: 'Each law has its own trigger, authority and clock. NIS2 covers incidents at essential and important entities. GDPR covers personal data breaches. One incident can fall under all three, and Within24 runs their clocks side by side.',
         },
-        {
-          q: 'Do you submit reports to ENISA for us?',
-          a: 'No. The ENISA Single Reporting Platform has no API, and the decision to report stays with a person. Within24 wakes the right person and prepares the text.',
-        },
-        {
-          q: 'What data does the AI see?',
-          a: 'Only what you send it: alert payloads and the incident timeline. Personal data is masked before it reaches the model, and the AI never decides on its own.',
-        },
-        {
-          q: 'We already use PagerDuty. Do we need to switch?',
-          a: 'No. Send your alerts to Within24 by webhook. PagerDuty keeps waking your team; Within24 adds the legal clocks and the report drafts.',
-        },
-        {
-          q: 'We are moving off Opsgenie. Can we use Within24 without the CRA part?',
-          a: 'Yes. The legal clocks start only when you mark an incident as reportable.',
-        },
-        {
-          q: 'When can I use it?',
-          a: "We're building the core now and will onboard early-access teams in small groups.",
-        },
       ],
+    },
+    sourcesHeading: 'Sources',
+    sources: [
+      {
+        name: 'Regulation (EU) 2024/2847 (Cyber Resilience Act), EUR-Lex',
+        url: 'https://eur-lex.europa.eu/eli/reg/2024/2847/oj',
+      },
+    ],
+    next: {
+      heading: 'Work out your own deadlines',
+      calculator: 'Calculate your reporting deadlines',
+      earlyAccess: 'Join early access',
     },
   },
   formError: {

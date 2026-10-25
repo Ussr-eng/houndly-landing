@@ -24,7 +24,7 @@ const home = localizedPath(locale, '/');
     <nav aria-label={s.nav.label} class="site-header__navwrap">
       <ul class="site-header__nav">
         <li>
-          <a href={`${home}#cra`}>{s.nav.cra}</a>
+          <a href={localizedPath(locale, '/cra/')}>{s.nav.cra}</a>
         </li>
         <li>
           <a href={localizedPath(locale, '/deadlines/')}>{s.nav.calculator}</a>
