@@ -38,7 +38,8 @@
   --measure: 68ch;
   --radius-panel: 4px;
   --radius-card: 14px;
-  /* Sticky header height, for anchor offsets (taller on phones, where the links wrap). */
+  /* Sticky header height, for anchor offsets and sticky panels. A fallback: the header script
+     sets the measured height, since the links wrap differently at each width. */
   --header-h: 4.25rem;
 
   /* Controls: inputs, selects and buttons share these */

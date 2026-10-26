@@ -69,7 +69,8 @@
   .calc-result {
     grid-area: result;
     position: sticky;
-    top: var(--space-4);
+    /* Sticks below the sticky site header, not to the top of the window. */
+    top: calc(var(--header-h) + var(--space-4));
   }
 }
 
@@ -187,16 +188,26 @@
   font: inherit;
   font-weight: var(--weight-bold);
   color: var(--text);
-  background: var(--surface);
+  background: transparent;
   border: 1px solid var(--border-strong);
   border-radius: var(--control-radius);
   cursor: pointer;
 }
 
+.calc-button:hover:not(:disabled) {
+  background: var(--surface-2);
+}
+
+/* Same look as the site's primary .button. */
 .calc-button--primary {
-  color: var(--bg);
-  background: var(--text);
-  border-color: var(--text);
+  color: var(--brand-contrast);
+  background: var(--brand);
+  border-color: var(--brand);
+}
+
+.calc-button--primary:hover:not(:disabled) {
+  background: var(--brand-hover);
+  border-color: var(--brand-hover);
 }
 
 .calc-button:disabled {
