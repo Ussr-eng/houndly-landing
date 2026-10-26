@@ -37,15 +37,21 @@ const home = localizedPath(locale, '/');
         </li>
       </ul>
     </nav>
-    <a class="button button--secondary site-header__cta" href={`${home}#early-access`}>
+    <a class="button site-header__cta" href={localizedPath(locale, '/early-access/')}>
       {s.nav.earlyAccess}
     </a>
   </div>
 </header>
 
 <style>
+  /* Stays at the top while the page scrolls. */
   .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
     border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(8px);
   }
   .site-header__inner {
     display: flex;
@@ -81,9 +87,52 @@ const home = localizedPath(locale, '/');
     color: var(--accent);
     text-decoration: underline;
   }
+  /* Early access: a pill whose border has one bright arc that circles slowly. */
+  @property --cta-angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+  }
   .site-header__cta {
     min-height: 2.5rem;
     padding-inline: var(--space-4);
+    color: var(--text);
+    border: 2px solid transparent;
+    border-radius: 999px;
+    background:
+      linear-gradient(var(--bg), var(--bg)) padding-box,
+      conic-gradient(
+          from var(--cta-angle),
+          var(--border-strong) 0 55%,
+          var(--brand) 75%,
+          var(--accent) 85%,
+          var(--border-strong) 100%
+        )
+        border-box;
+    animation: cta-spin 6s linear infinite;
+  }
+  .site-header__cta:hover {
+    border-color: transparent;
+    background:
+      linear-gradient(var(--surface-2), var(--surface-2)) padding-box,
+      conic-gradient(
+          from var(--cta-angle),
+          var(--border-strong) 0 55%,
+          var(--brand) 75%,
+          var(--accent) 85%,
+          var(--border-strong) 100%
+        )
+        border-box;
+  }
+  @keyframes cta-spin {
+    to {
+      --cta-angle: 360deg;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .site-header__cta {
+      animation: none;
+    }
   }
   /* Phones: brand and button on one row, the links on the next. */
   @media (max-width: 47.99rem) {

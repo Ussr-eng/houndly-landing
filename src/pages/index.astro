@@ -1,10 +1,10 @@
 ---
-// Home: the entry to the funnel. Positioning, how it works, pricing and the early-access form.
+// Home: the entry to the funnel. Positioning, how it works and pricing; the early-access form
+// lives on /early-access/.
 // The deadline calculator lives on /deadlines/; old shared calculator links are forwarded there.
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PlanList from '../components/PlanList.astro';
 import HeroIncident from '../components/HeroIncident.astro';
-import SubscribeForm from '../components/forms/SubscribeForm.astro';
 import CraFacts from '../components/cra/CraFacts.astro';
 import CraReports from '../components/cra/CraReports.astro';
 import { t } from '../i18n';
@@ -25,7 +25,7 @@ const cra = all.cra;
           <a class="button button--large" href="/deadlines/">
             {s.primary}
           </a>
-          <a class="button button--large button--secondary" href="#early-access">
+          <a class="button button--large button--secondary" href="/early-access/">
             {s.secondary}
           </a>
         </div>
@@ -109,7 +109,7 @@ const cra = all.cra;
     <div class="container">
       <h2 id="pricing-heading">{s.pricing.heading}</h2>
       <p class="band__intro">{s.pricing.intro}</p>
-      <PlanList formPath="/" headingLevel={3} />
+      <PlanList formPath="/early-access/" headingLevel={3} />
       <p class="note">
         {p.priceLock} {p.consultant}
       </p>
@@ -144,18 +144,6 @@ const cra = all.cra;
           </div>
         ))}
       </dl>
-    </div>
-  </section>
-
-  <section id="early-access" class="band night early-access" aria-labelledby="early-access-heading">
-    <div class="container early-access__inner">
-      <div class="early-access__copy">
-        <h2 id="early-access-heading">{p.formHeading}</h2>
-        <p>{p.formIntro}</p>
-      </div>
-      <div class="early-access__form">
-        <SubscribeForm list="waitlist" locale="en" source="/" />
-      </div>
     </div>
   </section>
 </BaseLayout>
@@ -405,23 +393,5 @@ const cra = all.cra;
 
   .brief__link {
     margin: var(--space-8) 0 0;
-  }
-
-  .early-access__inner {
-    display: grid;
-    gap: var(--space-8);
-  }
-
-  @media (min-width: 64rem) {
-    .early-access__inner {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
-      gap: var(--space-16);
-    }
-  }
-
-  .early-access__copy p {
-    margin: 0;
-    color: var(--muted);
-    font-size: var(--fs-md);
   }
 </style>

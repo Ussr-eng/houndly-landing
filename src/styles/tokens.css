@@ -38,6 +38,8 @@
   --measure: 68ch;
   --radius-panel: 4px;
   --radius-card: 14px;
+  /* Sticky header height, for anchor offsets (taller on phones, where the links wrap). */
+  --header-h: 4.25rem;
 
   /* Controls: inputs, selects and buttons share these */
   --control-h: 2.75rem;
@@ -88,6 +90,12 @@
   --shadow-panel: 0 1.5rem 4rem rgb(10 15 28 / 0.18);
 
   color-scheme: light dark;
+}
+
+@media (max-width: 47.99rem) {
+  :root {
+    --header-h: 6.5rem;
+  }
 }
 
 @media (prefers-color-scheme: dark) {

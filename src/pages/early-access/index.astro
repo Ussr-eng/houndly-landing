@@ -1,0 +1,77 @@
+---
+// Early-access sign-up on its own page, so the home page stays short. Every "Join early access"
+// and "Choose {plan}" link from the home page, header, footer and /cra/ lands here;
+// ?plan= preselects the plan.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SubscribeForm from '../../components/forms/SubscribeForm.astro';
+import { t } from '../../i18n';
+
+const all = t('en');
+const s = all.earlyAccess;
+const p = all.pricing;
+---
+
+<BaseLayout title={s.title} description={s.description} bleed nightHeader>
+  <section id="early-access" class="night early-access" aria-labelledby="early-access-heading">
+    <div class="container early-access__inner">
+      <div class="early-access__copy">
+        <h1 id="early-access-heading">{p.formHeading}</h1>
+        <p>{p.formIntro}</p>
+        <p class="early-access__note">
+          {p.priceLock} <a href="/pricing/">{s.plansLink}</a>
+        </p>
+      </div>
+      <div class="early-access__form">
+        <SubscribeForm list="waitlist" locale="en" source="/early-access/" />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  import { enhancePlanButtons } from '../../scripts/pricing';
+  enhancePlanButtons();
+</script>
+
+<style>
+  .early-access {
+    padding-block: var(--space-12) var(--space-16);
+  }
+
+  .early-access__inner {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 64rem) {
+    .early-access__inner {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+      gap: var(--space-16);
+    }
+
+    .early-access__copy {
+      position: sticky;
+      top: calc(var(--header-h) + var(--space-8));
+      align-self: start;
+    }
+  }
+
+  .early-access h1 {
+    margin: 0 0 var(--space-4);
+    font-size: var(--fs-2xl);
+    font-weight: var(--weight-heavy);
+    line-height: var(--lh-display);
+    letter-spacing: -0.02em;
+  }
+
+  .early-access__copy p {
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--fs-md);
+  }
+
+  .early-access__copy .early-access__note {
+    margin-top: var(--space-6);
+    font-size: var(--fs-sm);
+  }
+</style>
