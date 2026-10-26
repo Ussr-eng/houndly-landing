@@ -154,6 +154,12 @@ export const en = {
       back: 'Back to the deadline calculator',
     },
   },
+  earlyAccess: {
+    title: 'Get early access to Within24',
+    description:
+      'Join the Within24 early-access list: AI-written CRA reports and legal clocks for small software teams. No payment is taken.',
+    plansLink: 'Compare plans',
+  },
   pricing: {
     title: 'Pricing and early access',
     description:

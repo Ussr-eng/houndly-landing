@@ -133,4 +133,14 @@ describe('pricing "Choose" buttons', () => {
     expect((document.querySelector('select') as HTMLSelectElement).value).toBe('starter');
     expect(track).not.toHaveBeenCalled();
   });
+
+  it('follows the link to /early-access/ when the form is not on the page', () => {
+    window.history.replaceState(null, '', '/');
+    document.body.innerHTML = `<a href="/early-access/?plan=team#early-access" data-choose-plan="team">Choose Team</a>`;
+    enhancePlanButtons();
+    const event = new MouseEvent('click', { bubbles: true, cancelable: true });
+    (document.querySelector('a') as HTMLAnchorElement).dispatchEvent(event);
+    expect(event.defaultPrevented).toBe(false);
+    expect(vi.mocked(track).mock.calls).toEqual([['buy_clicked', { plan: 'team' }]]);
+  });
 });
