@@ -43,6 +43,18 @@ const home = localizedPath(locale, '/');
   </div>
 </header>
 
+<script>
+  // Publish the header's real height as --header-h (links wrap differently at each width), so
+  // anchors and sticky panels such as the calculator result sit just below it.
+  const header = document.querySelector<HTMLElement>('.site-header');
+  if (header) {
+    const root = document.documentElement;
+    const update = () => root.style.setProperty('--header-h', `${header.offsetHeight}px`);
+    update();
+    new ResizeObserver(update).observe(header);
+  }
+</script>
+
 <style>
   /* Stays at the top while the page scrolls. */
   .site-header {
@@ -134,14 +146,19 @@ const home = localizedPath(locale, '/');
       animation: none;
     }
   }
-  /* Phones: brand and button on one row, the links on the next. */
+  /* Phones: brand and button on one row, the links on one scrollable row below, so the sticky
+     header stays two rows high and does not cover much of the screen. */
   @media (max-width: 47.99rem) {
     .site-header__navwrap {
       order: 3;
       width: 100%;
+      overflow-x: auto;
+      scrollbar-width: none;
     }
     .site-header__nav {
-      gap: var(--space-1) var(--space-4);
+      flex-wrap: nowrap;
+      gap: var(--space-4);
+      white-space: nowrap;
     }
   }
 </style>
