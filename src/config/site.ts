@@ -18,12 +18,14 @@ export const site = {
   ogImageAlt: 'Within24: we take care of your CRA reporting',
   twitterHandle: null as string | null,
   // Shown in Article JSON-LD on guides.
-  author: { name: 'Dmytro Slobodin', url: null as string | null },
+  author: { name: 'Within24', url: null as string | null, type: 'Organization' as const },
   // Legal notice (/legal/). TODO(verify) before taking real payments: whether a postal
   // address and further details are required.
   operator: {
-    name: 'Dmytro Slobodin',
-    country: 'Ukraine',
+    // The company's legal name and country follow later; until then the legal notice uses
+    // a general statement (en.legal.companyGeneral).
+    name: null as string | null,
+    country: null as string | null,
     email: 'hello@within24.app' as string | null,
   },
   analytics: {

@@ -1,23 +1,75 @@
 ---
-// Privacy policy skeleton. TODO(text): the legal text is supplied before launch; each
-// section shows a placeholder until then.
+// Privacy policy. The text lives in src/i18n/en.ts (privacy); inline [text](url) links are
+// turned into anchors here.
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { t } from '../i18n';
 
 const s = t('en').privacy;
 const slug = (heading: string) => heading.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
+const LINK = /\[([^\]]+)\]\(((?:https:\/\/|mailto:)[^)\s]+)\)/g;
+type Part = { text: string; href?: string };
+function parts(text: string): Part[] {
+  const out: Part[] = [];
+  let last = 0;
+  for (const m of text.matchAll(LINK)) {
+    if (m.index > last) out.push({ text: text.slice(last, m.index) });
+    out.push({ text: m[1] ?? '', href: m[2] ?? '' });
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) out.push({ text: text.slice(last) });
+  return out;
+}
 ---
 
 <BaseLayout title={s.title} description={s.description}>
   <article class="prose legal-page">
     <h1>{s.title}</h1>
     <p class="legal-updated">
-      {s.lastUpdated}: {s.notYet}
+      {s.lastUpdated}: {s.updatedOn}
     </p>
-    {s.sections.map((heading) => (
-      <section aria-labelledby={slug(heading)}>
-        <h2 id={slug(heading)}>{heading}</h2>
-        <p>{s.placeholder}</p>
+    <p>{s.intro}</p>
+    {s.sections.map((section) => (
+      <section aria-labelledby={slug(section.heading)}>
+        <h2 id={slug(section.heading)}>{section.heading}</h2>
+        {section.blocks.map((block) =>
+          'p' in block ? (
+            <p>{parts(block.p).map((x) => (x.href ? <a href={x.href}>{x.text}</a> : x.text))}</p>
+          ) : 'ul' in block ? (
+            <ul>
+              {block.ul.map((item) => (
+                <li>{parts(item).map((x) => (x.href ? <a href={x.href}>{x.text}</a> : x.text))}</li>
+              ))}
+            </ul>
+          ) : (
+            <table>
+              <thead>
+                <tr>
+                  {block.table.head.map((h) => (
+                    <th scope="col">{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {block.table.rows.map((row) => (
+                  <tr>
+                    {row.map((cell, i) =>
+                      i === 0 ? (
+                        <th scope="row">{cell}</th>
+                      ) : (
+                        <td>
+                          {parts(cell).map((x) =>
+                            x.href ? <a href={x.href}>{x.text}</a> : x.text,
+                          )}
+                        </td>
+                      ),
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ),
+        )}
       </section>
     ))}
   </article>
@@ -30,6 +82,10 @@ const slug = (heading: string) => heading.toLowerCase().replace(/[^a-z0-9]+/g, '
 
   .legal-page h2 {
     font-size: var(--fs-lg);
+  }
+
+  .legal-page th[scope='row'] {
+    font-weight: var(--weight-bold);
   }
 
   .legal-updated {

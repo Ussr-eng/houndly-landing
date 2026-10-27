@@ -33,7 +33,7 @@ Only page for things that need a human now. Everything else goes to a channel or
 
 ## A night from our own rota
 
-Dmytro, who builds Within24, was once woken at night to fix "an error". It turned out the whole client API was down: a recent update made the service fill up the RAM until the node fell over. The fix that night was simple: bring the node back up and get customers working again. The real fix, the memory leak, waited until the next working day.
+One of the people building Within24 was once woken at night to fix "an error". It turned out the whole client API was down: a recent update made the service fill up the RAM until the node fell over. The fix that night was simple: bring the node back up and get customers working again. The real fix, the memory leak, waited until the next working day.
 
 Two lessons for a small team. At night, restore the service first and find the root cause in daylight. And the alert said "error", not "API down": a better alert would have said what he was walking into before he opened the laptop.
 
