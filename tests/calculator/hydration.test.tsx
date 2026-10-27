@@ -44,15 +44,14 @@ describe('Calculator hydration', () => {
   it('server-renders the form, labels, notices and the example result', () => {
     const html = renderToString(<Calculator locale="en" />);
     expect(html).not.toContain('Rules not yet verified');
+    expect(html).not.toContain('not legal advice');
     for (const text of [
       'Became aware at',
       'Reporting country',
       'Show times in',
-      'This is not legal advice.',
       'Example: aware at 1 October 2026, 09:00 UTC',
       'Fri 2 Oct 2026, 11:00 (UTC+02:00)',
       'Waiting for a fix or mitigation.',
-      'This helper is a rough guide, not a legal assessment.',
     ]) {
       expect(html).toContain(text);
     }

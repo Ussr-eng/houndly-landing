@@ -87,7 +87,6 @@ export function EventPicker({ available, selected, strings, onChange }: Props) {
         <p role="status" className="calc-hint">
           {applied}
         </p>
-        <p className="calc-hint">{s.helper.disclaimer}</p>
       </details>
 
       <fieldset>

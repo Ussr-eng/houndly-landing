@@ -83,7 +83,7 @@ Every page must be fully readable by Google without running JavaScript.
   `.ics` download (per deadline and all); "Copy link" with state in the URL query (no personal data).
 - Below the result: the bridge to the product ("Deadlines calculated. Who wakes up at 3 a.m.?") and the
   Incident Kit form.
-- "This is not legal advice" next to the result, not only in the footer.
+- No "not legal advice" disclaimer on the site (owner decision, 2026-10-27). While any rule is unverified, the result shows the "rules not yet verified" notice.
 - Accessible: real labels, keyboard usable, countdown not announced every second to screen readers.
 
 ## Forms and analytics

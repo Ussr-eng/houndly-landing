@@ -186,9 +186,11 @@ export default function Calculator({ locale }: Props) {
         fill(s.ics.due, { reporting: row.display.reporting, utc: row.display.utc }),
         fill(s.ics.source, { url: row.rule.source_url }),
         fill(s.ics.rules, { version }),
-        verification.allVerified ? s.result.notLegalAdvice : s.ics.disclaimer,
+        verification.allVerified ? '' : s.ics.disclaimer,
         url,
-      ].join('\n'),
+      ]
+        .filter(Boolean)
+        .join('\n'),
       url,
     };
   };
@@ -298,10 +300,7 @@ export default function Calculator({ locale }: Props) {
 
       <section className="calc-result" aria-labelledby={`${id}-result`}>
         <h2 id={`${id}-result`}>{s.resultHeading}</h2>
-        <p className="calc-notice">
-          <strong>{s.result.notLegalAdvice}</strong>
-          {!verification.allVerified && <> {s.result.unverified}</>}
-        </p>
+        {!verification.allVerified && <p className="calc-notice">{s.result.unverified}</p>}
         <p className="calc-summary">
           {fill(s.result.summary, {
             country: country?.name ?? state.country,
