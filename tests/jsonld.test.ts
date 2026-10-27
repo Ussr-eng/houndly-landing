@@ -33,6 +33,11 @@ describe('JSON-LD builders', () => {
     expect(ld['author']).toEqual({ '@type': 'Person', name: 'Within24 team' });
   });
 
+  it('marks an organisation author as Organization', () => {
+    const ld = article({ ...articleInput, author: { name: 'Within24', type: 'Organization' } });
+    expect(ld['author']).toEqual({ '@type': 'Organization', name: 'Within24' });
+  });
+
   it('includes the author URL when given', () => {
     const ld = article({ ...articleInput, author: { name: 'A', url: 'https://a.example/' } });
     expect(ld['author']).toEqual({ '@type': 'Person', name: 'A', url: 'https://a.example/' });

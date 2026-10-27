@@ -5,6 +5,8 @@ type JsonLd = Record<string, unknown>;
 export interface Person {
   name: string;
   url?: string | null | undefined;
+  /** schema.org type of the author; defaults to Person. */
+  type?: 'Person' | 'Organization' | undefined;
 }
 
 export function webApplication(input: {
@@ -52,7 +54,7 @@ export function article(input: {
     datePublished: input.datePublished.toISOString(),
     dateModified: input.dateModified.toISOString(),
     author: {
-      '@type': 'Person',
+      '@type': input.author.type ?? 'Person',
       name: input.author.name,
       ...(input.author.url ? { url: input.author.url } : {}),
     },

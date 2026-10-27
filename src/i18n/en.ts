@@ -328,7 +328,7 @@ export const en = {
       items: [
         {
           name: 'Built by an on-call engineer',
-          text: 'Dmytro spent two years on call for a customer-support platform and built Within24 for the 3 a.m. alert he used to get.',
+          text: 'Our founder spent two years on call for a customer-support platform. Within24 is built for the 3 a.m. alerts from those years.',
         },
         {
           name: 'A person always decides',
@@ -710,6 +710,7 @@ export const en = {
     title: 'Legal notice',
     description: 'Who operates this website and how to contact them.',
     operator: 'Operator',
+    detailsPending: 'Details to follow.',
     country: 'Country',
     email: 'Email',
     emailPending: 'follows once the domain is set up',
