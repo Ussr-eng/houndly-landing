@@ -1,0 +1,70 @@
+---
+// Guides index: published English guides, grouped by topic.
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { publishedGuides } from '../../lib/guides';
+import { topics } from '../../content/guide-schema';
+import { breadcrumbList } from '../../lib/seo/jsonld';
+import { siteUrl } from '../../config/site';
+import { t } from '../../i18n';
+
+const all = t('en');
+const s = all.guides;
+const guides = publishedGuides(
+  (await getCollection('guides')).filter((g) => g.data.locale === 'en'),
+).sort((a, b) => a.data.title.localeCompare(b.data.title));
+const groups = topics
+  .map((topic) => ({ topic, items: guides.filter((g) => g.data.topic === topic) }))
+  .filter((g) => g.items.length > 0);
+---
+
+<BaseLayout
+  title={s.title}
+  description={s.description}
+  jsonLd={[
+    breadcrumbList([
+      { name: all.breadcrumbs.home, url: siteUrl() + '/' },
+      { name: all.breadcrumbs.guides, url: siteUrl() + '/guides/' },
+    ]),
+  ]}
+>
+  <div class="prose">
+    <h1>{s.title}</h1>
+    <p class="lead">{s.intro}</p>
+
+    {groups.map(({ topic, items }) => (
+      <section aria-labelledby={`topic-${topic}`}>
+        <h2 id={`topic-${topic}`}>{s.topics[topic]}</h2>
+        <ul class="guide-list">
+          {items.map((g) => (
+            <li>
+              <a href={`/guides/${g.data.slug}/`}>{g.data.title}</a>
+              <p>{g.data.description}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+
+    <p>
+      <a href="/deadlines/">{all.guide.calculatorCta}</a>
+    </p>
+  </div>
+</BaseLayout>
+
+<style>
+  .guide-list {
+    padding: 0;
+    list-style: none;
+  }
+  .guide-list li + li {
+    margin-top: var(--space-4);
+  }
+  .guide-list a {
+    font-weight: 700;
+  }
+  .guide-list p {
+    margin: var(--space-1) 0 0;
+    color: var(--muted);
+  }
+</style>

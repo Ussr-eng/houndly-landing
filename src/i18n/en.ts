@@ -31,6 +31,14 @@ export const en = {
     toolsHeading: 'Tools',
   },
   breadcrumbs: { label: 'Breadcrumb', home: 'Home', guides: 'Guides' },
+  guides: {
+    title: 'Guides to EU incident reporting and on-call',
+    description:
+      'Plain-English guides to CRA, NIS2 and GDPR reporting deadlines, and to running on-call in a small team. Each one cites the official texts.',
+    intro:
+      'What the law asks when something goes wrong, and how a small team stays ready to answer at 3 a.m. Every legal statement links to the article it comes from.',
+    topics: { law: 'Reporting under EU law', 'on-call': 'Running on-call' },
+  },
   guide: {
     lastVerified: 'Last verified',
     notVerified: 'Not yet verified against the official texts',
@@ -172,6 +180,8 @@ export const en = {
     useCalculator: 'Use the calculator',
     priceLock: 'Early-access teams keep this price for 12 months after launch.',
     consultant: 'Consultant with several clients? Tell us in the form.',
+    pagerDuty:
+      'Already on PagerDuty or Opsgenie? Starter works with it: send your alerts by webhook.',
     recommended: 'Recommended',
     plans: {
       free: {

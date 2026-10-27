@@ -27,6 +27,7 @@ const isoDate = (d: Date) => d.toISOString().slice(0, 10);
 
 const crumbs = [
   { name: s.breadcrumbs.home, path: home },
+  { name: s.breadcrumbs.guides, path: localizedPath(guide.locale, '/guides/') },
   { name: guide.title, path },
 ];
 
