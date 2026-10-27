@@ -29,6 +29,7 @@ export const en = {
       scope: 'Does it apply to you',
     },
     toolsHeading: 'Tools',
+    faq: 'FAQ',
   },
   breadcrumbs: { label: 'Breadcrumb', home: 'Home', guides: 'Guides' },
   guides: {
@@ -38,6 +39,7 @@ export const en = {
     intro:
       'What the law asks when something goes wrong, and how a small team stays ready to answer at 3 a.m. Every legal statement links to the article it comes from.',
     topics: { law: 'Reporting under EU law', 'on-call': 'Running on-call' },
+    faqLink: 'Short answers: frequently asked questions',
   },
   guide: {
     lastVerified: 'Last verified',
@@ -373,6 +375,132 @@ export const en = {
         },
       ],
     },
+  },
+  faqPage: {
+    title: 'CRA reporting and on-call: frequently asked questions',
+    description:
+      'Short answers on who the CRA applies to, its 24-hour, 72-hour and final-report deadlines, how it fits with NIS2 and GDPR, and running on-call.',
+    intro:
+      'Short answers, each with the article it comes from and a guide that goes deeper. This page is not legal advice.',
+    verified:
+      'Last verified: 27 October 2026, against the texts of Regulation (EU) 2024/2847, Directive (EU) 2022/2555 and Regulation (EU) 2016/679.',
+    more: 'Read the guide',
+    productHeading: 'About Within24',
+    // Each answer cites its source; `link` points to the guide that covers the topic in depth.
+    groups: [
+      {
+        id: 'scope',
+        heading: 'Does the CRA apply to me?',
+        items: [
+          {
+            q: 'Does the Cyber Resilience Act apply to SaaS?',
+            a: 'Usually not directly: recital 12 points SaaS, PaaS and IaaS to NIS2. A cloud backend is in scope when it is the remote data processing of a product you ship, such as the server your app or device needs to work (Art. 3(1), 3(2)).',
+            link: '/guides/cra-saas-scope/',
+          },
+          {
+            q: 'Does it apply to free or open-source software?',
+            a: 'Only to software supplied in the course of a commercial activity (recital 18). Charging for the product, for support beyond cost, or monetising through it can count as commercial (recital 15). Open-source software stewards have lighter duties and are not fined under the CRA (Art. 24, Art. 64(10)(b)).',
+          },
+          {
+            q: 'We are not based in the EU. Does it apply?',
+            a: "Yes, if your product is made available on the EU market (Art. 2(1)). You still report through the ENISA Single Reporting Platform, to the CSIRT chosen by the order in Art. 14(7): your authorised representative's country, then your importer's, then your distributor's, then where most of your users are.",
+          },
+          {
+            q: 'Does reporting apply to products sold before December 2027?',
+            a: 'Yes. The reporting duty in Article 14 applies to all products in scope, including those placed on the market before 11 December 2027 (Art. 69(3)).',
+          },
+          {
+            q: 'Who has to report: us or our customer?',
+            a: 'The manufacturer: whoever develops the product, or has it developed, and markets it under their own name or trademark (Art. 3(13), Art. 14(1)).',
+          },
+        ],
+      },
+      {
+        id: 'deadlines',
+        heading: 'Deadlines and reports',
+        items: [
+          {
+            q: 'What are the CRA reporting deadlines?',
+            a: 'An early warning within 24 hours of becoming aware, a notification within 72 hours, then a final report: 14 days after a fix is available for a vulnerability, or one month after the notification for an incident (Art. 14(2), 14(4)).',
+            link: '/guides/cra-reporting-deadlines/',
+          },
+          {
+            q: 'When does the 24-hour clock start?',
+            a: 'When you become aware of the actively exploited vulnerability or severe incident (Art. 14(2)(a)). The regulation does not define the moment, so use the earliest one you could defend.',
+            link: '/guides/cra-24-hour-clock/',
+          },
+          {
+            q: 'Do weekends or public holidays pause the clock?',
+            a: 'No. The 24-hour and 72-hour limits are counted in hours, and Article 14 gives no extension for nights, weekends or holidays. We treat the 14-day and one-month limits the same way and never extend them.',
+          },
+          {
+            q: 'What if our fix takes longer than 14 days?',
+            a: 'The 14 days for the final report on a vulnerability start only when a corrective or mitigating measure is available (Art. 14(2)(c)). Until then there is no final-report date, but the early warning and notification still apply.',
+          },
+          {
+            q: 'A researcher reported a vulnerability to us. Do we have to report it?',
+            a: 'Not as an actively exploited vulnerability, if there is no evidence a malicious actor used it (Art. 3(42), recital 68). You can report it voluntarily (Art. 15).',
+            link: '/guides/cra-what-to-report/',
+          },
+          {
+            q: 'Can the authority ask for more after we file?',
+            a: 'Yes. The CSIRT that receives your report may ask for an intermediate report on status updates (Art. 14(6)).',
+          },
+          {
+            q: 'Do we also have to tell our users?',
+            a: 'Yes. After becoming aware, inform the impacted users, and where appropriate all users, and say what they can do to reduce the impact (Art. 14(8)).',
+          },
+          {
+            q: 'What happens if we report late?',
+            a: 'Missing the Article 14 obligations can be fined up to EUR 15 million or 2.5% of worldwide annual turnover, whichever is higher (Art. 64(2)). Microenterprises and small enterprises are not fined for missing the 24-hour early warning (Art. 64(10)(a)).',
+          },
+        ],
+      },
+      {
+        id: 'laws',
+        heading: 'CRA, NIS2 and GDPR together',
+        items: [
+          {
+            q: 'How is CRA reporting different from NIS2 and GDPR?',
+            a: "Each law has its own trigger, recipient and clock. The CRA covers your product, NIS2 your organisation's service, GDPR personal data. One incident can fall under all three.",
+            link: '/guides/cra-nis2-gdpr-reporting/',
+          },
+          {
+            q: 'Does NIS2 apply to us?',
+            a: "NIS2 covers entities in the sectors listed in its Annexes I and II, cloud computing providers among them, that are medium-sized or larger (NIS2 Art. 2(1)). Some types are covered regardless of size (Art. 2(2)). Your country's national law sets the details.",
+          },
+          {
+            q: 'Can one report cover the CRA, NIS2 and GDPR?',
+            a: 'No. Each goes to a different recipient: the CRA report to the CSIRT and ENISA through the Single Reporting Platform (CRA Art. 14(7)), NIS2 to the national CSIRT or competent authority (NIS2 Art. 23(1)), GDPR to the data protection authority (GDPR Art. 33(1)). Write them from one incident timeline so the facts match.',
+          },
+          {
+            q: 'What is the GDPR deadline for a data breach?',
+            a: 'Where feasible, 72 hours after becoming aware, unless the breach is unlikely to result in a risk to people. A later notification must give reasons for the delay (GDPR Art. 33(1)).',
+          },
+        ],
+      },
+      {
+        id: 'on-call',
+        heading: 'Running on-call',
+        items: [
+          {
+            q: 'How many people do we need for on-call?',
+            a: 'With three people each is on call every third week, which works but is heavy; five or more is sustainable. One primary, one backup, weekly shifts, handover in working hours.',
+            link: '/guides/on-call-rotation-small-team/',
+          },
+          {
+            q: 'Who should be woken if the on-call engineer does not answer?',
+            a: 'Write an escalation policy before you need it: for example the primary by phone after 5 minutes, the backup after 15, the engineering lead after 30.',
+            link: '/guides/escalation-policy/',
+          },
+          {
+            q: 'Can our support team wake a developer?',
+            a: 'They should have one button or number that always reaches whoever is on call now, and permission to use it. A customer saying "I can see someone else\'s data" can start a legal clock.',
+            link: '/guides/support-to-developer-escalation/',
+          },
+        ],
+      },
+    ],
   },
   cra: {
     title: 'Cyber Resilience Act: what to report and when',

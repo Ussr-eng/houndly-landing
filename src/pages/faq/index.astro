@@ -1,0 +1,87 @@
+---
+// FAQ: short answers with their sources, each linking to the guide that goes deeper.
+// The product questions are the home page FAQ, reused so the two never drift apart.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { breadcrumbList } from '../../lib/seo/jsonld';
+import { siteUrl } from '../../config/site';
+import { t } from '../../i18n';
+
+const all = t('en');
+const s = all.faqPage;
+type Item = { q: string; a: string; link?: string };
+const groups: { id: string; heading: string; items: readonly Item[] }[] = [
+  ...s.groups,
+  { id: 'within24', heading: s.productHeading, items: all.home.faq.items },
+];
+---
+
+<BaseLayout
+  title={s.title}
+  description={s.description}
+  jsonLd={[
+    breadcrumbList([
+      { name: all.breadcrumbs.home, url: siteUrl() + '/' },
+      { name: all.footer.faq, url: siteUrl() + '/faq/' },
+    ]),
+  ]}
+>
+  <div class="prose">
+    <h1>{s.title}</h1>
+    <p class="lead">{s.intro}</p>
+    <p class="faq-page__status">{s.verified}</p>
+  </div>
+
+  {groups.map((group) => (
+    <section class="faq-page__group" aria-labelledby={`faq-${group.id}`}>
+      <h2 id={`faq-${group.id}`}>{group.heading}</h2>
+      <dl class="faq-page__list">
+        {group.items.map((item) => (
+          <div class="faq-page__item">
+            <dt>{item.q}</dt>
+            <dd>
+              {item.a}
+              {item.link && (
+                <>
+                  {' '}
+                  <a href={item.link}>{s.more}</a>
+                </>
+              )}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  ))}
+
+  <p class="faq-page__next">
+    <a href="/guides/">{all.nav.guides}</a> · <a href="/deadlines/">{all.guide.calculatorCta}</a>
+  </p>
+</BaseLayout>
+
+<style>
+  .faq-page__status {
+    color: var(--muted);
+    font-size: var(--fs-sm);
+  }
+  .faq-page__group {
+    max-width: var(--measure);
+    margin-top: var(--space-12);
+  }
+  .faq-page__list {
+    margin: 0;
+    border-top: 1px solid var(--border);
+  }
+  .faq-page__item {
+    padding-block: var(--space-4);
+    border-bottom: 1px solid var(--border);
+  }
+  .faq-page__item dt {
+    font-weight: var(--weight-bold);
+  }
+  .faq-page__item dd {
+    margin: var(--space-2) 0 0;
+  }
+  .faq-page__next {
+    margin-top: var(--space-8);
+  }
+</style>
