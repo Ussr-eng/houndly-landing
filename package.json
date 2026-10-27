@@ -15,7 +15,8 @@
     "format": "prettier --write .",
     "test": "vitest run",
     "check:dist": "node scripts/check-dist.ts",
-    "sync-rules": "node scripts/sync-rules.ts"
+    "sync-rules": "node scripts/sync-rules.ts",
+    "relock-rules": "node scripts/relock-rules.ts"
   },
   "dependencies": {
     "@astrojs/react": "7.0.1",

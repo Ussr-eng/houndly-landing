@@ -4,8 +4,9 @@ Source of truth for regulatory deadline computation. The backend (Python, `compu
 landing site (TypeScript, copied via its own sync command) implement this spec and must both pass every
 case in `cases/`.
 
-> Every rule is unverified (`verified_at: null`, `TODO(verify)` in `notes`) until checked against the
-> official legal text. This is not legal advice.
+> A rule is unverified (`verified_at: null`, `TODO(verify)` in `notes`) until checked against the
+> official legal text. All `v1` rules were checked on 2026-10-27 against the Official Journal texts of
+> Regulation (EU) 2024/2847, Directive (EU) 2022/2555 and Regulation (EU) 2016/679. This is not legal advice.
 
 ## Files
 

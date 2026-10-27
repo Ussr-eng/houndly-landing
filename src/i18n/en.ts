@@ -119,13 +119,12 @@ export const en = {
     privacyLink: 'privacy policy',
   },
   kit: {
-    title: 'Incident Kit for CRA, NIS2 and GDPR reporting',
+    title: 'Incident Kit for CRA incident reporting',
     description:
-      'Report templates and checklists for the first hours of a reportable incident under CRA, NIS2 and GDPR. Free, sent to your inbox.',
+      'Templates for the three CRA reports, an ENISA reporting platform checklist and a first-hour runbook for a reportable incident. Free, sent to your inbox.',
     intro:
       'Templates and checklists for the first hours of a reportable incident. Free, sent to your inbox.',
     insideHeading: "What's inside",
-    // TODO(content): descriptions follow when the kit content is supplied.
     items: [
       {
         name: 'Report templates',
@@ -320,8 +319,7 @@ export const en = {
           text: 'Most alerts are outages. They page the rota, escalate and close with a note. Only the alerts you mark as reportable start legal clocks.',
         },
       ],
-      // TODO(verify): Opsgenie end-of-life date before launch.
-      opsgenie: 'Moving off Opsgenie before April 2027? Bring your schedules with you.',
+      opsgenie: 'Moving off Opsgenie? Bring your schedules with you.',
     },
     pricing: {
       heading: 'Pricing',
@@ -734,13 +732,13 @@ export const en = {
         'gdpr.personal_data_breach': 'GDPR: personal data breach',
       },
     },
-    // TODO(verify): every helper question is a rough legal qualification. Review the wording
-    // against the official texts before launch.
+    // Checked 2026-10-27: CRA Art. 14(1), 14(3) (the manufacturer reports), NIS2 Art. 23(1),
+    // GDPR Art. 33(1) (the controller notifies). Still a rough guide, as the disclaimer says.
     helper: {
       summary: 'Not sure which boxes apply? Answer three questions',
       cra: {
         legend:
-          'Do you make or sell a product with digital elements in the EU, and is it affected?',
+          'Are you the manufacturer of a product with digital elements sold in the EU, and is it affected?',
         no: 'No',
         vulnerability: 'Yes: a vulnerability in it is being actively exploited',
         incident: 'Yes: a severe incident affects its security',
@@ -753,7 +751,7 @@ export const en = {
         no: 'No',
       },
       gdpr: {
-        legend: 'Does the incident involve a breach of personal data?',
+        legend: 'Does the incident involve a breach of personal data that you are responsible for?',
         yes: 'Yes',
         no: 'No',
       },

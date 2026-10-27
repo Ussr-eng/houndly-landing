@@ -1,11 +1,11 @@
 {
-  "source": "../backend/rules",
-  "backend_commit": "115544f96adf52fa8a32fc7a40d8c81429b91506",
-  "backend_dirty": false,
+  "source": "rules (edited in this repository; backend not deployed)",
+  "backend_commit": null,
+  "backend_dirty": null,
   "rule_set_version": "v1",
-  "checksum": "c4ad6626ebb93eace410e8bb065090ad106195f18d69fbfddb5dd7fd214e69ef",
+  "checksum": "4ea30ba515d667d8e3f6aaee6825e6d2a24066d0052587b54e98d748fedf198a",
   "files": {
-    "README.md": "c9c63fecfe1348a7d9e44a763a6e1288906ac30f00e6b50694c148ce068b5b62",
+    "README.md": "03656d47e10b955a8811ade6ed13fbc2a71e806c9fe43abc7b387c6b23f5c8b1",
     "case.schema.json": "e8ac5ee0615297e79c74e2ceeefe220e7bb9cd84d44b4587a9f67d77d68836a2",
     "cases/001-cra-vulnerability-all-anchors-known.json": "40ee32751584122a96cc926be10b7e54536225dc88f325e3702cf6d510b3a097",
     "cases/002-cra-vulnerability-no-measure-yet.json": "942c18958059654955aa86b9875951c499f9434bedec02a3b099cf00f993dd49",
@@ -26,6 +26,6 @@
     "cases/017-error-unsupported-regime-event-pair.json": "6a9cea9b73db690157068d1bc6e8e2854aa62b603083b61b99f5ec1f03738624",
     "cases/018-error-unknown-reporting-timezone.json": "98da9a16a1026288814e9b16f5772c8faeff1e9e67b628a368a3f66a009081f4",
     "schema.json": "e861abd2e88d354d0f2bb2b18c3ae95530bb3e14db377207e0df7b00e0360069",
-    "v1.json": "1f150edc9704577331577252d02a8064acaa33bb2f35d2722a3f9cbecd44b71a"
+    "v1.json": "588d2c577f2faa140139a11f1f1b3d5ad967f4bebb985062ebb343d4ba345852"
   }
 }

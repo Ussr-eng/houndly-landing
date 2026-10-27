@@ -19,7 +19,8 @@ const rulesLine = [
     ? fill(s.footer.rulesVerified, { date: verification.latestVerifiedAt })
     : s.footer.rulesUnverified,
 ].join(' · ');
-const commit = lock.backend_commit?.slice(0, 7);
+// backend_commit is null while rules are edited in this repository (see CLAUDE.md).
+const commit = (lock.backend_commit as string | null)?.slice(0, 7);
 const cra = localizedPath(locale, '/cra/');
 const columns = [
   {

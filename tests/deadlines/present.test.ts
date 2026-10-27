@@ -75,10 +75,19 @@ describe('countdown', () => {
 });
 
 describe('verificationSummary', () => {
-  it('reports v1 as unverified', () => {
+  it('reports v1 as verified', () => {
     expect(verificationSummary(currentRuleSet.rules)).toEqual({
+      allVerified: true,
+      unverifiedCount: 0,
+      latestVerifiedAt: '2026-10-27',
+    });
+  });
+
+  it('reports unverified rules', () => {
+    const rules = currentRuleSet.rules.map((r) => ({ ...r, verified_at: null }));
+    expect(verificationSummary(rules)).toEqual({
       allVerified: false,
-      unverifiedCount: currentRuleSet.rules.length,
+      unverifiedCount: rules.length,
       latestVerifiedAt: null,
     });
   });
