@@ -22,7 +22,8 @@ export const site = {
   // Legal notice (/legal/). TODO(verify) before taking real payments: whether a postal
   // address and further details are required.
   operator: {
-    // TODO(verify): the operating company's legal name and EU country, supplied by the owner.
+    // The company's legal name and country follow later; until then the legal notice uses
+    // a general statement (en.legal.companyGeneral).
     name: null as string | null,
     country: null as string | null,
     email: 'hello@within24.app' as string | null,

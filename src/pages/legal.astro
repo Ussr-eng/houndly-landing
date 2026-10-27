@@ -14,9 +14,9 @@ const email = site.operator.email;
     <h1>{s.title}</h1>
     <dl class="legal-list">
       <dt>{s.operator}</dt>
-      <dd>{site.operator.name ?? s.detailsPending}</dd>
+      <dd>{site.operator.name ?? s.companyGeneral}</dd>
       <dt>{s.country}</dt>
-      <dd>{site.operator.country ?? s.detailsPending}</dd>
+      <dd>{site.operator.country ?? s.countryGeneral}</dd>
       <dt>{s.email}</dt>
       <dd>{email ? <a href={`mailto:${email}`}>{email}</a> : s.emailPending}</dd>
     </dl>
