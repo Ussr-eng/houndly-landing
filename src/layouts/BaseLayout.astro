@@ -26,6 +26,8 @@ interface Props {
   /** Locale-neutral path for hreflang; defaults to the current URL path. */
   neutralPath?: string;
   ogImage?: string;
+  /** Alt text for ogImage; defaults to the site-wide one. */
+  ogImageAlt?: string;
   ogType?: 'website' | 'article';
   noindex?: boolean;
   jsonLd?: Record<string, unknown>[];
@@ -41,6 +43,7 @@ const {
   locale = defaultLocale,
   neutralPath,
   ogImage = site.defaultOgImage,
+  ogImageAlt = site.ogImageAlt,
   ogType = 'website',
   noindex = false,
   jsonLd = [],
@@ -55,7 +58,7 @@ const seo = buildSeo({
   path,
   origin: siteUrl(),
   ogImage,
-  ogImageAlt: site.ogImageAlt,
+  ogImageAlt,
   ogType,
   ogLocale: ogLocale[locale],
   siteName: site.name,

@@ -1,6 +1,6 @@
 // EU-27 member states and the IANA zone used as the reporting timezone (the competent
-// authority's wall clock). TODO(verify): mainland zones for Portugal (Europe/Lisbon, not
-// Atlantic/Azores or Atlantic/Madeira) and Spain (Europe/Madrid, not Atlantic/Canary).
+// authority's wall clock). Portugal and Spain use their mainland zones (Europe/Lisbon,
+// Europe/Madrid), where the national authorities sit, not Atlantic/Azores, Madeira or Canary.
 
 export interface Country {
   code: string;

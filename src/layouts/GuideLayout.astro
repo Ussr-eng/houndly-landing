@@ -36,7 +36,7 @@ const jsonLd = [
     headline: guide.title,
     description: guide.description,
     url: origin + path,
-    image: absoluteUrl(origin, site.defaultOgImage),
+    image: absoluteUrl(origin, `/og/guides/${guide.slug}.png`),
     datePublished: guide.datePublished,
     dateModified: guide.dateModified,
     author,
@@ -52,6 +52,8 @@ const jsonLd = [
   description={guide.description}
   locale={guide.locale}
   neutralPath={`/guides/${guide.slug}/`}
+  ogImage={`/og/guides/${guide.slug}.png`}
+  ogImageAlt={guide.title}
   ogType="article"
   jsonLd={jsonLd}
 >

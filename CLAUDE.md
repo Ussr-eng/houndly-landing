@@ -51,11 +51,12 @@ Every page must be fully readable by Google without running JavaScript.
 
 ## Deadline rules (shared with the backend)
 
-- The source of truth for rules is the backend repository (`../backend/rules/`). This repository keeps
-  a committed copy in `rules/` (`v1.json` + shared test cases in `rules/cases/`), updated only by
-  `pnpm sync-rules`, which copies from `../backend/rules/`.
-- Never edit `rules/` by hand here. A test checks that the copy matches its recorded checksum and
-  `rule_version`; the calculator shows that version in the footer.
+- Until the backend is deployed, the source of truth for rules is this repository's `rules/`
+  (`v1.json` + shared test cases in `rules/cases/`). Edit it here, then run `pnpm relock-rules` to
+  record the new checksums. When the backend goes live, copy `rules/` into `../backend/rules/`; from
+  then on the backend is the source again and `rules/` is updated only by `pnpm sync-rules`.
+- A test checks that `rules/` matches its recorded checksum and `rule_version`; the calculator shows
+  that version in the footer.
 - Keep the JSON framework-neutral (no TypeScript-only constructs): the backend reads the same file.
 - Each rule: `regime` (CRA | NIS2 | GDPR), `event_type`, `stage` (early_warning | notification | final_report),
   `anchor` (`aware_at` | `fix_available_at` | `notification_submitted_at`), `offset` (`{ "hours": 24 }` or

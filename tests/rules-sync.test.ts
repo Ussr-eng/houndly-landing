@@ -1,5 +1,5 @@
-// The committed rules/ copy must match rules.lock.json (written by `pnpm sync-rules`) and the
-// shared JSON schemas. Never edit rules/ by hand: change ../backend/rules and run the sync.
+// The committed rules/ must match rules.lock.json (written by `pnpm relock-rules`, or by
+// `pnpm sync-rules` once the backend is the source again) and the shared JSON schemas.
 
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';

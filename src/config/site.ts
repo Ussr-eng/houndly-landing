@@ -15,7 +15,7 @@ export const site = {
   defaultDescription:
     'Calculate CRA, NIS2 and GDPR incident reporting deadlines in your time zone. Free, no sign-up.',
   defaultOgImage: '/og/default.png',
-  ogImageAlt: 'Within24 — EU incident reporting deadlines',
+  ogImageAlt: 'Within24: we take care of your CRA reporting',
   twitterHandle: null as string | null,
   // Shown in Article JSON-LD on guides.
   author: { name: 'Dmytro Slobodin', url: null as string | null },
