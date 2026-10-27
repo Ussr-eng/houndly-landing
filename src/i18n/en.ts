@@ -729,7 +729,7 @@ export const en = {
       },
     },
     // Checked 2026-10-27: CRA Art. 14(1), 14(3) (the manufacturer reports), NIS2 Art. 23(1),
-    // GDPR Art. 33(1) (the controller notifies). Still a rough guide, as the disclaimer says.
+    // GDPR Art. 33(1) (the controller notifies).
     helper: {
       summary: 'Not sure which boxes apply? Answer three questions',
       cra: {
@@ -754,7 +754,6 @@ export const en = {
       apply: 'Tick the matching boxes',
       applied: 'Boxes ticked from your answers. Check them before you rely on the result.',
       appliedNone: 'Your answers match none of the boxes. Check them yourself.',
-      disclaimer: 'This helper is a rough guide, not a legal assessment.',
     },
     aware: {
       label: 'Became aware at',

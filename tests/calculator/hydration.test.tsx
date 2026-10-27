@@ -52,7 +52,6 @@ describe('Calculator hydration', () => {
       'Example: aware at 1 October 2026, 09:00 UTC',
       'Fri 2 Oct 2026, 11:00 (UTC+02:00)',
       'Waiting for a fix or mitigation.',
-      'This helper is a rough guide, not a legal assessment.',
     ]) {
       expect(html).toContain(text);
     }
