@@ -1,5 +1,13 @@
 // UI strings. Placeholders in braces ({time}) are filled with fill() from src/i18n/index.ts.
 
+/** A block of the privacy policy. Strings may hold inline links as [text](https://…). */
+export type PrivacyBlock =
+  { p: string } | { ul: string[] } | { table: { head: string[]; rows: string[][] } };
+export interface PrivacySection {
+  heading: string;
+  blocks: PrivacyBlock[];
+}
+
 export const en = {
   skipToContent: 'Skip to content',
   nav: {
@@ -689,22 +697,163 @@ export const en = {
   },
   privacy: {
     title: 'Privacy policy',
-    description: 'How Within24 handles data from the calculator, analytics and the sign-up forms.',
+    description:
+      'What personal data Within24 collects, why, which providers process it, how long we keep it and how to use your rights.',
     lastUpdated: 'Last updated',
-    notYet: 'not yet published',
-    placeholder: 'This section will be completed before launch.',
+    updatedOn: '27 October 2026',
+    // Text approved by the owner on 2026-10-27. Provider facts checked on that date against
+    // the pages linked below. Inline links use [text](https://…).
+    intro:
+      'This policy explains what personal data Within24 collects on within24.app, why, and what you can do about it. Reading the site and using the calculator need no personal data. We collect your email only when you send one of our forms.',
     sections: [
-      'Who is responsible',
-      'The deadline calculator',
-      'Analytics',
-      'Sign-up forms',
-      'Service providers',
-      'Transfers outside the EU',
-      'How long we keep data',
-      'Your rights',
-      'Cookies',
-      'Changes to this policy',
-    ],
+      {
+        heading: 'Who is responsible',
+        blocks: [
+          {
+            p: 'Within24 is run by a private company registered in the European Union. The company is the controller of the personal data described here. For any question about this policy or your data, write to [hello@within24.app](mailto:hello@within24.app).',
+          },
+        ],
+      },
+      {
+        heading: 'What we collect and why',
+        blocks: [
+          {
+            table: {
+              head: ['Where', 'What we receive', 'Why'],
+              rows: [
+                [
+                  'Deadline calculator',
+                  'Nothing. It runs in your browser. The times you enter stay in the page address so you can copy the link; we never receive them.',
+                  'To show your deadlines.',
+                ],
+                [
+                  'Analytics (Umami)',
+                  'Page views and anonymous events, such as “calculator used” or “plan chosen”, the referring site, browser and device type, and country. Your IP address is used briefly to count unique visitors and estimate the country; it is not stored in the analytics records. No cookies.',
+                  'To see which pages help people and which plans they are interested in.',
+                ],
+                [
+                  'Incident Kit form',
+                  'Email (required). Optional: company, product type, which laws apply.',
+                  'To send you the kit after you confirm your email.',
+                ],
+                [
+                  'Early-access form',
+                  'Email (required). Optional answers: what you ship, company size, your on-call tool today, whether you sell in the EU, the plan you chose, a free-text note.',
+                  'To invite you when the product is ready, and to learn what to build first.',
+                ],
+                [
+                  'Both forms',
+                  'The time you signed up, which form you used, the version of the consent text, and whether you asked for occasional news.',
+                  'To prove your consent and respect your choices.',
+                ],
+                [
+                  'Bot check (Cloudflare Turnstile)',
+                  'Your IP address, TLS fingerprint and browser user agent, processed by Cloudflare.',
+                  'To keep spam out of the forms.',
+                ],
+                [
+                  'Hosting (Cloudflare Pages)',
+                  'Technical data of each request, such as IP address and browser, processed by Cloudflare.',
+                  'To deliver the site and protect it from attacks.',
+                ],
+              ],
+            },
+          },
+          { p: 'We do not sell your data, and we do not use it for advertising.' },
+        ],
+      },
+      {
+        heading: 'Legal bases',
+        blocks: [
+          {
+            ul: [
+              'Forms and emails: your consent (GDPR Article 6(1)(a)), given when you send the form and confirm your email. You can withdraw it at any time with the unsubscribe link in every email or by writing to us.',
+              'Analytics, bot check and hosting: our legitimate interest (GDPR Article 6(1)(f)) in running a secure site and learning which pages are useful. We chose cookieless analytics to keep this light on your privacy.',
+            ],
+          },
+        ],
+      },
+      {
+        heading: 'Service providers',
+        blocks: [
+          {
+            p: 'These providers process data for us. No one else receives it.',
+          },
+          {
+            table: {
+              head: ['Provider', 'What it does', 'Where', 'Their terms'],
+              rows: [
+                [
+                  'Brevo SAS',
+                  'Stores form sign-ups and sends confirmation and kit emails',
+                  'Company in France; may transfer data to the USA and India',
+                  '[Brevo privacy policy](https://www.brevo.com/legal/privacypolicy/)',
+                ],
+                [
+                  'Cloudflare, Inc.',
+                  'Hosts the site (Pages) and runs the bot check (Turnstile)',
+                  'Global network; company in the USA',
+                  '[Cloudflare privacy policy](https://www.cloudflare.com/privacypolicy/), [Turnstile Privacy Addendum](https://www.cloudflare.com/turnstile-privacy-policy/)',
+                ],
+                [
+                  'Umami Software, Inc.',
+                  'Cookieless analytics',
+                  'EU and USA',
+                  '[Umami privacy policy](https://umami.is/privacy)',
+                ],
+              ],
+            },
+          },
+        ],
+      },
+      {
+        heading: 'Transfers outside the EU',
+        blocks: [
+          {
+            p: 'Some providers process data in the USA or elsewhere outside the EU. Cloudflare relies on the EU–US Data Privacy Framework and, as a fallback, the European Commission’s standard contractual clauses. For Brevo and Umami, the safeguards are set out in their privacy policies and data processing terms.',
+          },
+        ],
+      },
+      {
+        heading: 'How long we keep data',
+        blocks: [
+          {
+            ul: [
+              'Confirmed sign-ups: until you unsubscribe or ask us to delete them. When the early-access list closes, we delete answers we no longer need.',
+              'Analytics: kept as aggregate statistics.',
+              'Hosting and bot check data: kept by Cloudflare for the periods in its own terms.',
+            ],
+          },
+        ],
+      },
+      {
+        heading: 'Your rights',
+        blocks: [
+          {
+            p: 'You can ask us to show, correct, delete or export the data we hold about you. You can also object to processing based on our legitimate interest, or withdraw your consent at any time. Withdrawing consent does not affect processing that happened before.',
+          },
+          {
+            p: 'Write to [hello@within24.app](mailto:hello@within24.app); we answer within one month. You can also complain to a data protection authority, in particular in the EU country where you live or work, or where you think the problem happened (GDPR Article 77).',
+          },
+        ],
+      },
+      {
+        heading: 'Cookies',
+        blocks: [
+          {
+            p: 'Within24 sets no cookies and stores nothing in your browser’s local storage. The analytics tool works without cookies, so there is no cookie banner. When a form loads, Cloudflare’s bot check may set strictly necessary security cookies, as described in [Cloudflare’s cookie list](https://developers.cloudflare.com/fundamentals/reference/policies-compliances/cloudflare-cookies/).',
+          },
+        ],
+      },
+      {
+        heading: 'Changes to this policy',
+        blocks: [
+          {
+            p: 'When we change how we handle data, we update this page and its date. If a change affects what you agreed to, we email you before it applies.',
+          },
+        ],
+      },
+    ] as PrivacySection[],
   },
   legal: {
     title: 'Legal notice',
