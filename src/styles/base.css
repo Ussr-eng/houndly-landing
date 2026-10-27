@@ -19,6 +19,15 @@ body {
   font-size: var(--fs-base);
   line-height: var(--lh-body);
   overflow-wrap: break-word;
+  /* Keep the footer at the bottom of the screen on short pages. */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+body > main {
+  flex: 1 0 auto;
 }
 
 h1,
