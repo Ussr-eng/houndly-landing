@@ -68,6 +68,22 @@ main:focus {
   max-width: var(--measure);
 }
 
+/* Guide tables wrap inside the column instead of widening the page on phones. */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-sm);
+}
+.prose th,
+.prose td {
+  padding: var(--space-2) var(--space-2) var(--space-2) 0;
+  border-bottom: 1px solid var(--border);
+  text-align: start;
+  vertical-align: top;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
 .lead {
   margin: 0;
   max-width: 72ch;

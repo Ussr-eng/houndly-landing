@@ -4,6 +4,9 @@ import { DESCRIPTION_MAX, TITLE_MAX } from '../lib/seo/build';
 
 export const regimes = ['CRA', 'NIS2', 'GDPR'] as const;
 
+/** Groups guides on /guides/: the law itself, or running on-call. */
+export const topics = ['law', 'on-call'] as const;
+
 export const sourcePublishers = [
   'EUR-Lex',
   'ENISA',
@@ -21,6 +24,7 @@ export const guideSchema = z
     slug,
     locale: z.enum(locales).default('en'),
     regimes: z.array(z.enum(regimes)).min(1),
+    topic: z.enum(topics).default('law'),
     datePublished: z.coerce.date(),
     dateModified: z.coerce.date(),
     // null until a person has checked the guide against the official texts.
