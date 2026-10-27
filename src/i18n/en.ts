@@ -244,8 +244,7 @@ export const en = {
       'Our AI writes every CRA report from your incident timeline, with a source for each statement. Within24 starts the legal clocks and wakes whoever is on call.',
     primary: 'Calculate your reporting deadlines',
     secondary: 'Join early access',
-    status:
-      'Early access: we are building Within24 now. Not legal advice. Not affiliated with ENISA.',
+    status: 'Early access: we are building Within24 now.',
     // Illustration of the product in the hero. Static example, not a calculation.
     example: {
       caption: 'Example incident: three CRA reporting clocks, 9 hours after the alert.',
@@ -376,8 +375,7 @@ export const en = {
     title: 'CRA reporting and on-call: frequently asked questions',
     description:
       'Short answers on who the CRA applies to, its 24-hour, 72-hour and final-report deadlines, how it fits with NIS2 and GDPR, and running on-call.',
-    intro:
-      'Short answers, each with the article it comes from and a guide that goes deeper. This page is not legal advice.',
+    intro: 'Short answers, each with the article it comes from and a guide that goes deeper.',
     verified:
       'Last verified: 27 October 2026, against the texts of Regulation (EU) 2024/2847, Directive (EU) 2022/2555 and Regulation (EU) 2016/679.',
     more: 'Read the guide',
@@ -505,7 +503,7 @@ export const en = {
     breadcrumb: 'The CRA',
     // Checked against the text of Regulation (EU) 2024/2847 in the Official Journal (OJ L, 20.11.2024).
     verified:
-      'Last verified: 25 October 2026, against the text published in the Official Journal on 20 November 2024. This page is not legal advice.',
+      'Last verified: 25 October 2026, against the text published in the Official Journal on 20 November 2024.',
     asks: {
       heading: 'What the Cyber Resilience Act asks of you',
       intro:

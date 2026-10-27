@@ -45,4 +45,4 @@ The reporting duty in Article 14 covers your product, including its remote data 
 
 NIS2 may apply instead: recital 12 of the CRA says cloud computing providers that are medium-sized or larger fall within NIS2. NIS2 has its own early warning within 24 hours of becoming aware of a significant incident (NIS2 Art. 23(4)(a)). See [one incident, several clocks](/guides/cra-nis2-gdpr-reporting/).
 
-This guide is not legal advice. Borderline products are exactly where you should get some.
+Borderline products are exactly where you should ask a lawyer.
