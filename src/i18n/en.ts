@@ -16,8 +16,6 @@ export const en = {
     rulesVersion: 'Rules {version}',
     rulesUnverified: 'not yet verified against the official texts',
     rulesVerified: 'verified {date}',
-    notLegalAdvice: 'This site is not legal advice.',
-    notAffiliated: 'Not affiliated with ENISA or the European Commission.',
     links: 'Legal',
     privacy: 'Privacy',
     legal: 'Legal notice',
