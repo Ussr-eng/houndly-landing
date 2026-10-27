@@ -202,7 +202,7 @@ describe('Calculator', () => {
     expect(one).toContain('DTSTART:20261002T090000Z');
     // Waiting rows are not exported.
     expect(all?.match(/BEGIN:VEVENT/g)).toHaveLength(2);
-    expect(all).toContain('This is not legal advice.');
+    expect(all).not.toContain('not legal advice');
     expect(vi.mocked(track).mock.calls.filter((c) => c[0] === 'ics_downloaded')).toEqual([
       ['ics_downloaded', { scope: 'single' }],
       ['ics_downloaded', { scope: 'all' }],

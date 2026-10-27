@@ -793,7 +793,6 @@ export const en = {
       liveCaption: 'Aware at {time}.',
       summary: '{country} (authority time) · times shown in {zone}',
       change: 'Change',
-      notLegalAdvice: 'This is not legal advice.',
       unverified:
         'Rules not yet verified against the official text. Check each deadline against its source before you rely on it.',
       noEvents: 'Tick at least one event to see deadlines.',
@@ -875,7 +874,7 @@ export const en = {
       due: 'Due {reporting} (authority time), {utc}.',
       source: 'Source: {url}',
       rules: 'Rules {version}.',
-      disclaimer: 'Not legal advice. Rules not yet verified against the official text.',
+      disclaimer: 'Rules not yet verified against the official text.',
     },
   },
 };
