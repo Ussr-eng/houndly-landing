@@ -5,18 +5,19 @@ slug: opsgenie-migration
 regimes: [CRA]
 topic: on-call
 datePublished: 2026-10-27
-dateModified: 2026-10-27
-# TODO(verify): end-of-sale and end-of-support dates from Atlassian's own announcement; add it as a source, then publish.
-lastVerified: null
-draft: true
+dateModified: 2026-10-31
+lastVerified: 2026-10-31
 sources:
+  - title: Opsgenie migration to Jira Service Management
+    url: https://www.atlassian.com/software/opsgenie/migration
+    publisher: Atlassian
   - title: Regulation (EU) 2024/2847 (Cyber Resilience Act)
     url: https://eur-lex.europa.eu/eli/reg/2024/2847/oj
     publisher: EUR-Lex
 related: [on-call-rotation-small-team, escalation-policy, support-to-developer-escalation]
 ---
 
-Atlassian is retiring Opsgenie and steering customers to Jira Service Management. TODO(verify): third-party summaries say new sign-ups stopped in early 2026 and the service ends in April 2027. A small team can move in a week if it starts with an inventory, not with a vendor demo.
+Atlassian is shutting Opsgenie down and moving customers to Jira Service Management. Since 4 June 2025 you can no longer change your Opsgenie edition. On 5 April 2027 Opsgenie shuts down, and any data you have not moved is deleted. A small team can move in a week if it starts with an inventory, not with a vendor demo.
 
 ## Step 1. Inventory what Opsgenie does for you today
 

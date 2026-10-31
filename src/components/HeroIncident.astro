@@ -15,6 +15,16 @@ const now = (9 + 13 / 60) / 72;
     <span class="incident__status">{e.status}</span>
   </div>
   <div class="incident__body">
+    <p class="incident__label">{e.oncall.label}</p>
+    <ol class="incident__events">
+      {e.oncall.events.map((ev, i) => (
+        <li class:list={['event', { 'event--ok': i === e.oncall.events.length - 1 }]}>
+          <time class="event__time">{ev.time}</time>
+          <span>{ev.text}</span>
+        </li>
+      ))}
+    </ol>
+    <p class="incident__label incident__label--clocks">{e.clocksLabel}</p>
     <div class="incident__axis" aria-hidden="true">
       {e.axis.map((tick) => (
         <span>{tick}</span>
@@ -99,6 +109,43 @@ const now = (9 + 13 / 60) / 72;
 
   .incident__body {
     padding: var(--space-8);
+  }
+
+  .incident__label {
+    margin: 0 0 var(--space-3);
+    font-size: var(--fs-xs);
+    font-weight: var(--weight-bold);
+    color: var(--muted);
+  }
+
+  .incident__label--clocks {
+    margin-top: var(--space-8);
+  }
+
+  .incident__events {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--fs-sm);
+  }
+
+  .event {
+    display: grid;
+    grid-template-columns: 3.5rem minmax(0, 1fr);
+    align-items: baseline;
+  }
+
+  .event__time {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--muted);
+  }
+
+  .event--ok span {
+    font-weight: var(--weight-bold);
+    color: var(--ok);
   }
 
   .incident__axis {

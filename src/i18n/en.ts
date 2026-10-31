@@ -195,6 +195,8 @@ export const en = {
     noPayment: 'Early access. No payment is taken.',
     choose: 'Choose {plan}',
     useCalculator: 'Use the calculator',
+    perTeam:
+      'Prices are per team, not per person: Starter covers up to {people} people on call for €{price} a month in total.',
     priceLock: 'Early-access teams keep this price for 12 months after launch.',
     consultant: 'Consultant with several clients? Tell us in the form.',
     pagerDuty:
@@ -283,16 +285,27 @@ export const en = {
           href: '/cra/',
         },
       ],
-      note: 'Use one, or both. Legal clocks start only when you mark an incident as reportable.',
+      note: 'Use one, or both. Mark an incident as reportable and the legal clocks start from the same alert that woke you up.',
     },
     status: 'Early access: we are building Within24 now.',
     // Illustration of the product in the hero. Static example, not a calculation.
     example: {
-      caption: 'Example incident: three CRA reporting clocks, 9 hours after the alert.',
+      caption:
+        'Example incident: Sam was on it 4 minutes after the alert, and the three CRA clocks have been running for 9 hours.',
       badge: 'Example',
       id: 'INC-0412',
       name: 'Actively exploited vulnerability',
       status: 'Clocks running',
+      // The on-call part: who was woken, before the legal clocks.
+      oncall: {
+        label: 'On call',
+        events: [
+          { time: '03:12', text: 'Alert from Sentry: exploit attempts on the login API' },
+          { time: '03:13', text: 'Calling Sam, on call this week' },
+          { time: '03:16', text: 'Sam: “I’m on it”' },
+        ],
+      },
+      clocksLabel: 'CRA clocks',
       axis: ['Sat 03:12', '+24 h', '+48 h', '+72 h'],
       now: 'Now',
       lanes: {
@@ -582,8 +595,12 @@ export const en = {
         id: 'opsgenie',
         heading: 'Moving off Opsgenie',
         text: 'Import your schedules and escalation rules (Team plan), run both tools side by side for a week, then switch.',
-        // The Opsgenie migration guide is still a draft; link it here once it is published.
-        links: [] as { label: string; href: string }[],
+        links: [
+          {
+            label: 'Opsgenie is shutting down: a migration plan for small teams',
+            href: '/guides/opsgenie-migration/',
+          },
+        ],
       },
       {
         id: 'legal',

@@ -5,12 +5,17 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PlanList from '../../components/PlanList.astro';
 import { breadcrumbList } from '../../lib/seo/jsonld';
 import { siteUrl } from '../../config/site';
-import { t } from '../../i18n';
+import { fill, t } from '../../i18n';
+import { starterPlan } from '../../config/pricing';
 
 const all = t('en');
 const s = all.oncall;
 const p = all.pricing;
 const earlyAccess = '/early-access/?interest=oncall';
+const perTeam = fill(p.perTeam, {
+  people: starterPlan.peopleOnCall ?? 0,
+  price: starterPlan.price,
+});
 ---
 
 <BaseLayout
@@ -55,7 +60,9 @@ const earlyAccess = '/early-access/?interest=oncall';
 
     <section aria-labelledby="pricing-heading">
       <h2 id="pricing-heading">{s.pricing.heading}</h2>
-      <p class="oncall__intro">{s.pricing.intro}</p>
+      <p class="oncall__intro">
+        {s.pricing.intro} {perTeam}
+      </p>
       <PlanList formPath="/early-access/" headingLevel={3} />
       <p class="oncall__note">
         {p.oncallOnly} {p.priceLock} {p.pagerDuty}

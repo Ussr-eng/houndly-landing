@@ -2,9 +2,14 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SubscribeForm from '../../components/forms/SubscribeForm.astro';
 import PlanList from '../../components/PlanList.astro';
-import { t } from '../../i18n';
+import { fill, t } from '../../i18n';
+import { starterPlan } from '../../config/pricing';
 
 const s = t('en').pricing;
+const perTeam = fill(s.perTeam, {
+  people: starterPlan.peopleOnCall ?? 0,
+  price: starterPlan.price,
+});
 ---
 
 <BaseLayout title={s.title} description={s.description}>
@@ -12,6 +17,7 @@ const s = t('en').pricing;
     <div class="prose">
       <h1>{s.title}</h1>
       <p class="lead">{s.intro}</p>
+      <p>{perTeam}</p>
     </div>
 
     <PlanList formPath="/pricing/" headingLevel={2} />
