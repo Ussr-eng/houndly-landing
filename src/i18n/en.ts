@@ -595,8 +595,12 @@ export const en = {
         id: 'opsgenie',
         heading: 'Moving off Opsgenie',
         text: 'Import your schedules and escalation rules (Team plan), run both tools side by side for a week, then switch.',
-        // The Opsgenie migration guide is still a draft; link it here once it is published.
-        links: [] as { label: string; href: string }[],
+        links: [
+          {
+            label: 'Opsgenie is shutting down: a migration plan for small teams',
+            href: '/guides/opsgenie-migration/',
+          },
+        ],
       },
       {
         id: 'legal',

@@ -12,6 +12,8 @@ export const sourcePublishers = [
   'ENISA',
   'European Commission',
   'National authority',
+  // The vendor's own announcement, for facts about a product (e.g. the Opsgenie shutdown).
+  'Atlassian',
   'Other',
 ] as const;
 

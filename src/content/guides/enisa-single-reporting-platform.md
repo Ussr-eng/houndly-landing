@@ -4,14 +4,18 @@ description: 'Every mandatory CRA report goes through ENISA’s Single Reporting
 slug: enisa-single-reporting-platform
 regimes: [CRA]
 datePublished: 2026-10-27
-dateModified: 2026-10-27
-# TODO(verify): portal, EU Login and "no API" facts against ENISA's SRP page; add it as a source, then publish.
-lastVerified: null
-draft: true
+dateModified: 2026-10-31
+lastVerified: 2026-10-31
 sources:
   - title: Regulation (EU) 2024/2847 (Cyber Resilience Act)
     url: https://eur-lex.europa.eu/eli/reg/2024/2847/oj
     publisher: EUR-Lex
+  - title: Single Reporting Platform (SRP)
+    url: https://www.enisa.europa.eu/topics/product-security/single-reporting-platform-srp
+    publisher: ENISA
+  - title: Single Reporting Platform – frequently asked questions
+    url: https://www.enisa.europa.eu/topics/product-security/single-reporting-platform-srp/frequently-asked-questions
+    publisher: ENISA
 related: [cra-reporting-deadlines, cra-24-hour-clock, cra-what-to-report]
 ---
 
@@ -37,7 +41,8 @@ The CSIRT that receives the report passes it on through the platform to the CSIR
 - Decide which Member State and CSIRT you report to, and write it in your runbook.
 - Keep a list of Member States where each product is available.
 - Keep product names, versions and a contact person ready to paste.
-- Set up access before you need it. TODO(verify): the portal is portal.cra-srp.enisa.europa.eu; each person signs in with their own EU Login account and multi-factor authentication. Make sure at least two people can sign in.
-- Agree who submits and who checks. TODO(verify): submission is a web form in English with no API, so a person always files the report.
+- Set up access before you need it. The portal is portal.cra-srp.enisa.europa.eu, and each person signs in with their own EU Login account with multi-factor authentication. One Primary Assigned Representative registers your company and selects your CSIRT, then can invite up to 20 Secondary Assigned Representatives. Make sure at least two people can sign in.
+- The CSIRT checks that each representative really acts for your company. You can submit up to 20 notifications before that check becomes mandatory.
+- Agree who submits and who checks. At launch there is no API and the platform is in English only, so a person always enters the report in the web interface.
 
 Our free [Incident Kit](/incident-kit/) has fill-in templates for all three reports.
