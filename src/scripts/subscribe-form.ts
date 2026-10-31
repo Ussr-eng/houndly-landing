@@ -103,9 +103,10 @@ function enhance(form: HTMLFormElement): void {
     }
     try {
       await waitForToken(form);
+      const data = new FormData(form);
       const res = await fetch(form.action, {
         method: 'POST',
-        body: new FormData(form),
+        body: data,
         headers: { accept: 'application/json' },
       });
       const body = (await res.json()) as {
@@ -117,7 +118,11 @@ function enhance(form: HTMLFormElement): void {
         form.reset();
         if (status) status.textContent = form.dataset['success'] ?? '';
         const name = form.dataset['event'];
-        if (name === 'kit_requested' || name === 'waitlist_submitted') track(name);
+        if (name === 'kit_requested') track(name);
+        if (name === 'waitlist_submitted') {
+          const interest = data.get('interest');
+          track(name, { interest: typeof interest === 'string' && interest ? interest : 'none' });
+        }
       } else if (body.error === 'invalid') {
         const code = body.fields?.['email'];
         showError(errors['summary'] ?? '', code ? errors[code] : undefined);

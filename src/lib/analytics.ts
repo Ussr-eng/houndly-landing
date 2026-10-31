@@ -9,7 +9,8 @@ export interface AnalyticsEvents {
   link_copied: undefined;
   kit_requested: undefined;
   buy_clicked: { plan: string };
-  waitlist_submitted: undefined;
+  /** interest: the answer to "What do you need first?", or "none". */
+  waitlist_submitted: { interest: string };
 }
 
 export type AnalyticsEvent = keyof AnalyticsEvents;

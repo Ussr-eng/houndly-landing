@@ -23,6 +23,7 @@ describe('validateSubscribe', () => {
         company: '',
         productType: '',
         laws: [],
+        interest: '',
         companySize: '',
         currentProcess: '',
         sellsEu: '',
@@ -45,6 +46,7 @@ describe('validateSubscribe', () => {
         ['laws', 'NIS2'],
         ['laws', 'CRA'],
         ['plan', 'team'],
+        ['interest', 'both'],
         ['company_size', '10-49'],
         ['current_process', 'opsgenie'],
         ['sells_eu', 'unsure'],
@@ -57,6 +59,7 @@ describe('validateSubscribe', () => {
       list: 'waitlist',
       laws: ['CRA', 'NIS2'],
       plan: 'team',
+      interest: 'both',
       companySize: '10-49',
       currentProcess: 'opsgenie',
       sellsEu: 'unsure',
@@ -85,6 +88,7 @@ describe('validateSubscribe', () => {
         ['list', 'kit'],
         ['email', 'a@b.eu'],
         ['plan', 'team'],
+        ['interest', 'cra'],
         ['company_size', '1-9'],
         ['current_process', 'opsgenie'],
         ['sells_eu', 'yes'],
@@ -92,8 +96,15 @@ describe('validateSubscribe', () => {
       ]),
     );
     expect(
-      r.ok && [r.data.plan, r.data.companySize, r.data.currentProcess, r.data.sellsEu, r.data.note],
-    ).toEqual(['', '', '', '', '']);
+      r.ok && [
+        r.data.plan,
+        r.data.interest,
+        r.data.companySize,
+        r.data.currentProcess,
+        r.data.sellsEu,
+        r.data.note,
+      ],
+    ).toEqual(['', '', '', '', '', '']);
   });
 
   it.each([
@@ -149,6 +160,15 @@ describe('validateSubscribe', () => {
         ['plan', 'free'],
       ],
       { plan: 'invalid' },
+    ],
+    [
+      'unknown interest',
+      [
+        ['list', 'waitlist'],
+        ['email', 'a@b.eu'],
+        ['interest', 'logs'],
+      ],
+      { interest: 'invalid' },
     ],
     [
       'unknown company size',

@@ -18,6 +18,9 @@ export const PRODUCT_TYPES = [
 export type ProductType = (typeof PRODUCT_TYPES)[number];
 
 /** Early-access segmentation: one click each, all optional. */
+export const INTERESTS = ['oncall', 'cra', 'both'] as const;
+export type Interest = (typeof INTERESTS)[number];
+
 export const COMPANY_SIZES = ['1-9', '10-49', '50-249', '250+'] as const;
 export type CompanySize = (typeof COMPANY_SIZES)[number];
 
@@ -51,6 +54,7 @@ export interface SubscribeData {
   productType: ProductType | '';
   laws: Law[];
   /** Early access only. */
+  interest: Interest | '';
   companySize: CompanySize | '';
   currentProcess: OncallTool | '';
   sellsEu: SellsEu | '';
@@ -106,6 +110,8 @@ export function validateSubscribe(form: FormLike): ValidationResult {
   if (laws.length !== new Set(lawsRaw).size) errors.laws = 'invalid';
 
   const waitlist = list === 'waitlist';
+  const interest = waitlist ? choice(text(form.get('interest')), INTERESTS) : '';
+  if (interest === null) errors.interest = 'invalid';
   const companySize = waitlist ? choice(text(form.get('company_size')), COMPANY_SIZES) : '';
   if (companySize === null) errors.companySize = 'invalid';
   const currentProcess = waitlist ? choice(text(form.get('current_process')), ONCALL_TOOLS) : '';
@@ -127,6 +133,7 @@ export function validateSubscribe(form: FormLike): ValidationResult {
     !list ||
     Object.keys(errors).length ||
     productType === null ||
+    interest === null ||
     companySize === null ||
     currentProcess === null ||
     sellsEu === null
@@ -140,6 +147,7 @@ export function validateSubscribe(form: FormLike): ValidationResult {
       company,
       productType,
       laws,
+      interest,
       companySize,
       currentProcess,
       sellsEu,
