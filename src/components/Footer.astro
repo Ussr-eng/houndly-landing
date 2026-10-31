@@ -22,7 +22,17 @@ const rulesLine = [
 // backend_commit is null while rules are edited in this repository (see CLAUDE.md).
 const commit = (lock.backend_commit as string | null)?.slice(0, 7);
 const cra = localizedPath(locale, '/cra/');
+const oncall = localizedPath(locale, '/on-call/');
 const columns = [
+  {
+    heading: s.footer.oncallHeading,
+    links: [
+      { href: oncall, label: s.footer.oncallLinks.overview },
+      { href: `${oncall}#rotas`, label: s.footer.oncallLinks.rotas },
+      { href: `${oncall}#support`, label: s.footer.oncallLinks.support },
+      { href: `${oncall}#opsgenie`, label: s.footer.oncallLinks.opsgenie },
+    ],
+  },
   {
     heading: s.footer.craHeading,
     links: [

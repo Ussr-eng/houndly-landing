@@ -13,6 +13,7 @@ export const en = {
   nav: {
     label: 'Main',
     home: 'Home',
+    oncall: 'On-call',
     cra: 'The CRA',
     calculator: 'Deadline calculator',
     guides: 'Guides',
@@ -33,6 +34,13 @@ export const en = {
       dates: 'Key dates',
       reports: 'Three reports',
       scope: 'Does it apply to you',
+    },
+    oncallHeading: 'On-call',
+    oncallLinks: {
+      overview: 'How on-call works',
+      rotas: 'Rotas',
+      support: 'Support to developer',
+      opsgenie: 'Moving off Opsgenie',
     },
     toolsHeading: 'Tools',
     faq: 'FAQ',
@@ -88,6 +96,8 @@ export const en = {
       other: 'Other',
     },
     productTypeQuestion: 'What do you ship?',
+    interest: 'What do you need first?',
+    interests: { oncall: 'On-call', cra: 'CRA reporting', both: 'Both' },
     companySize: 'Company size',
     companySizes: {
       '1-9': '1–9',
@@ -189,6 +199,8 @@ export const en = {
     consultant: 'Consultant with several clients? Tell us in the form.',
     pagerDuty:
       'Already on PagerDuty or Opsgenie? Starter works with it: send your alerts by webhook.',
+    oncallOnly:
+      'Need only on-call? Every plan works without the CRA part: legal clocks start only when you mark an incident as reportable.',
     recommended: 'Recommended',
     plans: {
       free: {
@@ -224,7 +236,7 @@ export const en = {
     },
     formHeading: 'Get early access',
     formIntro:
-      "We'll email you when your plan is ready. Four quick clicks, so we build the right thing first. No payment is taken.",
+      "We'll email you when your plan is ready. A few quick clicks, so we build the right thing first. No payment is taken.",
     plan: 'Plan',
     planNone: 'Not sure yet',
     submit: 'Join early access',
@@ -244,14 +256,35 @@ export const en = {
     },
   },
   home: {
-    title: 'CRA incident reporting for small teams',
+    title: 'On-call and CRA incident reporting for small teams',
     description:
-      'AI drafts of your 24-hour, 72-hour and final CRA reports, clocks that start from the alert, and alerts that wake someone up. Early access.',
-    heading: 'We take care of your CRA reporting.',
+      'Rotas, escalation and phone calls that wake the right person, plus legal clocks and AI drafts of every CRA report. Early access, no payment.',
+    heading: 'Wake the right person. File the CRA report on time.',
     intro:
-      'Our AI writes every CRA report from your incident timeline, with a source for each statement. Within24 starts the legal clocks and wakes whoever is on call.',
-    primary: 'Calculate your reporting deadlines',
-    secondary: 'Join early access',
+      'Within24 runs your on-call: rotas, escalation and phone calls until someone taps "I\'m on it". When an incident is reportable under the CRA, it starts the legal clocks and our AI drafts each report, with a source for every statement.',
+    primary: 'Join early access',
+    secondary: 'Calculate your reporting deadlines',
+    // Two entry points right under the hero: one per service.
+    doors: {
+      heading: 'What do you need?',
+      items: [
+        {
+          id: 'oncall',
+          name: 'You need someone on call',
+          text: 'Rotas, escalation, phone calls, and a "Call a developer" button for support staff. Moving off Opsgenie? Bring your schedules.',
+          link: 'See how on-call works',
+          href: '/on-call/',
+        },
+        {
+          id: 'cra',
+          name: 'You need to report under the CRA',
+          text: 'The 24-hour, 72-hour and final-report clocks start from the alert, and our AI drafts each report for you to review and submit.',
+          link: 'See what the CRA asks of you',
+          href: '/cra/',
+        },
+      ],
+      note: 'Use one, or both. Legal clocks start only when you mark an incident as reportable.',
+    },
     status: 'Early access: we are building Within24 now.',
     // Illustration of the product in the hero. Static example, not a calculation.
     example: {
@@ -325,6 +358,7 @@ export const en = {
         },
       ],
       opsgenie: 'Moving off Opsgenie? Bring your schedules with you.',
+      link: 'See how on-call works',
     },
     pricing: {
       heading: 'Pricing',
@@ -503,6 +537,72 @@ export const en = {
         ],
       },
     ],
+  },
+  // The on-call page: the twin of /cra/ for teams that come for on-call first.
+  oncall: {
+    title: 'On-call for small teams, with EU deadlines built in',
+    description:
+      'Rotas, escalation, phone calls and a "Call a developer" button for support. Works alongside PagerDuty or replaces Opsgenie. Early access.',
+    breadcrumb: 'On-call',
+    heading: 'On-call that wakes the right person',
+    intro:
+      'For teams of 3 to 20 engineers. Alerts come in by webhook, and Within24 calls the person on call and escalates down the rota until someone taps "I\'m on it".',
+    status: 'Early access: we are building Within24 now.',
+    primary: 'Join early access',
+    sections: [
+      {
+        id: 'alerts',
+        heading: 'How an alert reaches a person',
+        text: 'A webhook arrives from Grafana, Sentry, New Relic, PagerDuty or Opsgenie. Within24 sends Telegram and email first, then calls if nobody answers (phone calls on the Team plan). After a set time it moves to the next person.',
+        links: [{ label: 'Escalation policy for small teams', href: '/guides/escalation-policy/' }],
+      },
+      {
+        id: 'rotas',
+        heading: 'Rotas a small team can keep',
+        text: 'A weekly rotation, a backup person, and swaps when someone is away.',
+        links: [
+          {
+            label: 'On-call rotation for small teams',
+            href: '/guides/on-call-rotation-small-team/',
+          },
+        ],
+      },
+      {
+        id: 'support',
+        heading: 'Support can wake a developer',
+        text: 'Support staff get a "Call a developer" button: no alert rules to write and no phone numbers to look up.',
+        links: [
+          {
+            label: 'How support staff can reach the on-call developer',
+            href: '/guides/support-to-developer-escalation/',
+          },
+        ],
+      },
+      {
+        id: 'opsgenie',
+        heading: 'Moving off Opsgenie',
+        text: 'Import your schedules and escalation rules (Team plan), run both tools side by side for a week, then switch.',
+        // The Opsgenie migration guide is still a draft; link it here once it is published.
+        links: [] as { label: string; href: string }[],
+      },
+      {
+        id: 'legal',
+        heading: 'When an incident is also a legal one',
+        text: 'Mark an incident as reportable and the CRA, NIS2 and GDPR clocks start from the moment you became aware. Until then, an alert is just an alert.',
+        links: [
+          { label: 'What the CRA asks of you', href: '/cra/' },
+          { label: 'Calculate your reporting deadlines', href: '/deadlines/' },
+        ],
+      },
+    ],
+    pricing: {
+      heading: 'Pricing',
+      intro: 'Prices for early access. Choose a plan to join the list; no payment is taken.',
+    },
+    next: {
+      heading: 'Get on-call that knows the legal clocks',
+      text: "We'll contact you before launch; you decide then whether to buy.",
+    },
   },
   cra: {
     title: 'Cyber Resilience Act: what to report and when',
@@ -738,12 +838,12 @@ export const en = {
                 ],
                 [
                   'Early-access form',
-                  'Email (required). Optional answers: what you ship, company size, your on-call tool today, whether you sell in the EU, the plan you chose, a free-text note.',
+                  'Email (required). Optional answers: what you need first, what you ship, company size, your on-call tool today, whether you sell in the EU, the plan you chose, a free-text note.',
                   'To invite you when the product is ready, and to learn what to build first.',
                 ],
                 [
                   'Both forms',
-                  'The time you signed up, which form you used, the version of the consent text, and whether you asked for occasional news.',
+                  'The time you signed up, which form you used and the page you came from, the version of the consent text, and whether you asked for occasional news.',
                   'To prove your consent and respect your choices.',
                 ],
                 [

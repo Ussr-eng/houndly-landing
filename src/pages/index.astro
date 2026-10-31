@@ -22,10 +22,10 @@ const cra = all.cra;
         <h1 id="hero-heading">{s.heading}</h1>
         <p class="hero__intro">{s.intro}</p>
         <div class="hero__actions">
-          <a class="button button--large" href="/deadlines/">
+          <a class="button button--large" href="/early-access/">
             {s.primary}
           </a>
-          <a class="button button--large button--secondary" href="/early-access/">
+          <a class="button button--large button--secondary" href="/deadlines/">
             {s.secondary}
           </a>
         </div>
@@ -34,6 +34,26 @@ const cra = all.cra;
       <div class="hero__visual">
         <HeroIncident />
       </div>
+    </div>
+  </section>
+
+  <section class="band doors-band" aria-labelledby="doors-heading">
+    <div class="container">
+      <h2 id="doors-heading" class="visually-hidden">
+        {s.doors.heading}
+      </h2>
+      <ul class="doors">
+        {s.doors.items.map((door) => (
+          <li class:list={['door', `door--${door.id}`]}>
+            <h3>{door.name}</h3>
+            <p>{door.text}</p>
+            <a class="door__link" href={door.href}>
+              {door.link}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p class="note">{s.doors.note}</p>
     </div>
   </section>
 
@@ -101,7 +121,9 @@ const cra = all.cra;
           </li>
         ))}
       </ul>
-      <p class="note">{s.oncall.opsgenie}</p>
+      <p class="note">
+        {s.oncall.opsgenie} <a href="/on-call/">{s.oncall.link}</a>
+      </p>
     </div>
   </section>
 
@@ -111,7 +133,7 @@ const cra = all.cra;
       <p class="band__intro">{s.pricing.intro}</p>
       <PlanList formPath="/early-access/" headingLevel={3} />
       <p class="note">
-        {p.priceLock} {p.pagerDuty} {p.consultant}
+        {p.oncallOnly} {p.priceLock} {p.pagerDuty} {p.consultant}
       </p>
     </div>
   </section>
@@ -389,6 +411,53 @@ const cra = all.cra;
     max-width: var(--measure);
     margin: var(--space-2) 0 0;
     color: var(--muted);
+  }
+
+  /* Two entry points, one per service, straight under the hero. */
+  .doors-band {
+    padding-block: var(--space-12);
+  }
+
+  .doors {
+    display: grid;
+    gap: var(--space-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 48rem) {
+    .doors {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .door {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-6);
+    border-left: 4px solid var(--brand);
+    background: var(--bg-2);
+  }
+
+  .door--cra {
+    border-left-color: var(--soon);
+  }
+
+  .band .door h3 {
+    margin: 0;
+    font-size: var(--fs-lg);
+  }
+
+  .door p {
+    margin: 0;
+    color: var(--muted);
+  }
+
+  .door__link {
+    margin-top: auto;
+    font-weight: var(--weight-bold);
   }
 
   .brief__link {

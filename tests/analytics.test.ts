@@ -62,7 +62,7 @@ describe('track', () => {
   it('sends to one provider only', () => {
     window.umami = { track: vi.fn() };
     window.plausible = vi.fn();
-    mod.track('waitlist_submitted');
+    mod.track('waitlist_submitted', { interest: 'oncall' });
     expect(window.umami.track).toHaveBeenCalledOnce();
     expect(window.plausible).not.toHaveBeenCalled();
   });
@@ -106,6 +106,6 @@ describe('track', () => {
         throw new Error('blocked');
       },
     };
-    expect(() => mod.track('waitlist_submitted')).not.toThrow();
+    expect(() => mod.track('waitlist_submitted', { interest: 'none' })).not.toThrow();
   });
 });

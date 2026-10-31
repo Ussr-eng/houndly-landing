@@ -1,7 +1,8 @@
 ---
 // Early-access sign-up on its own page, so the home page stays short. Every "Join early access"
 // and "Choose {plan}" link from the home page, header, footer and /cra/ lands here;
-// ?plan= preselects the plan.
+// ?plan= preselects the plan, ?interest= the first question; the page the person came from is
+// sent as SOURCE (src/scripts/waitlist-context.ts).
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SubscribeForm from '../../components/forms/SubscribeForm.astro';
 import { t } from '../../i18n';
@@ -30,7 +31,9 @@ const p = all.pricing;
 
 <script>
   import { enhancePlanButtons } from '../../scripts/pricing';
+  import { applyWaitlistContext } from '../../scripts/waitlist-context';
   enhancePlanButtons();
+  applyWaitlistContext();
 </script>
 
 <style>

@@ -1,0 +1,178 @@
+---
+// The on-call page: the twin of /cra/ for teams that come for on-call first. Each section links
+// to the guide that covers it; the early-access links preselect "On-call" in the form.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PlanList from '../../components/PlanList.astro';
+import { breadcrumbList } from '../../lib/seo/jsonld';
+import { siteUrl } from '../../config/site';
+import { t } from '../../i18n';
+
+const all = t('en');
+const s = all.oncall;
+const p = all.pricing;
+const earlyAccess = '/early-access/?interest=oncall';
+---
+
+<BaseLayout
+  title={s.title}
+  description={s.description}
+  jsonLd={[
+    breadcrumbList([
+      { name: all.breadcrumbs.home, url: siteUrl() + '/' },
+      { name: s.breadcrumb, url: siteUrl() + '/on-call/' },
+    ]),
+  ]}
+>
+  <div class="oncall">
+    <div class="prose">
+      <h1>{s.heading}</h1>
+      <p class="lead">{s.intro}</p>
+      <div class="oncall__actions">
+        <a class="button" href={earlyAccess}>
+          {s.primary}
+        </a>
+      </div>
+      <p class="oncall__status">{s.status}</p>
+    </div>
+
+    <ol class="oncall__sections">
+      {s.sections.map((section) => (
+        <li id={section.id} class="oncall__section">
+          <h2>{section.heading}</h2>
+          <p>{section.text}</p>
+          {section.links.length > 0 && (
+            <ul class="oncall__links">
+              {section.links.map((link) => (
+                <li>
+                  <a href={link.href}>{link.label}</a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </li>
+      ))}
+    </ol>
+
+    <section aria-labelledby="pricing-heading">
+      <h2 id="pricing-heading">{s.pricing.heading}</h2>
+      <p class="oncall__intro">{s.pricing.intro}</p>
+      <PlanList formPath="/early-access/" headingLevel={3} />
+      <p class="oncall__note">
+        {p.oncallOnly} {p.priceLock} {p.pagerDuty}
+      </p>
+    </section>
+
+    <section class="oncall__next" aria-labelledby="next-heading">
+      <h2 id="next-heading">{s.next.heading}</h2>
+      <p>{s.next.text}</p>
+      <div class="oncall__actions">
+        <a class="button" href={earlyAccess}>
+          {s.primary}
+        </a>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  import { enhancePlanButtons } from '../../scripts/pricing';
+  enhancePlanButtons();
+</script>
+
+<style>
+  .oncall {
+    display: grid;
+    gap: var(--space-16);
+    margin-block: var(--space-4) var(--space-12);
+  }
+
+  .oncall h2 {
+    margin: 0 0 var(--space-4);
+    font-size: var(--fs-xl);
+    font-weight: var(--weight-heavy);
+    letter-spacing: -0.01em;
+  }
+
+  .oncall__status,
+  .oncall__note {
+    margin: var(--space-4) 0 0;
+    color: var(--muted);
+    font-size: var(--fs-sm);
+  }
+
+  .oncall__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+
+  .oncall__intro {
+    max-width: var(--measure);
+    margin: 0 0 var(--space-8);
+    color: var(--muted);
+    font-size: var(--fs-md);
+  }
+
+  /* The path of an alert, top to bottom: one numbered stop per section. */
+  .oncall__sections {
+    display: grid;
+    gap: var(--space-12);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: stop;
+  }
+
+  .oncall__section {
+    position: relative;
+    max-width: var(--measure);
+    padding-left: var(--space-12);
+    scroll-margin-top: calc(var(--header-h, 4rem) + var(--space-4));
+    counter-increment: stop;
+  }
+
+  .oncall__section::before {
+    content: counter(stop);
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    font-weight: var(--weight-heavy);
+    color: var(--brand-contrast);
+    background: var(--brand);
+    border-radius: 50%;
+  }
+
+  .oncall__section:last-child::before {
+    background: var(--soon);
+  }
+
+  .oncall .oncall__section h2 {
+    margin-bottom: var(--space-2);
+    font-size: var(--fs-lg);
+  }
+
+  .oncall__section p {
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--fs-md);
+  }
+
+  .oncall__links {
+    display: grid;
+    gap: var(--space-1);
+    margin: var(--space-3) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .oncall__next p {
+    margin: 0;
+    color: var(--muted);
+  }
+</style>

@@ -301,6 +301,7 @@ describe('brevoAttributes', () => {
         company: '',
         productType: 'saas',
         laws: ['CRA', 'GDPR'],
+        interest: '',
         companySize: '',
         currentProcess: '',
         sellsEu: '',
@@ -329,6 +330,7 @@ describe('brevoAttributes', () => {
         company: '',
         productType: 'mobile',
         laws: [],
+        interest: 'oncall',
         companySize: '50-249',
         currentProcess: 'pagerduty',
         sellsEu: 'yes',
@@ -339,6 +341,7 @@ describe('brevoAttributes', () => {
       },
     });
     expect(attrs).toMatchObject({
+      INTEREST: 'oncall',
       PRODUCT_TYPE: 'mobile',
       COMPANY_SIZE: '50-249',
       CURRENT_PROCESS: 'pagerduty',

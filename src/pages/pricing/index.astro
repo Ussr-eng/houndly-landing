@@ -16,7 +16,7 @@ const s = t('en').pricing;
 
     <PlanList formPath="/pricing/" headingLevel={2} />
     <p class="pricing-note">
-      {s.priceLock} {s.pagerDuty} {s.consultant}
+      {s.oncallOnly} {s.priceLock} {s.pagerDuty} {s.consultant}
     </p>
 
     <section id="early-access" class="early-access" aria-labelledby="early-access-heading">
@@ -29,7 +29,9 @@ const s = t('en').pricing;
 
 <script>
   import { enhancePlanButtons } from '../../scripts/pricing';
+  import { applyWaitlistContext } from '../../scripts/waitlist-context';
   enhancePlanButtons();
+  applyWaitlistContext();
 </script>
 
 <style>

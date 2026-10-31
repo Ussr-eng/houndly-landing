@@ -99,7 +99,18 @@ describe('subscribe form enhancement', () => {
   it('sends waitlist_submitted for the early-access form', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(Response.json({ ok: true })));
     await submit(mountForm('waitlist_submitted'));
-    expect(vi.mocked(track).mock.calls).toEqual([['waitlist_submitted']]);
+    expect(vi.mocked(track).mock.calls).toEqual([['waitlist_submitted', { interest: 'none' }]]);
+  });
+
+  it('sends the answer to "What do you need first?" with waitlist_submitted', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(Response.json({ ok: true })));
+    const form = mountForm('waitlist_submitted');
+    form.insertAdjacentHTML(
+      'afterbegin',
+      '<input type="radio" name="interest" value="oncall" checked>',
+    );
+    await submit(form);
+    expect(vi.mocked(track).mock.calls).toEqual([['waitlist_submitted', { interest: 'oncall' }]]);
   });
 });
 

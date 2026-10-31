@@ -54,6 +54,7 @@ export function brevoAttributes(req: SubscribeRequest): Record<string, string | 
     COMPANY: d.company,
     PRODUCT_TYPE: d.productType,
     LAWS: d.laws.join(','),
+    INTEREST: d.interest,
     COMPANY_SIZE: d.companySize,
     CURRENT_PROCESS: d.currentProcess,
     SELLS_EU: d.sellsEu,
