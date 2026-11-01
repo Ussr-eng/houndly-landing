@@ -16,7 +16,8 @@
     "test": "vitest run",
     "check:dist": "node scripts/check-dist.ts",
     "sync-rules": "node scripts/sync-rules.ts",
-    "relock-rules": "node scripts/relock-rules.ts"
+    "relock-rules": "node scripts/relock-rules.ts",
+    "build-cra-corpus": "node scripts/build-cra-corpus.ts"
   },
   "dependencies": {
     "@astrojs/react": "7.0.1",

@@ -6,3 +6,5 @@ rules/
 CLAUDE.md
 TASKS.md
 rules.lock.json
+cra-check/source/
+cra-check/corpus.json
