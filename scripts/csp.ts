@@ -26,12 +26,14 @@ for (const file of htmlFiles(DIST)) {
 }
 
 const turnstile = site.turnstile.origin;
+// The CRA check chat calls the backend API.
+const api = process.env['PUBLIC_API_URL']?.trim();
 const mode = process.env['CSP_MODE'] === 'report' ? 'report' : 'enforce';
 const policy = buildCsp({
   reportOnly: mode === 'report',
   scriptHashes: [...hashes],
   scriptHosts: [originOf(site.analytics.scriptSrc), turnstile],
-  connectHosts: [...site.analytics.connectSrc, turnstile],
+  connectHosts: [...site.analytics.connectSrc, turnstile, ...(api ? [originOf(api)] : [])],
   frameHosts: [turnstile],
 });
 const header =

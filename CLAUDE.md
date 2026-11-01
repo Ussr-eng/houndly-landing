@@ -93,8 +93,13 @@ Every page must be fully readable by Google without running JavaScript.
 - Early-access form (home page and pricing page): email, then one-click answers for what you ship, company
   size, on-call tool today and whether you sell in the EU, the plan, and an optional free-text note.
 - Custom analytics events: `calculator_opened`, `calculator_calculated`, `ics_downloaded`, `link_copied`,
-  `kit_requested`, `buy_clicked` (with plan), `waitlist_submitted`.
-- No tracking cookies, no third-party scripts beyond the analytics tool and the form provider.
+  `kit_requested`, `buy_clicked` (with plan), `waitlist_submitted`, and for the CRA check chat
+  `cra_check_opened`, `cra_check_started`, `cra_check_answered` (with verdict), `cra_check_pain`.
+- CRA check chat (every page, only when `PUBLIC_API_URL` is set): email first, then the AI check
+  on the backend (houndly-backend `POST /public/cra-check/*`), then "what hurts most". The backend
+  stores everything in its own PostgreSQL; the browser keeps nothing.
+- No tracking cookies, no third-party scripts beyond the analytics tool and the form provider
+  (Turnstile). The only other host the browser talks to is our backend API.
 
 ## Design direction
 

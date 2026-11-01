@@ -2,32 +2,10 @@
 // load Turnstile on first interaction, send the analytics event after the server accepted.
 // Without JavaScript the form posts normally and the server redirects to a status page.
 
-import { site } from '../config/site';
 import { track } from '../lib/analytics';
-
-interface Turnstile {
-  render(el: HTMLElement, options: { sitekey: string }): string;
-}
-declare global {
-  interface Window {
-    turnstile?: Turnstile;
-  }
-}
+import { loadTurnstile } from '../lib/turnstile';
 
 type Errors = Record<string, string>;
-
-let turnstileLoading: Promise<void> | null = null;
-function loadTurnstile(): Promise<void> {
-  turnstileLoading ??= new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    script.src = site.turnstile.scriptSrc;
-    script.async = true;
-    script.onload = () => resolve();
-    script.onerror = () => reject(new Error('turnstile'));
-    document.head.append(script);
-  });
-  return turnstileLoading;
-}
 
 /** Wait briefly for the Turnstile token; send without it if it does not arrive. */
 async function waitForToken(form: HTMLFormElement, ms = 5000): Promise<void> {

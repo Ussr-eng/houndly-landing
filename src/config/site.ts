@@ -48,6 +48,15 @@ export function siteUrl(): string {
   return (fromEnv || PLACEHOLDER_SITE_URL).replace(/\/+$/, '');
 }
 
+/**
+ * Origin of the backend API (houndly-backend), e.g. https://api.within24.app. The CRA check
+ * chat appears on every page only when PUBLIC_API_URL is set; unset means no chat.
+ */
+export function apiOrigin(): string | null {
+  const fromEnv = (import.meta.env?.PUBLIC_API_URL as string | undefined)?.trim();
+  return fromEnv ? new URL(fromEnv).origin : null;
+}
+
 /** PUBLIC_ALLOW_INDEXING=true turns indexing on (launch, L5). Anything else means off. */
 export function allowIndexing(): boolean {
   return parseAllowIndexing(import.meta.env?.PUBLIC_ALLOW_INDEXING as string | undefined);

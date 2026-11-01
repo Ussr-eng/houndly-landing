@@ -812,16 +812,117 @@ export const en = {
     backKit: 'Back to the Incident Kit',
     backPricing: 'Back to pricing',
   },
+  // The CRA check chat in the page corner (src/components/cra-check). Facts in `clocks` come
+  // from rules/v1.json (CRA, actively exploited vulnerability; verified 2026-10-27).
+  craCheck: {
+    launcher: 'Does the CRA apply to you?',
+    launcherOpen: 'Open the CRA check',
+    hideLauncher: 'Hide',
+    title: 'CRA check',
+    subtitle: 'AI, answers from the law text',
+    close: 'Close the CRA check',
+    restart: 'Start over',
+    stepOf: 'step {n} of 4',
+    stepDone: 'done',
+    stepsLabel: 'Steps',
+    steps: ['Email', 'Product', 'Answer', 'Your problem'],
+    you: 'You',
+    greeting:
+      'Hi. I check whether the EU Cyber Resilience Act applies to your product and cite the articles behind the answer.',
+    askEmail:
+      'First, your work email. We use it to follow up on your check and to tell you when Within24 is ready.',
+    askEmailSmall: 'You confirm the address by email. Unsubscribe any time.',
+    emailLabel: 'Work email',
+    emailPlaceholder: 'you@company.com',
+    continue: 'Continue',
+    askProduct:
+      'Thanks. Now describe your product: what it does, who uses it and how it connects. A sentence or two is enough.',
+    productLabel: 'Describe your product',
+    productPlaceholder: 'A Wi-Fi camera with a phone app…',
+    examples: [
+      {
+        label: 'Smart door lock',
+        text: 'We make a smart door lock. People open it with our phone app, and the app talks to the lock through our own cloud.',
+      },
+      {
+        label: 'Project-management SaaS',
+        text: 'A project management web app. Customers use it in the browser; there is nothing to install.',
+      },
+      {
+        label: 'We make an app',
+        text: 'We make a mobile app that people install from the App Store and Google Play.',
+      },
+    ],
+    answerLabel: 'Your answer',
+    answerPlaceholder: 'Your answer',
+    questionsLeft: 'I can ask {n} more at most.',
+    send: 'Send',
+    thinking: 'Checking',
+    thinkingSteps: [
+      'Reading scope and exclusions',
+      'Comparing with the Annex III and IV categories',
+      'Checking every article against the text',
+    ],
+    verdicts: {
+      in_scope: 'Yes, the CRA applies',
+      out_of_scope: 'No, the CRA does not apply',
+      depends: 'It depends',
+      off_topic: 'This check covers only the CRA',
+    },
+    categories: {
+      default: 'Default category',
+      important_class_i: 'Important product, class I',
+      important_class_ii: 'Important product, class II',
+      critical: 'Critical product',
+    },
+    clocks: {
+      intro: 'If a vulnerability in it is actively exploited, you report:',
+      lanes: ['Early warning', 'Notification', 'Final report'],
+      caption: '24 h · 72 h · 14 days after the fix',
+      link: 'Calculate your dates',
+    },
+    copy: 'Copy answer',
+    copied: 'Copied',
+    askPain:
+      'One last question. What is the hardest part of CRA reporting or incident response for you right now?',
+    askPainSmall: 'Your answer goes straight to the team. We build next what people tell us here.',
+    pains: {
+      which_reports: 'Not sure which reports we owe',
+      reports_take_long: 'Writing the reports takes too long',
+      nobody_watches_clock: 'Nobody watches the clock at night',
+      wrong_person_woken: 'Night alerts wake the wrong person',
+      customers_ask_cra: 'Customers ask us about the CRA',
+      other: 'Write my own',
+    },
+    painLabel: 'Your biggest problem',
+    painPlaceholder: 'Tell us in your own words',
+    thanks:
+      'Thank you. We read every answer. If many teams name the same problem, we build for it first.',
+    checkInbox: 'Check your inbox and confirm your address.',
+    earlyAccess: 'Get early access',
+    footnote: 'We keep what you write here to improve Within24.',
+    privacy: 'Privacy policy',
+    source: 'Answers quote Regulation (EU) 2024/2847.',
+    errors: {
+      email: 'That does not look like an email address.',
+      robot: 'We could not confirm you are not a robot. Reload the page and try again.',
+      tooMany: 'Too many checks from your network. Please try again in an hour.',
+      expired: 'This check has expired. Start over to run a new one.',
+      unavailable: 'The check is not available right now. Please try again in a few minutes.',
+      network: 'No connection. Check your network and try again.',
+    },
+  },
   privacy: {
     title: 'Privacy policy',
     description:
       'What personal data Within24 collects, why, which providers process it, how long we keep it and how to use your rights.',
     lastUpdated: 'Last updated',
-    updatedOn: '27 October 2026',
-    // Text approved by the owner on 2026-10-27. Provider facts checked on that date against
-    // the pages linked below. Inline links use [text](https://…).
+    updatedOn: '1 November 2026',
+    // Text approved by the owner on 2026-10-27; the CRA check parts (2026-11-01) await approval
+    // in the pull request. Provider facts checked against the pages linked below. Inline links
+    // use [text](https://…).
     intro:
-      'This policy explains what personal data Within24 collects on within24.app, why, and what you can do about it. Reading the site and using the calculator need no personal data. We collect your email only when you send one of our forms.',
+      'This policy explains what personal data Within24 collects on within24.app, why, and what you can do about it. Reading the site and using the calculator need no personal data. We collect your email only when you send one of our forms or use the CRA check.',
     sections: [
       {
         heading: 'Who is responsible',
@@ -859,6 +960,11 @@ export const en = {
                   'To invite you when the product is ready, and to learn what to build first.',
                 ],
                 [
+                  'CRA check (the chat in the page corner)',
+                  'Email (required), the product description and answers you type, the answer the AI gives, the problem you name at the end, the page you used it on and the time.',
+                  'To answer whether the CRA applies to your product, to follow up by email once you confirm your address, and to decide what to build next.',
+                ],
+                [
                   'Both forms',
                   'The time you signed up, which form you used and the page you came from, the version of the consent text, and whether you asked for occasional news.',
                   'To prove your consent and respect your choices.',
@@ -885,6 +991,7 @@ export const en = {
           {
             ul: [
               'Forms and emails: your consent (GDPR Article 6(1)(a)), given when you send the form and confirm your email. You can withdraw it at any time with the unsubscribe link in every email or by writing to us.',
+              'CRA check: we process what you type to give you the answer you ask for (GDPR Article 6(1)(b)). Emails after the check rely on your consent, given when you confirm your address.',
               'Analytics, bot check and hosting: our legitimate interest (GDPR Article 6(1)(f)) in running a secure site and learning which pages are useful. We chose cookieless analytics to keep this light on your privacy.',
             ],
           },
@@ -913,6 +1020,18 @@ export const en = {
                   '[Cloudflare privacy policy](https://www.cloudflare.com/privacypolicy/), [Turnstile Privacy Addendum](https://www.cloudflare.com/turnstile-privacy-policy/)',
                 ],
                 [
+                  'Anthropic, PBC',
+                  'Writes the CRA check answer from your product description (AI model)',
+                  'Company in the USA',
+                  '[Anthropic privacy policy](https://www.anthropic.com/legal/privacy)',
+                ],
+                [
+                  'Hetzner Online GmbH',
+                  'Hosts our API server and the database of the CRA check',
+                  'Company in Germany; our server is in the EU (Germany or Finland)',
+                  '[Hetzner privacy policy](https://www.hetzner.com/legal/privacy-policy/)',
+                ],
+                [
                   'Umami Software, Inc.',
                   'Cookieless analytics',
                   'EU and USA',
@@ -927,7 +1046,7 @@ export const en = {
         heading: 'Transfers outside the EU',
         blocks: [
           {
-            p: 'Some providers process data in the USA or elsewhere outside the EU. Cloudflare relies on the EU–US Data Privacy Framework and, as a fallback, the European Commission’s standard contractual clauses. For Brevo and Umami, the safeguards are set out in their privacy policies and data processing terms.',
+            p: 'Some providers process data in the USA or elsewhere outside the EU. Cloudflare relies on the EU–US Data Privacy Framework and, as a fallback, the European Commission’s standard contractual clauses. For Brevo, Anthropic and Umami, the safeguards are set out in their privacy policies and data processing terms.',
           },
         ],
       },
@@ -937,6 +1056,7 @@ export const en = {
           {
             ul: [
               'Confirmed sign-ups: until you unsubscribe or ask us to delete them. When the early-access list closes, we delete answers we no longer need.',
+              'CRA check: what you type, the answers and your email are deleted 24 months after you last used the check, or earlier when you ask us.',
               'Analytics: kept as aggregate statistics.',
               'Hosting and bot check data: kept by Cloudflare for the periods in its own terms.',
             ],

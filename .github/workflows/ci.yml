@@ -27,6 +27,7 @@ jobs:
       PUBLIC_ANALYTICS_WEBSITE_ID: ${{ github.event_name == 'push' && vars.PUBLIC_ANALYTICS_WEBSITE_ID || '' }}
       PUBLIC_ANALYTICS_DOMAIN: ${{ github.event_name == 'push' && vars.PUBLIC_ANALYTICS_DOMAIN || '' }}
       PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.PUBLIC_TURNSTILE_SITE_KEY }}
+      PUBLIC_API_URL: ${{ vars.PUBLIC_API_URL }}
       # The CSP is enforced on production and report-only on pull-request previews.
       CSP_MODE: ${{ github.event_name == 'push' && 'enforce' || 'report' }}
     steps:
