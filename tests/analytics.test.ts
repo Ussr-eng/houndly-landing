@@ -35,6 +35,10 @@ describe('track', () => {
         'kit_requested',
         'link_copied',
         'waitlist_submitted',
+        'cra_check_opened',
+        'cra_check_started',
+        'cra_check_answered',
+        'cra_check_pain',
       ].sort(),
     );
   });

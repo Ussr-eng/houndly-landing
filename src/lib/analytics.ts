@@ -11,6 +11,12 @@ export interface AnalyticsEvents {
   buy_clicked: { plan: string };
   /** interest: the answer to "What do you need first?", or "none". */
   waitlist_submitted: { interest: string };
+  /** The CRA check chat: opened, email accepted, answer shown, problem sent. */
+  cra_check_opened: undefined;
+  cra_check_started: undefined;
+  cra_check_answered: { verdict: string };
+  /** choice: one of the offered problems, or "text" for a written one. */
+  cra_check_pain: { choice: string };
 }
 
 export type AnalyticsEvent = keyof AnalyticsEvents;
@@ -23,6 +29,10 @@ export const analyticsEvents = [
   'kit_requested',
   'buy_clicked',
   'waitlist_submitted',
+  'cra_check_opened',
+  'cra_check_started',
+  'cra_check_answered',
+  'cra_check_pain',
 ] as const satisfies readonly AnalyticsEvent[];
 
 type Props = Record<string, string>;
