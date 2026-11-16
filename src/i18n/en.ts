@@ -10,6 +10,17 @@ export interface PrivacySection {
 
 export const en = {
   skipToContent: 'Skip to content',
+  // Language names are shown in their own language (in the switcher and the hint).
+  language: {
+    short: 'EN',
+    name: 'English',
+    switcherLabel: 'Language',
+    hint: {
+      text: 'This page is also available in English.',
+      link: 'Read it in English',
+      close: 'Close',
+    },
+  },
   nav: {
     label: 'Main',
     home: 'Home',

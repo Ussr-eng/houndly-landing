@@ -5,6 +5,16 @@ import { en, type UiStrings } from './en';
 export const de: UiStrings = {
   ...en,
   skipToContent: 'Zum Inhalt springen',
+  language: {
+    short: 'DE',
+    name: 'Deutsch',
+    switcherLabel: 'Sprache',
+    hint: {
+      text: 'Diese Seite gibt es auch auf Deutsch.',
+      link: 'Auf Deutsch lesen',
+      close: 'Schließen',
+    },
+  },
   breadcrumbs: { label: 'Brotkrumen-Navigation', home: 'Startseite', guides: 'Leitfäden' },
   guide: {
     ...en.guide,

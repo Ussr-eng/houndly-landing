@@ -6,6 +6,7 @@ import Fonts from '../components/Fonts.astro';
 import Analytics from '../components/Analytics.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import LanguageHint from '../components/LanguageHint.astro';
 import CraCheck from '../components/cra-check/CraCheck';
 import { buildSeo } from '../lib/seo/build';
 import { allowIndexing, apiOrigin, site, siteUrl } from '../config/site';
@@ -13,6 +14,7 @@ import { isNoindexByDesign } from '../config/indexing';
 import {
   defaultLocale,
   htmlLang,
+  localizedPath,
   ogLocale,
   normalizePath,
   siteLocale,
@@ -75,6 +77,15 @@ const seo = buildSeo({
 const s = t(locale);
 // Header and footer follow the locale only when the whole site exists in it.
 const chrome = siteLocale(locale);
+// This page in each language it exists in, for the switcher and the browser-language hint.
+// Status pages (noindex by design) have no translations to offer.
+const versions =
+  translations && translations.length > 1 && !isNoindexByDesign(path)
+    ? translations.map((l) => ({
+        locale: l,
+        href: localizedPath(l, neutralPath ?? path),
+      }))
+    : [];
 const api = apiOrigin();
 const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
 ---
@@ -95,7 +106,8 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | u
     <a class="skip-link" href="#main">
       {s.skipToContent}
     </a>
-    <Header locale={chrome} night={nightHeader} />
+    <Header locale={chrome} night={nightHeader} current={locale} versions={versions} />
+    <LanguageHint current={locale} versions={versions} />
     <main id="main" class:list={[{ container: !bleed }]} tabindex="-1">
       <slot />
     </main>
