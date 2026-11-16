@@ -1,12 +1,18 @@
 // Locale routing. English has no prefix; other locales live under /<locale>/.
 // Adding a language: add it to `locales`, add src/i18n/<locale>.ts, add pages under src/pages/<locale>/.
+// A locale can start with single translated pages (German has one guide): until it is listed in
+// `fullSiteLocales`, its pages keep the English header, footer and links, and only pages that
+// name their translations carry hreflang tags.
 
-export const locales = ['en'] as const;
+export const locales = ['en', 'de'] as const;
 export type Locale = (typeof locales)[number];
 export const defaultLocale: Locale = 'en';
 
-export const htmlLang: Record<Locale, string> = { en: 'en' };
-export const ogLocale: Record<Locale, string> = { en: 'en_GB' };
+/** Locales in which every page exists. */
+export const fullSiteLocales: readonly Locale[] = ['en'];
+
+export const htmlLang: Record<Locale, string> = { en: 'en', de: 'de' };
+export const ogLocale: Record<Locale, string> = { en: 'en_GB', de: 'de_DE' };
 
 export function isLocale(value: string): value is Locale {
   return (locales as readonly string[]).includes(value);
@@ -30,19 +36,24 @@ export function localizedPath(
   return locale === def ? base : normalizePath(`/${locale}${base}`);
 }
 
+/** The locale whose pages a link from a `locale` page should point to. */
+export function siteLocale(locale: Locale): Locale {
+  return fullSiteLocales.includes(locale) ? locale : defaultLocale;
+}
+
 export interface Alternate {
   hreflang: string;
   href: string;
 }
 
 /**
- * hreflang alternates for a locale-neutral path. Empty while only one locale exists,
- * so single-language pages carry no hreflang tags.
+ * hreflang alternates for a locale-neutral path. `available` lists the locales the page
+ * exists in; with fewer than two the page carries no hreflang tags.
  */
 export function alternates(
   path: string,
   origin: string,
-  available: readonly string[] = locales,
+  available: readonly string[] = [defaultLocale],
   def: string = defaultLocale,
 ): Alternate[] {
   if (available.length < 2) return [];

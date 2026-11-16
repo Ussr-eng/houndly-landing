@@ -291,6 +291,33 @@ describe('handleSubscribe', () => {
 });
 
 describe('brevoAttributes', () => {
+  it('joins alert channels into CHANNELS and leaves it out when none were picked', () => {
+    const base = {
+      at: '2026-11-16T10:00:00.000Z',
+      redirectionUrl: 'https://example.com/pricing/confirmed/',
+      data: {
+        list: 'waitlist' as const,
+        email: 'a@b.eu',
+        company: '',
+        productType: '' as const,
+        laws: [],
+        interest: 'oncall' as const,
+        companySize: '' as const,
+        currentProcess: '' as const,
+        sellsEu: '' as const,
+        channels: ['phone_call' as const, 'telegram' as const],
+        note: '',
+        plan: '' as const,
+        newsConsent: false,
+        source: '/opsgenie-alternative/',
+      },
+    };
+    expect(brevoAttributes(base).CHANNELS).toBe('phone_call,telegram');
+    expect(brevoAttributes({ ...base, data: { ...base.data, channels: [] } })).not.toHaveProperty(
+      'CHANNELS',
+    );
+  });
+
   it('stores news consent and the consent version', () => {
     const attrs = brevoAttributes({
       at: '2026-10-19T10:00:00.000Z',
@@ -305,6 +332,7 @@ describe('brevoAttributes', () => {
         companySize: '',
         currentProcess: '',
         sellsEu: '',
+        channels: [],
         note: '',
         plan: '',
         newsConsent: true,
@@ -334,6 +362,7 @@ describe('brevoAttributes', () => {
         companySize: '50-249',
         currentProcess: 'pagerduty',
         sellsEu: 'yes',
+        channels: [],
         note: 'Support calls us on WhatsApp',
         plan: 'starter',
         newsConsent: false,

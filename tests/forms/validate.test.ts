@@ -27,6 +27,7 @@ describe('validateSubscribe', () => {
         companySize: '',
         currentProcess: '',
         sellsEu: '',
+        channels: [],
         note: '',
         plan: '',
         newsConsent: false,
@@ -69,6 +70,38 @@ describe('validateSubscribe', () => {
       // news consent exists only on the kit form
       newsConsent: false,
     });
+  });
+
+  it('reads alert channels on the early-access form, once each', () => {
+    const r = validateSubscribe(
+      form([
+        ['list', 'waitlist'],
+        ['email', 'a@b.eu'],
+        ['channels', 'phone_call'],
+        ['channels', 'telegram'],
+        ['channels', 'phone_call'],
+      ]),
+    );
+    expect(r.ok && r.data.channels).toEqual(['phone_call', 'telegram']);
+  });
+
+  it('rejects an unknown channel and ignores channels on the kit form', () => {
+    const bad = validateSubscribe(
+      form([
+        ['list', 'waitlist'],
+        ['email', 'a@b.eu'],
+        ['channels', 'pager'],
+      ]),
+    );
+    expect(bad).toMatchObject({ ok: false, errors: { channels: 'invalid' } });
+    const kit = validateSubscribe(
+      form([
+        ['list', 'kit'],
+        ['email', 'a@b.eu'],
+        ['channels', 'sms'],
+      ]),
+    );
+    expect(kit.ok && kit.data.channels).toEqual([]);
   });
 
   it('stores news consent only when ticked on the kit form', () => {

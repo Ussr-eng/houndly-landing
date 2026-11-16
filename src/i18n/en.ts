@@ -40,7 +40,7 @@ export const en = {
       overview: 'How on-call works',
       rotas: 'Rotas',
       support: 'Support to developer',
-      opsgenie: 'Moving off Opsgenie',
+      opsgenie: 'Opsgenie alternative',
     },
     toolsHeading: 'Tools',
     faq: 'FAQ',
@@ -63,6 +63,8 @@ export const en = {
     calculatorCta: 'Calculate your deadlines',
     published: 'Published',
     updated: 'Updated',
+    // Shown on a guide that exists in another language; the label is in that language.
+    otherLanguage: 'Diesen Leitfaden auf Deutsch lesen',
   },
   notFound: {
     title: 'Page not found',
@@ -116,6 +118,15 @@ export const en = {
     },
     sellsEu: 'Do you sell in the EU?',
     sellsEuOptions: { yes: 'Yes', no: 'No', unsure: 'Not sure' },
+    channels: 'Which channels do you need?',
+    channelsHint: '(optional, pick any)',
+    channelLabels: {
+      phone_call: 'Phone call',
+      sms: 'SMS',
+      telegram: 'Telegram',
+      email: 'Email',
+      app_push: 'App push',
+    },
     note: 'Anything else?',
     noteHint: 'For example, what hurts most in your on-call today. Up to 300 characters.',
     laws: 'Applicable laws',
@@ -218,6 +229,7 @@ export const en = {
           '1 product',
           'Alert webhooks',
           'Telegram and email escalation',
+          'Opsgenie import',
           'CRA, NIS2 and GDPR clocks',
           'AI drafts of every report',
         ],
@@ -231,7 +243,6 @@ export const en = {
           'Phone calls',
           'AI triage of every alert',
           '"Call a developer" button for support',
-          'Opsgenie import',
           'Audit export',
         ],
       },
@@ -594,10 +605,11 @@ export const en = {
       {
         id: 'opsgenie',
         heading: 'Moving off Opsgenie',
-        text: 'Import your schedules and escalation rules (Team plan), run both tools side by side for a week, then switch.',
+        text: 'Import your schedules and escalation rules on any paid plan, run both tools side by side for a week, then switch.',
         links: [
+          { label: 'Within24 as an Opsgenie alternative', href: '/opsgenie-alternative/' },
           {
-            label: 'Opsgenie is shutting down: a migration plan for small teams',
+            label: 'Opsgenie end of support: dates and a one-week migration plan',
             href: '/guides/opsgenie-migration/',
           },
         ],
@@ -619,6 +631,86 @@ export const en = {
     next: {
       heading: 'Get on-call that knows the legal clocks',
       text: "We'll contact you before launch; you decide then whether to buy.",
+    },
+  },
+  // Landing page for teams replacing Opsgenie before its end of support.
+  opsgenieAlt: {
+    title: 'Opsgenie alternative for small teams',
+    description:
+      'Opsgenie shuts down on 5 April 2027. Within24 is on-call for teams of 3 to 20: rotas, escalation, one price per team, hosted in the EU. Early access.',
+    breadcrumb: 'Opsgenie alternative',
+    heading: 'An Opsgenie alternative for small teams',
+    intro:
+      'Opsgenie shuts down on 5 April 2027. Within24 is on-call for teams of 3 to 20 people: a weekly rota, escalation until someone taps "I\'m on it", and one price for the whole team.',
+    primary: 'Join early access',
+    status:
+      'Early access: we are building Within24 now. Join the list and tell us which channels must wake you.',
+    keep: {
+      heading: 'What you keep from Opsgenie',
+      columns: { from: 'In Opsgenie', to: 'In Within24' },
+      rows: [
+        {
+          from: 'Schedules and rotations',
+          to: 'A weekly rota, a backup person, swaps when someone is away',
+        },
+        {
+          from: 'Escalation policies',
+          to: 'Steps with a person, a rota or a team, and a delay between them',
+        },
+        {
+          from: 'Integrations',
+          to: 'One alert webhook for Grafana, Sentry, New Relic and anything that can send HTTP',
+        },
+        {
+          from: 'Notifications',
+          to: 'Telegram and email on every plan, phone calls on the Team plan',
+        },
+        { from: 'Acknowledge', to: 'An "I\'m on it" button that stops the escalation' },
+      ],
+    },
+    sections: [
+      {
+        id: 'left-out',
+        heading: 'What we leave out',
+        text: 'No mobile app, no SMS, no heartbeats and no service catalogue. A small team rarely uses them. If you depend on them, Jira Service Management or a larger tool will fit you better.',
+        links: [],
+      },
+      {
+        id: 'price',
+        heading: 'One price for the team',
+        text: 'Starter covers up to 5 people on call for €29 a month in total. Team covers up to 20 for €99. You do not pay per person. Early-access teams keep this price for 12 months after launch.',
+        links: [{ label: 'Compare plans', href: '/pricing/' }],
+      },
+      {
+        id: 'move',
+        heading: 'Move in a week',
+        text: 'Import your schedules and escalation rules, point your alerts at both tools for a week, test the 3 a.m. path with the real on-call person, then switch Opsgenie off.',
+        links: [
+          {
+            label: 'Opsgenie end of support: dates and a one-week migration plan',
+            href: '/guides/opsgenie-migration/',
+          },
+        ],
+      },
+      {
+        id: 'eu',
+        heading: 'Hosted in the EU',
+        text: 'Within24 runs on servers in the EU. Alerts, rotas and incident history stay there.',
+        links: [],
+      },
+      {
+        id: 'legal',
+        heading: 'If you sell software in the EU',
+        text: 'Mark an incident as reportable and the CRA, NIS2 and GDPR clocks start next to the paging. Until then, an alert is just an alert.',
+        links: [
+          { label: 'What the CRA asks of you', href: '/cra/' },
+          { label: 'Calculate your reporting deadlines', href: '/deadlines/' },
+        ],
+      },
+    ],
+    form: {
+      heading: 'Tell us what must wake you',
+      text: "We'll email you when on-call is ready to try. No payment is taken.",
     },
   },
   cra: {
@@ -956,7 +1048,7 @@ export const en = {
                 ],
                 [
                   'Early-access form',
-                  'Email (required). Optional answers: what you need first, what you ship, company size, your on-call tool today, whether you sell in the EU, the plan you chose, a free-text note.',
+                  'Email (required). Optional answers: what you need first, what you ship, company size, your on-call tool today, whether you sell in the EU, which alert channels you need, the plan you chose, a free-text note.',
                   'To invite you when the product is ready, and to learn what to build first.',
                 ],
                 [

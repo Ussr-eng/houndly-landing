@@ -2,17 +2,18 @@
 import type { GetStaticPaths } from 'astro';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import GuideLayout from '../../layouts/GuideLayout.astro';
-import { publishedGuides } from '../../lib/guides';
+import { guideTranslations, publishedGuides } from '../../lib/guides';
+import type { Locale } from '../../i18n/config';
 
 export const getStaticPaths = (async () => {
-  const guides = publishedGuides(
-    (await getCollection('guides')).filter((g) => g.data.locale === 'en'),
-  );
+  const all = await getCollection('guides');
+  const guides = publishedGuides(all.filter((g) => g.data.locale === 'en'));
   const bySlug = new Map(guides.map((g) => [g.data.slug, g]));
   return guides.map((guide) => ({
     params: { slug: guide.data.slug },
     props: {
       guide,
+      translations: guideTranslations(all, guide.data.slug),
       related: guide.data.related.map((slug) => ({
         slug,
         title: bySlug.get(slug)?.data.title ?? slug,
@@ -23,13 +24,14 @@ export const getStaticPaths = (async () => {
 
 interface Props {
   guide: CollectionEntry<'guides'>;
+  translations: Locale[];
   related: { slug: string; title: string }[];
 }
 
-const { guide, related } = Astro.props;
+const { guide, translations, related } = Astro.props;
 const { Content } = await render(guide);
 ---
 
-<GuideLayout guide={guide.data} related={related}>
+<GuideLayout guide={guide.data} related={related} translations={translations}>
   <Content />
 </GuideLayout>

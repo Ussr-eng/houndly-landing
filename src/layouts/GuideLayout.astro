@@ -3,20 +3,26 @@ import BaseLayout from './BaseLayout.astro';
 import { article, breadcrumbList } from '../lib/seo/jsonld';
 import { absoluteUrl } from '../lib/seo/build';
 import { site, siteUrl } from '../config/site';
-import { htmlLang, localizedPath } from '../i18n/config';
+import { htmlLang, localizedPath, siteLocale, type Locale } from '../i18n/config';
 import type { GuideData } from '../content/guide-schema';
 import { t } from '../i18n';
 
 interface Props {
   guide: GuideData;
-  related: { title: string; slug: string }[];
+  /** `locale` is the language the related guide exists in (English when not translated). */
+  related: { title: string; slug: string; locale?: Locale }[];
+  /** Every locale this guide exists in, this one included. */
+  translations?: readonly Locale[];
 }
 
-const { guide, related } = Astro.props;
+const { guide, related, translations = [guide.locale] } = Astro.props;
 const s = t(guide.locale);
 const origin = siteUrl();
-const home = localizedPath(guide.locale, '/');
+// Pages around the guide (home, guides index, calculator) exist only in full-site locales.
+const around = siteLocale(guide.locale);
+const home = localizedPath(around, '/');
 const path = localizedPath(guide.locale, `/guides/${guide.slug}/`);
+const others = translations.filter((l) => l !== guide.locale);
 const author = guide.author ?? site.author;
 
 const dateFmt = new Intl.DateTimeFormat(htmlLang[guide.locale], {
@@ -27,7 +33,7 @@ const isoDate = (d: Date) => d.toISOString().slice(0, 10);
 
 const crumbs = [
   { name: s.breadcrumbs.home, path: home },
-  { name: s.breadcrumbs.guides, path: localizedPath(guide.locale, '/guides/') },
+  { name: s.breadcrumbs.guides, path: localizedPath(around, '/guides/') },
   { name: guide.title, path },
 ];
 
@@ -52,6 +58,7 @@ const jsonLd = [
   description={guide.description}
   locale={guide.locale}
   neutralPath={`/guides/${guide.slug}/`}
+  translations={translations}
   ogImage={`/og/guides/${guide.slug}.png`}
   ogImageAlt={guide.title}
   ogType="article"
@@ -86,11 +93,22 @@ const jsonLd = [
       {s.guide.updated}:{' '}
       <time datetime={isoDate(guide.dateModified)}>{dateFmt.format(guide.dateModified)}</time>
     </p>
+    {others.map((l) => (
+      <p class="guide-meta">
+        <a
+          href={localizedPath(l, `/guides/${guide.slug}/`)}
+          hreflang={htmlLang[l]}
+          lang={htmlLang[l]}
+        >
+          {s.guide.otherLanguage}
+        </a>
+      </p>
+    ))}
 
     <slot />
 
     <p>
-      <a href={localizedPath(guide.locale, '/deadlines/')}>{s.guide.calculatorCta}</a>
+      <a href={localizedPath(around, '/deadlines/')}>{s.guide.calculatorCta}</a>
     </p>
 
     <section aria-labelledby="sources-heading">
@@ -112,7 +130,7 @@ const jsonLd = [
       <ul>
         {related.map((r) => (
           <li>
-            <a href={localizedPath(guide.locale, `/guides/${r.slug}/`)}>{r.title}</a>
+            <a href={localizedPath(r.locale ?? around, `/guides/${r.slug}/`)}>{r.title}</a>
           </li>
         ))}
       </ul>

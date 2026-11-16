@@ -13,9 +13,9 @@ import { isNoindexByDesign } from '../config/indexing';
 import {
   defaultLocale,
   htmlLang,
-  locales,
   ogLocale,
   normalizePath,
+  siteLocale,
   type Locale,
 } from '../i18n/config';
 import { t } from '../i18n';
@@ -26,6 +26,8 @@ interface Props {
   locale?: Locale;
   /** Locale-neutral path for hreflang; defaults to the current URL path. */
   neutralPath?: string;
+  /** Locales this page exists in. More than one adds hreflang tags; default: this page only. */
+  translations?: readonly Locale[];
   ogImage?: string;
   /** Alt text for ogImage; defaults to the site-wide one. */
   ogImageAlt?: string;
@@ -43,6 +45,7 @@ const {
   description,
   locale = defaultLocale,
   neutralPath,
+  translations,
   ogImage = site.defaultOgImage,
   ogImageAlt = site.ogImageAlt,
   ogType = 'website',
@@ -65,11 +68,13 @@ const seo = buildSeo({
   siteName: site.name,
   // While the global switch is off, every page is noindex; status pages always are.
   noindex: noindex || !allowIndexing() || isNoindexByDesign(path),
-  locales,
+  locales: translations ?? [locale],
   defaultLocale,
   ...(neutralPath ? { neutralPath } : {}),
 });
 const s = t(locale);
+// Header and footer follow the locale only when the whole site exists in it.
+const chrome = siteLocale(locale);
 const api = apiOrigin();
 const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
 ---
@@ -90,11 +95,11 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | u
     <a class="skip-link" href="#main">
       {s.skipToContent}
     </a>
-    <Header locale={locale} night={nightHeader} />
+    <Header locale={chrome} night={nightHeader} />
     <main id="main" class:list={[{ container: !bleed }]} tabindex="-1">
       <slot />
     </main>
-    <Footer locale={locale} />
+    <Footer locale={chrome} />
     {api && <CraCheck client:idle apiOrigin={api} turnstileSiteKey={turnstileSiteKey} />}
   </body>
 </html>

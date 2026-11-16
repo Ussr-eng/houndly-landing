@@ -1,0 +1,150 @@
+---
+// For teams replacing Opsgenie before its end of support (5 April 2027): what carries over,
+// what does not, the price, the guide, and the early-access form with "On-call" chosen and the
+// channels question. Dates come from Atlassian's migration page (see the guide's sources).
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PlanList from '../../components/PlanList.astro';
+import SubscribeForm from '../../components/forms/SubscribeForm.astro';
+import { breadcrumbList } from '../../lib/seo/jsonld';
+import { siteUrl } from '../../config/site';
+import { t } from '../../i18n';
+
+const all = t('en');
+const s = all.opsgenieAlt;
+const path = '/opsgenie-alternative/';
+---
+
+<BaseLayout
+  title={s.title}
+  description={s.description}
+  jsonLd={[
+    breadcrumbList([
+      { name: all.breadcrumbs.home, url: siteUrl() + '/' },
+      { name: s.breadcrumb, url: siteUrl() + path },
+    ]),
+  ]}
+>
+  <div class="alt">
+    <div class="prose">
+      <h1>{s.heading}</h1>
+      <p class="lead">{s.intro}</p>
+      <div class="alt__actions">
+        <a class="button" href="#early-access">
+          {s.primary}
+        </a>
+      </div>
+      <p class="alt__status">{s.status}</p>
+    </div>
+
+    <section class="prose" aria-labelledby="keep-heading">
+      <h2 id="keep-heading">{s.keep.heading}</h2>
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">{s.keep.columns.from}</th>
+            <th scope="col">{s.keep.columns.to}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {s.keep.rows.map((row) => (
+            <tr>
+              <th scope="row">{row.from}</th>
+              <td>{row.to}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+
+    {s.sections.map((section) => (
+      <section id={section.id} class="prose alt__section" aria-labelledby={`${section.id}-heading`}>
+        <h2 id={`${section.id}-heading`}>{section.heading}</h2>
+        <p>{section.text}</p>
+        {section.links.length > 0 && (
+          <ul class="alt__links">
+            {section.links.map((link) => (
+              <li>
+                <a href={link.href}>{link.label}</a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    ))}
+
+    <section aria-labelledby="plans-heading">
+      <h2 id="plans-heading">{all.oncall.pricing.heading}</h2>
+      <PlanList formPath={path} headingLevel={3} />
+    </section>
+
+    <section id="early-access" class="alt__form" aria-labelledby="form-heading">
+      <div class="prose">
+        <h2 id="form-heading">{s.form.heading}</h2>
+        <p>{s.form.text}</p>
+      </div>
+      <SubscribeForm list="waitlist" locale="en" source={path} interest="oncall" askChannels />
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  import { enhancePlanButtons } from '../../scripts/pricing';
+  import { applyWaitlistContext } from '../../scripts/waitlist-context';
+  enhancePlanButtons();
+  applyWaitlistContext();
+</script>
+
+<style>
+  .alt {
+    display: grid;
+    gap: var(--space-12);
+    margin-block: var(--space-4) var(--space-12);
+  }
+
+  .alt h2 {
+    margin: 0 0 var(--space-4);
+    font-size: var(--fs-xl);
+    font-weight: var(--weight-heavy);
+    letter-spacing: -0.01em;
+  }
+
+  .alt__actions {
+    margin-top: var(--space-6);
+  }
+
+  .alt__status {
+    margin: var(--space-4) 0 0;
+    color: var(--muted);
+    font-size: var(--fs-sm);
+  }
+
+  .alt__section {
+    scroll-margin-top: calc(var(--header-h, 4rem) + var(--space-4));
+  }
+
+  .alt__section p {
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--fs-md);
+  }
+
+  .alt__links {
+    display: grid;
+    gap: var(--space-1);
+    margin: var(--space-3) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .alt__form {
+    display: grid;
+    gap: var(--space-6);
+    max-width: 40rem;
+    scroll-margin-top: calc(var(--header-h, 4rem) + var(--space-4));
+  }
+
+  .alt__form p {
+    margin: 0;
+    color: var(--muted);
+  }
+</style>
