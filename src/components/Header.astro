@@ -1,6 +1,7 @@
 ---
 import { site } from '../config/site';
 import { localizedPath, type Locale } from '../i18n/config';
+import LanguageSwitcher from './LanguageSwitcher.astro';
 import { t } from '../i18n';
 import Logo from './Logo.astro';
 
@@ -8,9 +9,13 @@ interface Props {
   locale: Locale;
   /** Dark in both themes, to sit on a night band (the home hero). */
   night?: boolean;
+  /** Language of this page (may differ from `locale` while a language has only some pages). */
+  current?: Locale;
+  /** This page in each of its languages; the switcher shows when there is more than one. */
+  versions?: { locale: Locale; href: string }[];
 }
 
-const { locale, night = false } = Astro.props;
+const { locale, night = false, current = locale, versions = [] } = Astro.props;
 const s = t(locale);
 const home = localizedPath(locale, '/');
 ---
@@ -43,6 +48,7 @@ const home = localizedPath(locale, '/');
         </li>
       </ul>
     </nav>
+    <LanguageSwitcher current={current} versions={versions} />
     <a class="button site-header__cta" href={localizedPath(locale, '/early-access/')}>
       {s.nav.earlyAccess}
     </a>
@@ -153,11 +159,13 @@ const home = localizedPath(locale, '/');
     }
   }
   /* Phones: brand and button on one row, the links on one scrollable row below, so the sticky
-     header stays two rows high and does not cover much of the screen. */
+     header stays two rows high and does not cover much of the screen. The language switcher,
+     when a page has one, ends the second row. */
   @media (max-width: 47.99rem) {
     .site-header__navwrap {
       order: 3;
-      width: 100%;
+      flex: 1 1 0;
+      min-width: 0;
       overflow-x: auto;
       scrollbar-width: none;
     }

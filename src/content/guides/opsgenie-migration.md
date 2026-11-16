@@ -1,12 +1,12 @@
 ---
-title: 'Opsgenie is shutting down: a migration plan for small teams'
-description: 'Atlassian is retiring Opsgenie. A one-week migration plan for a small team: inventory, must-haves, a parallel run and a real 3 a.m. test.'
+title: 'Opsgenie end of support: dates and a one-week migration plan'
+description: 'Opsgenie support ends on 5 April 2027. The key dates and a one-week migration plan for a small team: inventory, a parallel run and a 3 a.m. test.'
 slug: opsgenie-migration
 regimes: [CRA]
 topic: on-call
 datePublished: 2026-10-27
-dateModified: 2026-10-31
-lastVerified: 2026-10-31
+dateModified: 2026-11-16
+lastVerified: 2026-11-16
 sources:
   - title: Opsgenie migration to Jira Service Management
     url: https://www.atlassian.com/software/opsgenie/migration
@@ -17,7 +17,14 @@ sources:
 related: [on-call-rotation-small-team, escalation-policy, support-to-developer-escalation]
 ---
 
-Atlassian is shutting Opsgenie down and moving customers to Jira Service Management. Since 4 June 2025 you can no longer change your Opsgenie edition. On 5 April 2027 Opsgenie shuts down, and any data you have not moved is deleted. A small team can move in a week if it starts with an inventory, not with a vendor demo.
+Atlassian is shutting Opsgenie down and moving customers to Jira Service Management. Support ends on 5 April 2027. A small team can move in a week if it starts with an inventory, not with a vendor demo.
+
+## Opsgenie end-of-support dates
+
+- **4 June 2025, end of sale.** Since this date you can no longer change your Opsgenie edition or add sites. You can still buy extra seats until support ends.
+- **5 April 2027, end of support.** Opsgenie is shut down and no longer accessible. Any data you have not moved is deleted.
+
+Atlassian calls the second date "end of support". Elsewhere you will also see it called Opsgenie's end of life, or EOL. It is the same day.
 
 ## Step 1. Inventory what Opsgenie does for you today
 
@@ -43,4 +50,4 @@ Trigger a test alert at night with the real on-call person. Check that the phone
 
 ## If you build software sold in the EU
 
-Migration is a good moment to add the legal clocks. Under the Cyber Resilience Act, an actively exploited vulnerability starts a 24-hour reporting clock (Art. 14(2)(a)). We are building Within24 to import your Opsgenie schedules and run those clocks next to the paging. [Join early access](/early-access/).
+Migration is a good moment to add the legal clocks. Under the Cyber Resilience Act, an actively exploited vulnerability starts a 24-hour reporting clock (Art. 14(2)(a)). We are building Within24 to import your Opsgenie schedules and run those clocks next to the paging. See [Within24 as an Opsgenie alternative for small teams](/opsgenie-alternative/).

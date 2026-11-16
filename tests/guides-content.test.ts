@@ -4,7 +4,10 @@ import { describe, expect, it } from 'vitest';
 
 // Published guides must not ship with unverified markers; drafts may.
 const dir = join(__dirname, '../src/content/guides');
-const files = readdirSync(dir).filter((f) => /\.mdx?$/.test(f) && !f.startsWith('_'));
+// Includes translations in locale folders (de/<slug>.md).
+const files = readdirSync(dir, { recursive: true, encoding: 'utf8' }).filter(
+  (f) => /\.mdx?$/.test(f) && !f.split(/[\\/]/).some((part) => part.startsWith('_')),
+);
 
 describe('guide content', () => {
   it.each(files)('%s: published guide has no TODO markers', (file) => {

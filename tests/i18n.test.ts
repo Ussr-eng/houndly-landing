@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { isLocale, localizedPath, normalizePath } from '../src/i18n/config';
+import { isLocale, localizedPath, normalizePath, siteLocale } from '../src/i18n/config';
 import { en } from '../src/i18n/en';
 
 describe('normalizePath', () => {
@@ -30,12 +30,20 @@ describe('localizedPath', () => {
 describe('locales', () => {
   it('recognises configured locales only', () => {
     expect(isLocale('en')).toBe(true);
-    expect(isLocale('de')).toBe(false);
+    expect(isLocale('de')).toBe(true);
+    expect(isLocale('fr')).toBe(false);
   });
 
   it('has no empty UI strings', () => {
     const walk = (o: object): string[] =>
       Object.values(o).flatMap((v) => (typeof v === 'string' ? [v] : walk(v as object)));
     expect(walk(en).every((s) => s.trim().length > 0)).toBe(true);
+  });
+});
+
+describe('siteLocale', () => {
+  it('keeps English and falls back to English for a locale with single pages only', () => {
+    expect(siteLocale('en')).toBe('en');
+    expect(siteLocale('de')).toBe('en');
   });
 });

@@ -30,7 +30,10 @@ const columns = [
       { href: oncall, label: s.footer.oncallLinks.overview },
       { href: `${oncall}#rotas`, label: s.footer.oncallLinks.rotas },
       { href: `${oncall}#support`, label: s.footer.oncallLinks.support },
-      { href: `${oncall}#opsgenie`, label: s.footer.oncallLinks.opsgenie },
+      {
+        href: localizedPath(locale, '/opsgenie-alternative/'),
+        label: s.footer.oncallLinks.opsgenie,
+      },
     ],
   },
   {

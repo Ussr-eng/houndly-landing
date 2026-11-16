@@ -6,6 +6,7 @@ import '../../styles/forms.css';
 import { t } from '../../i18n';
 import type { Locale } from '../../i18n/config';
 import {
+  CHANNELS,
   COMPANY_SIZES,
   INTERESTS,
   LAWS,
@@ -13,6 +14,7 @@ import {
   ONCALL_TOOLS,
   PRODUCT_TYPES,
   SELLS_EU,
+  type Interest,
   type ListId,
 } from '../../lib/forms/validate';
 import { HONEYPOT_FIELD } from '../../lib/forms/handler';
@@ -23,9 +25,13 @@ interface Props {
   locale: Locale;
   /** Page path, sent as SOURCE. */
   source: string;
+  /** Early access: the answer to "What do you need first?" chosen in advance. */
+  interest?: Interest;
+  /** Early access: also ask which notification channels the team needs. */
+  askChannels?: boolean;
 }
 
-const { list, locale, source } = Astro.props;
+const { list, locale, source, interest, askChannels = false } = Astro.props;
 const all = t(locale);
 const f = all.form;
 const p = all.pricing;
@@ -137,13 +143,33 @@ const choiceGroups = [
           <div class="form-pills__options">
             {group.options.map((v) => (
               <label class="form-pill">
-                <input type="radio" name={group.name} value={v} />
+                <input
+                  type="radio"
+                  name={group.name}
+                  value={v}
+                  checked={group.name === 'interest' && v === interest}
+                />
                 <span>{(group.labels as Record<string, string>)[v]}</span>
               </label>
             ))}
           </div>
         </fieldset>
       ))}
+      {askChannels && (
+        <fieldset class="form-pills">
+          <legend>
+            {f.channels} <span class="form-note">{f.channelsHint}</span>
+          </legend>
+          <div class="form-pills__options">
+            {CHANNELS.map((v) => (
+              <label class="form-pill">
+                <input type="checkbox" name="channels" value={v} />
+                <span>{f.channelLabels[v]}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      )}
       <div class="form-field">
         <label for={id('plan')}>
           {p.plan} <span class="form-note">{f.optional}</span>

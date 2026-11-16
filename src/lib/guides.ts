@@ -1,4 +1,5 @@
 import type { GuideData } from '../content/guide-schema';
+import { locales, type Locale } from '../i18n/config';
 
 export interface GuideLike {
   id: string;
@@ -17,4 +18,15 @@ export function publishedGuides<G extends GuideLike>(all: G[]): G[] {
       );
   }
   return published;
+}
+
+/** Locales in which a published guide with this slug exists, in the order of `locales`. */
+export function guideTranslations(
+  all: { data: Pick<GuideData, 'slug' | 'locale' | 'draft'> }[],
+  slug: string,
+): Locale[] {
+  const found = new Set(
+    all.filter((g) => g.data.slug === slug && !g.data.draft).map((g) => g.data.locale),
+  );
+  return locales.filter((l) => found.has(l));
 }

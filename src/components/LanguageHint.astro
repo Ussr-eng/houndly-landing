@@ -1,0 +1,82 @@
+---
+// "This page is also in <language>": one hidden bar per other language. language.ts shows the
+// one that matches the browser's language, never redirects, and stays quiet once the person
+// picked a language or closed the bar. It floats below the header, so nothing moves.
+import { htmlLang, type Locale } from '../i18n/config';
+import { t } from '../i18n';
+
+interface Props {
+  current: Locale;
+  versions: { locale: Locale; href: string }[];
+}
+
+const { current, versions } = Astro.props;
+const others = versions.filter((v) => v.locale !== current);
+---
+
+{others.map((v) => {
+  const s = t(v.locale).language.hint;
+  return (
+    <aside class="lang-hint" data-language-hint={v.locale} lang={htmlLang[v.locale]} hidden>
+      <p>
+        {s.text}{' '}
+        <a href={v.href} hreflang={htmlLang[v.locale]} data-set-language={v.locale}>
+          {s.link}
+        </a>
+      </p>
+      <button type="button" class="lang-hint__close" data-language-hint-close aria-label={s.close}>
+        ×
+      </button>
+    </aside>
+  );
+})}
+
+<script>
+  import { enhanceLanguage } from '../scripts/language';
+  enhanceLanguage();
+</script>
+
+<style>
+  .lang-hint {
+    position: fixed;
+    top: calc(var(--header-h) + var(--space-2));
+    left: 50%;
+    z-index: 25;
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
+    width: min(calc(100% - 2 * var(--space-4)), 36rem);
+    padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4);
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--control-radius);
+    box-shadow: 0 6px 24px rgb(0 0 0 / 0.18);
+    transform: translateX(-50%);
+  }
+  .lang-hint[hidden] {
+    display: none;
+  }
+  .lang-hint p {
+    flex: 1;
+    margin: 0;
+    font-size: var(--fs-sm);
+  }
+  .lang-hint__close {
+    flex: none;
+    width: var(--control-h);
+    height: var(--control-h);
+    font: inherit;
+    font-size: var(--fs-lg);
+    line-height: 1;
+    color: var(--muted);
+    background: transparent;
+    border: 0;
+    border-radius: var(--control-radius);
+    cursor: pointer;
+  }
+  .lang-hint__close:hover {
+    color: var(--text);
+    background: var(--surface-2);
+  }
+</style>

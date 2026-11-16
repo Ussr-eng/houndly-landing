@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { guideSchema } from '../src/content/guide-schema';
-import { publishedGuides } from '../src/lib/guides';
+import { guideTranslations, publishedGuides } from '../src/lib/guides';
 
 // Placeholder data only: no legal facts.
 const fixture = {
@@ -63,5 +63,21 @@ describe('publishedGuides', () => {
     expect(() =>
       publishedGuides([g('a', ['b', 'c']), g('b', ['a', 'c']), g('c', ['a', 'b'], true)]),
     ).toThrow(/missing related guides: c/);
+  });
+});
+
+describe('guideTranslations', () => {
+  const g = (slug: string, locale: 'en' | 'de', draft = false) => ({
+    data: { slug, locale, draft },
+  });
+
+  it('lists the locales a published guide exists in, English first', () => {
+    const all = [g('a', 'de'), g('a', 'en'), g('b', 'en')];
+    expect(guideTranslations(all, 'a')).toEqual(['en', 'de']);
+    expect(guideTranslations(all, 'b')).toEqual(['en']);
+  });
+
+  it('leaves out drafts', () => {
+    expect(guideTranslations([g('a', 'en'), g('a', 'de', true)], 'a')).toEqual(['en']);
   });
 });

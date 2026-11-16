@@ -37,6 +37,10 @@ export type OncallTool = (typeof ONCALL_TOOLS)[number];
 export const SELLS_EU = ['yes', 'no', 'unsure'] as const;
 export type SellsEu = (typeof SELLS_EU)[number];
 
+/** Asked where the form is shown to people replacing an on-call tool; several can be picked. */
+export const CHANNELS = ['phone_call', 'sms', 'telegram', 'email', 'app_push'] as const;
+export type Channel = (typeof CHANNELS)[number];
+
 export const LAWS = ['CRA', 'NIS2', 'GDPR', 'unsure'] as const;
 export type Law = (typeof LAWS)[number];
 
@@ -58,6 +62,7 @@ export interface SubscribeData {
   companySize: CompanySize | '';
   currentProcess: OncallTool | '';
   sellsEu: SellsEu | '';
+  channels: Channel[];
   note: string;
   plan: PlanId | '';
   /** Incident Kit only: optional, unticked "Also send me product news". */
@@ -118,6 +123,11 @@ export function validateSubscribe(form: FormLike): ValidationResult {
   if (currentProcess === null) errors.currentProcess = 'invalid';
   const sellsEu = waitlist ? choice(text(form.get('sells_eu')), SELLS_EU) : '';
   if (sellsEu === null) errors.sellsEu = 'invalid';
+  const channelsRaw = waitlist ? form.getAll('channels').map(text).filter(Boolean) : [];
+  const channels = [...new Set(channelsRaw)].filter((c): c is Channel =>
+    (CHANNELS as readonly string[]).includes(c),
+  );
+  if (channels.length !== new Set(channelsRaw).size) errors.channels = 'invalid';
   const note = waitlist ? text(form.get('note')) : '';
   if (note.length > LIMITS.note) errors.note = 'too_long';
 
@@ -151,6 +161,7 @@ export function validateSubscribe(form: FormLike): ValidationResult {
       companySize,
       currentProcess,
       sellsEu,
+      channels,
       note,
       plan,
       newsConsent,
