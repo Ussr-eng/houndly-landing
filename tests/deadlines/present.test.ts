@@ -104,3 +104,20 @@ describe('verificationSummary', () => {
     });
   });
 });
+
+describe('German formatting', () => {
+  it('formats countdowns and dates in German', async () => {
+    const { DateTime } = await import('luxon');
+    const { formatZoned, formatLongUtc } = await import('../../src/lib/deadlines/format');
+    const { offsetLabel } = await import('../../src/lib/calculator/timeline');
+    const now = Date.UTC(2026, 0, 1);
+    const r = remaining(now + (26 * 3600 + 4 * 60 + 5) * 1000, now);
+    expect(formatCountdown(r, 'de')).toBe('1 T 2 Std 04 Min 05 Sek');
+    expect(formatCountdownSpoken(r, 'de')).toBe('1 Tag 2 Stunden');
+    const dt = DateTime.fromISO('2026-10-02T09:00:00Z');
+    expect(formatZoned(dt, 'Europe/Berlin', 'de')).toBe('Fr 2. Okt 2026, 11:00 (UTC+02:00)');
+    expect(formatLongUtc(dt, 'de')).toBe('2. Oktober 2026, 09:00 UTC');
+    expect(offsetLabel({ hours: 24 }, 'de')).toBe('24 Std');
+    expect(offsetLabel({ months: 1 }, 'de')).toBe('1 Mon');
+  });
+});

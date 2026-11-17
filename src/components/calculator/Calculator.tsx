@@ -255,6 +255,7 @@ export default function Calculator({ locale }: Props) {
           },
           nowMs: now,
           laneOrder: availableEvents,
+          locale,
         })
       : null;
 

@@ -25,7 +25,7 @@ export const de: UiStrings = {
     guides: 'Leitfäden',
     kit: 'Incident Kit',
     pricing: 'Preise',
-    earlyAccess: 'Frühen Zugang sichern',
+    earlyAccess: 'Früher Zugang',
   },
   footer: {
     rulesVersion: 'Regeln {version}',
