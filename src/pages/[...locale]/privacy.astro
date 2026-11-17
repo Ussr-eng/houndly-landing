@@ -4,12 +4,20 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { t } from '../../i18n';
 import { localeStaticPaths, pageLocale } from '../../i18n/routes';
+import { defaultLocale } from '../../i18n/config';
 
 export const getStaticPaths = localeStaticPaths;
 const locale = pageLocale(Astro.currentLocale);
 
 const s = t(locale).privacy;
-const slug = (heading: string) => heading.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+const slug = (heading: string) =>
+  heading
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/ß/g, 'ss')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
 
 const LINK = /\[([^\]]+)\]\(((?:https:\/\/|mailto:)[^)\s]+)\)/g;
 type Part = { text: string; href?: string };
@@ -29,6 +37,7 @@ function parts(text: string): Part[] {
 <BaseLayout title={s.title} description={s.description}>
   <article class="prose legal-page">
     <h1>{s.title}</h1>
+    {locale !== defaultLocale && <p class="legal-updated">{s.translationNote}</p>}
     <p class="legal-updated">
       {s.lastUpdated}: {s.updatedOn}
     </p>

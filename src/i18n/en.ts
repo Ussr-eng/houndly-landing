@@ -1028,6 +1028,9 @@ export const en = {
       'What personal data Within24 collects, why, which providers process it, how long we keep it and how to use your rights.',
     lastUpdated: 'Last updated',
     updatedOn: '1 November 2026',
+    // Shown on translations only (not on the English page): the English text is the binding one.
+    translationNote:
+      'This is a translation. If it differs from the English version, the English version applies.',
     // Text approved by the owner on 2026-10-27; the CRA check parts (2026-11-01) await approval
     // in the pull request. Provider facts checked against the pages linked below. Inline links
     // use [text](https://…).
@@ -1211,6 +1214,9 @@ export const en = {
     country: 'Country',
     email: 'Email',
     emailPending: 'follows once the domain is set up',
+    // Shown on translations only.
+    translationNote:
+      'This is a translation. If it differs from the English version, the English version applies.',
   },
   calculator: {
     formHeading: 'Your incident',
@@ -1267,6 +1273,36 @@ export const en = {
       label: 'Reporting country',
       hint: 'Deadlines counted in months use the clock of this country ({zone}).',
     },
+    // Shown in the reporting-country list; codes from src/lib/calculator/countries.ts.
+    countryNames: {
+      AT: 'Austria',
+      BE: 'Belgium',
+      BG: 'Bulgaria',
+      HR: 'Croatia',
+      CY: 'Cyprus',
+      CZ: 'Czechia',
+      DK: 'Denmark',
+      EE: 'Estonia',
+      FI: 'Finland',
+      FR: 'France',
+      DE: 'Germany',
+      GR: 'Greece',
+      HU: 'Hungary',
+      IE: 'Ireland',
+      IT: 'Italy',
+      LV: 'Latvia',
+      LT: 'Lithuania',
+      LU: 'Luxembourg',
+      MT: 'Malta',
+      NL: 'Netherlands',
+      PL: 'Poland',
+      PT: 'Portugal',
+      RO: 'Romania',
+      SK: 'Slovakia',
+      SI: 'Slovenia',
+      ES: 'Spain',
+      SE: 'Sweden',
+    } as Record<string, string>,
     displayZone: {
       label: 'Show times in',
       hint: 'Changes only how times are shown, not the deadlines.',

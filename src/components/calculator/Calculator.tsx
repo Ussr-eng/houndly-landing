@@ -126,10 +126,14 @@ export default function Calculator({ locale }: Props) {
   const input = toDeadlineInput(state);
   const zone = reportingZone(state);
   const country = countryByCode(state.country);
+  const countryLabel = country ? (s.countryNames[country.code] ?? country.name) : undefined;
+  const countryOptions = countries
+    .map((c) => ({ code: c.code, label: s.countryNames[c.code] ?? c.name }))
+    .sort((a, b) => a.label.localeCompare(b.label, locale));
   // Cheap (a handful of rules), so recomputed on every render, including clock ticks.
   const result = input ? computeDeadlines(input, ruleSet) : null;
   const rows = result?.ok
-    ? presentDeadlines(result.deadlines, ruleSet, { displayZone, reportingZone: zone })
+    ? presentDeadlines(result.deadlines, ruleSet, { displayZone, reportingZone: zone, locale })
     : [];
   const dueRows = rows.filter((r): r is DeadlineRow & { status: 'due' } => r.status === 'due');
 
@@ -232,8 +236,10 @@ export default function Calculator({ locale }: Props) {
 
   const caption = state.awareAt
     ? live
-      ? fill(s.result.liveCaption, { time: formatZoned(parseInstant(state.awareAt), displayZone) })
-      : fill(s.result.exampleCaption, { time: formatLongUtc(parseInstant(state.awareAt)) })
+      ? fill(s.result.liveCaption, {
+          time: formatZoned(parseInstant(state.awareAt), displayZone, locale),
+        })
+      : fill(s.result.exampleCaption, { time: formatLongUtc(parseInstant(state.awareAt), locale) })
     : '';
 
   const instantMs = (v: string | null) => (v ? parseInstant(v).toMillis() : null);
@@ -303,7 +309,7 @@ export default function Calculator({ locale }: Props) {
         {!verification.allVerified && <p className="calc-notice">{s.result.unverified}</p>}
         <p className="calc-summary">
           {fill(s.result.summary, {
-            country: country?.name ?? state.country,
+            country: countryLabel ?? state.country,
             zone: displayZone.replace(/_/g, ' '),
           })}{' '}
           ·{' '}
@@ -329,8 +335,9 @@ export default function Calculator({ locale }: Props) {
                 rows={rows}
                 now={now}
                 displayZone={displayZone.replace(/_/g, ' ')}
-                reportingLabel={country?.name ?? zone}
+                reportingLabel={countryLabel ?? zone}
                 strings={s}
+                locale={locale}
                 deadlineName={deadlineName}
                 onDownload={(row) => downloadIcs([row], 'single')}
               />
@@ -380,9 +387,9 @@ export default function Calculator({ locale }: Props) {
             aria-describedby={`${id}-country-hint`}
             onChange={(e) => update({ country: e.target.value })}
           >
-            {countries.map((c) => (
+            {countryOptions.map((c) => (
               <option key={c.code} value={c.code}>
-                {c.name}
+                {c.label}
               </option>
             ))}
           </select>

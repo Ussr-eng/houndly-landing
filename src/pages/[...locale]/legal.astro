@@ -5,6 +5,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { site } from '../../config/site';
 import { t } from '../../i18n';
 import { localeStaticPaths, pageLocale } from '../../i18n/routes';
+import { defaultLocale } from '../../i18n/config';
 
 export const getStaticPaths = localeStaticPaths;
 const locale = pageLocale(Astro.currentLocale);
@@ -16,6 +17,7 @@ const email = site.operator.email;
 <BaseLayout title={s.title} description={s.description}>
   <article class="prose legal-page">
     <h1>{s.title}</h1>
+    {locale !== defaultLocale && <p class="legal-updated">{s.translationNote}</p>}
     <dl class="legal-list">
       <dt>{s.operator}</dt>
       <dd>{site.operator.name ?? s.companyGeneral}</dd>
