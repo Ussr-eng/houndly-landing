@@ -1,0 +1,29 @@
+---
+import type { GetStaticPaths } from 'astro';
+import StatusPage from '../../../components/StatusPage.astro';
+import { t } from '../../../i18n';
+import type { ErrorReason } from '../../../lib/forms/handler';
+import { localeStaticPaths, pageLocale } from '../../../i18n/routes';
+
+export const getStaticPaths = (() =>
+  localeStaticPaths().flatMap((page) =>
+    (['invalid', 'verification', 'unavailable'] as const).map((reason) => ({
+      params: { ...page.params, reason },
+      props: page.props,
+    })),
+  )) satisfies GetStaticPaths;
+
+const locale = pageLocale(Astro.currentLocale);
+const reason = Astro.params.reason as ErrorReason;
+const s = t(locale).formError;
+---
+
+<StatusPage
+  title={s[reason].title}
+  description={s.description}
+  body={s[reason].body}
+  links={[
+    { href: '/incident-kit/', label: s.backKit },
+    { href: '/pricing/', label: s.backPricing },
+  ]}
+/>

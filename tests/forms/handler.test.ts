@@ -74,6 +74,7 @@ describe('handleSubscribe', () => {
         CONSENT_VERSION: '2026-10-19',
         NEWS_CONSENT: false,
         SIGNUP_AT: '2026-10-19T10:00:00.000Z',
+        LANGUAGE: 'en',
       },
       includeListIds: [3],
       templateId: 10,
@@ -310,6 +311,7 @@ describe('brevoAttributes', () => {
         plan: '' as const,
         newsConsent: false,
         source: '/opsgenie-alternative/',
+        locale: 'en' as const,
       },
     };
     expect(brevoAttributes(base).CHANNELS).toBe('phone_call,telegram');
@@ -337,6 +339,7 @@ describe('brevoAttributes', () => {
         plan: '',
         newsConsent: true,
         source: '/incident-kit/',
+        locale: 'en' as const,
       },
     });
     expect(attrs).not.toHaveProperty('COMPANY');
@@ -367,6 +370,7 @@ describe('brevoAttributes', () => {
         plan: 'starter',
         newsConsent: false,
         source: '/',
+        locale: 'en' as const,
       },
     });
     expect(attrs).toMatchObject({

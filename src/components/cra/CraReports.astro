@@ -1,13 +1,16 @@
 ---
 // The three CRA reports, one lane per stage. The detailed version adds what each report covers.
 import { t } from '../../i18n';
+import { pageLocale } from '../../i18n/routes';
+
+const locale = pageLocale(Astro.currentLocale);
 
 interface Props {
   detailed?: boolean;
 }
 
 const { detailed = false } = Astro.props;
-const s = t('en').cra.reports;
+const s = t(locale).cra.reports;
 ---
 
 <ol class:list={['reports', { 'reports--detailed': detailed }]}>

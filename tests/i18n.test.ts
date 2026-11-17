@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { isLocale, localizedPath, normalizePath, siteLocale } from '../src/i18n/config';
+import { isLocale, localizedPath, normalizePath, splitLocale } from '../src/i18n/config';
 import { en } from '../src/i18n/en';
 
 describe('normalizePath', () => {
@@ -41,9 +41,15 @@ describe('locales', () => {
   });
 });
 
-describe('siteLocale', () => {
-  it('keeps English and falls back to English for a locale with single pages only', () => {
-    expect(siteLocale('en')).toBe('en');
-    expect(siteLocale('de')).toBe('en');
+describe('splitLocale', () => {
+  it.each([
+    ['/de/faq/', 'de', '/faq/'],
+    ['/de/', 'de', '/'],
+    ['/faq/', 'en', '/faq/'],
+    ['/', 'en', '/'],
+    ['/en/faq/', 'en', '/en/faq/'],
+    ['/fr/faq/', 'en', '/fr/faq/'],
+  ])('%s -> %s %s', (input, locale, path) => {
+    expect(splitLocale(input)).toEqual({ locale, path });
   });
 });

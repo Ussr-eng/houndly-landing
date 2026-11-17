@@ -1,15 +1,28 @@
 // Locale routing. English has no prefix; other locales live under /<locale>/.
-// Adding a language: add it to `locales`, add src/i18n/<locale>.ts, add pages under src/pages/<locale>/.
-// A locale can start with single translated pages (German has one guide): until it is listed in
-// `fullSiteLocales`, its pages keep the English header, footer and links, and only pages that
-// name their translations carry hreflang tags.
+//
+// Adding a language (see README, "Languages"):
+//   1. add it to `locales`, `htmlLang`, `ogLocale` and astro.config.mjs;
+//   2. add src/i18n/<locale>.ts with every UI string (typed as UiStrings, so a missing one fails
+//      the build) and register it in src/i18n/index.ts;
+//   3. translate the guides into src/content/guides/<locale>/;
+//   4. add it to `builtLocales`: every page under src/pages/[...locale]/ is then built for it.
+// A locale in `hiddenLocales` is built for the team only: noindex, left out of hreflang, the
+// sitemap, the language switcher on other pages and the browser-language hint.
 
 export const locales = ['en', 'de'] as const;
 export type Locale = (typeof locales)[number];
 export const defaultLocale: Locale = 'en';
 
-/** Locales in which every page exists. */
-export const fullSiteLocales: readonly Locale[] = ['en'];
+/** Locales every page is built in. */
+export const builtLocales: readonly Locale[] = ['en', 'de'];
+
+/** Built, but not for the public. */
+export const hiddenLocales: readonly Locale[] = [];
+
+/** Built and public: these get hreflang, the sitemap, the switcher and the hint. */
+export const publicLocales: readonly Locale[] = builtLocales.filter(
+  (l) => !hiddenLocales.includes(l),
+);
 
 export const htmlLang: Record<Locale, string> = { en: 'en', de: 'de' };
 export const ogLocale: Record<Locale, string> = { en: 'en_GB', de: 'de_DE' };
@@ -36,9 +49,13 @@ export function localizedPath(
   return locale === def ? base : normalizePath(`/${locale}${base}`);
 }
 
-/** The locale whose pages a link from a `locale` page should point to. */
-export function siteLocale(locale: Locale): Locale {
-  return fullSiteLocales.includes(locale) ? locale : defaultLocale;
+/** The locale of a path and the path without its locale prefix: "/de/faq/" → de, "/faq/". */
+export function splitLocale(path: string): { locale: Locale; path: string } {
+  const m = /^\/([a-z]{2})(\/.*)$/.exec(path);
+  if (m && m[1] !== defaultLocale && isLocale(m[1] ?? '')) {
+    return { locale: m[1] as Locale, path: m[2] ?? '/' };
+  }
+  return { locale: defaultLocale, path };
 }
 
 export interface Alternate {

@@ -1,7 +1,8 @@
 // Form provider adapter. The Pages Function only talks to this interface, so the provider can
 // be swapped by replacing one implementation.
 
-import type { SubscribeData } from './validate';
+import type { ListId, SubscribeData } from './validate';
+import { defaultLocale, type Locale } from '../../i18n/config';
 import { CONSENT_VERSION } from './validate';
 
 export interface SubscribeRequest {
@@ -34,6 +35,8 @@ export interface ProviderEnv {
   BREVO_LIST_WAITLIST?: string;
   BREVO_TEMPLATE_KIT?: string;
   BREVO_TEMPLATE_WAITLIST?: string;
+  /** Double opt-in templates for other languages, e.g. BREVO_TEMPLATE_KIT_DE; English is the fallback. */
+  [key: `BREVO_TEMPLATE_${'KIT' | 'WAITLIST'}_${string}`]: string | undefined;
 }
 
 /** Accepts everything and stores nothing. For previews and tests until the domain exists. */
@@ -62,6 +65,7 @@ export function brevoAttributes(req: SubscribeRequest): Record<string, string | 
     NOTE: d.note,
     PLAN: d.plan,
     SOURCE: `${d.list}:${d.source}`,
+    LANGUAGE: d.locale,
     CONSENT_VERSION,
     NEWS_CONSENT: d.newsConsent,
     SIGNUP_AT: req.at,
@@ -92,6 +96,13 @@ async function brevoError(res: Response): Promise<{ code?: string; message?: str
 
 const positiveInt = (v: string | undefined) => (v && /^\d+$/.test(v) ? Number(v) : null);
 
+/** The double opt-in template for a list in a language other than English, when set. */
+export function templateFor(env: ProviderEnv, list: ListId, locale: Locale): number | null {
+  if (locale === defaultLocale) return null;
+  const key = `BREVO_TEMPLATE_${list.toUpperCase()}_${locale.toUpperCase()}` as const;
+  return positiveInt(env[key as `BREVO_TEMPLATE_KIT_${string}`]);
+}
+
 /**
  * Brevo double opt-in: POST /v3/contacts/doubleOptinConfirmation. Brevo sends the confirmation
  * email; the contact joins the list once confirmed.
@@ -117,7 +128,7 @@ export function brevoProvider(env: ProviderEnv, fetchImpl: typeof fetch): FormPr
           email: req.data.email,
           attributes: brevoAttributes(req),
           includeListIds: [lists[req.data.list]],
-          templateId: templates[req.data.list],
+          templateId: templateFor(env, req.data.list, req.data.locale) ?? templates[req.data.list],
           redirectionUrl: req.redirectionUrl,
         }),
       });

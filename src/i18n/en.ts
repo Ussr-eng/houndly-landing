@@ -77,6 +77,13 @@ export const en = {
     // Shown on a guide that exists in another language; the label is in that language.
     otherLanguage: 'Diesen Leitfaden auf Deutsch lesen',
   },
+  deadlinesPage: {
+    title: 'EU incident reporting deadline calculator',
+    description:
+      'Calculate CRA, NIS2 and GDPR incident reporting deadlines in your time zone. Free, no sign-up.',
+    appName: '{site} deadline calculator',
+    lead: "Enter when you became aware of an actively exploited vulnerability or incident. Get every Cyber Resilience Act (CRA), NIS2 and GDPR reporting deadline in your time zone and the authority's.",
+  },
   notFound: {
     title: 'Page not found',
     body: 'This page does not exist or has moved.',

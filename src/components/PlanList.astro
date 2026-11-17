@@ -3,6 +3,9 @@
 // links to the early-access form on the same page (src/scripts/pricing.ts enhances it).
 import { plans } from '../config/pricing';
 import { fill, t } from '../i18n';
+import { pageLocale } from '../i18n/routes';
+
+const locale = pageLocale(Astro.currentLocale);
 
 interface Props {
   /** Page that holds the #early-access form. */
@@ -12,7 +15,7 @@ interface Props {
 
 const { formPath, headingLevel } = Astro.props;
 const Heading = headingLevel === 2 ? 'h2' : 'h3';
-const s = t('en').pricing;
+const s = t(locale).pricing;
 const price = (amount: number) => `€${amount}`;
 ---
 

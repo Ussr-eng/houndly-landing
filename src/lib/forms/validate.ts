@@ -2,6 +2,7 @@
 // pages (option lists). Plain TypeScript, no framework or runtime APIs.
 
 import { isPaidPlanId, type PlanId } from '../../config/pricing';
+import { builtLocales, defaultLocale, type Locale } from '../../i18n/config';
 
 export const LISTS = ['kit', 'waitlist'] as const;
 export type ListId = (typeof LISTS)[number];
@@ -69,6 +70,8 @@ export interface SubscribeData {
   newsConsent: boolean;
   /** Page path the form was sent from. */
   source: string;
+  /** Language of the page with the form: status pages and emails follow it. */
+  locale: Locale;
 }
 
 export type ValidationResult =
@@ -87,6 +90,12 @@ const text = (v: unknown) => (typeof v === 'string' ? v.trim() : '');
 function choice<T extends string>(raw: string, options: readonly T[]): T | '' | null {
   if (!raw) return '';
   return (options as readonly string[]).includes(raw) ? (raw as T) : null;
+}
+
+/** The page language sent with the form; the default language when missing or unknown. */
+export function formLocale(form: FormLike): Locale {
+  const raw = text(form.get('locale'));
+  return (builtLocales as readonly string[]).includes(raw) ? (raw as Locale) : defaultLocale;
 }
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -166,6 +175,7 @@ export function validateSubscribe(form: FormLike): ValidationResult {
       plan,
       newsConsent,
       source,
+      locale: formLocale(form),
     },
   };
 }

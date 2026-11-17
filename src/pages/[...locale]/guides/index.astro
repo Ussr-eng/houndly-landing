@@ -1,0 +1,76 @@
+---
+// Guides index: the published guides in this page's language, grouped by topic.
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { publishedGuides } from '../../../lib/guides';
+import { topics } from '../../../content/guide-schema';
+import { breadcrumbList } from '../../../lib/seo/jsonld';
+import { siteUrl } from '../../../config/site';
+import { t } from '../../../i18n';
+import { localizedPath } from '../../../i18n/config';
+import { localeStaticPaths, pageLocale } from '../../../i18n/routes';
+
+export const getStaticPaths = localeStaticPaths;
+const locale = pageLocale(Astro.currentLocale);
+
+const all = t(locale);
+const s = all.guides;
+// Related links are checked against the English set; a translation may link to English guides.
+const guides = publishedGuides(await getCollection('guides'))
+  .filter((g) => g.data.locale === locale)
+  .sort((a, b) => a.data.title.localeCompare(b.data.title, locale));
+const groups = topics
+  .map((topic) => ({ topic, items: guides.filter((g) => g.data.topic === topic) }))
+  .filter((g) => g.items.length > 0);
+---
+
+<BaseLayout
+  title={s.title}
+  description={s.description}
+  jsonLd={[
+    breadcrumbList([
+      { name: all.breadcrumbs.home, url: siteUrl() + localizedPath(locale, '/') },
+      { name: all.breadcrumbs.guides, url: siteUrl() + localizedPath(locale, '/guides/') },
+    ]),
+  ]}
+>
+  <div class="prose">
+    <h1>{s.title}</h1>
+    <p class="lead">{s.intro}</p>
+
+    {groups.map(({ topic, items }) => (
+      <section aria-labelledby={`topic-${topic}`}>
+        <h2 id={`topic-${topic}`}>{s.topics[topic]}</h2>
+        <ul class="guide-list">
+          {items.map((g) => (
+            <li>
+              <a href={`/guides/${g.data.slug}/`}>{g.data.title}</a>
+              <p>{g.data.description}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+
+    <p>
+      <a href="/faq/">{s.faqLink}</a> · <a href="/deadlines/">{all.guide.calculatorCta}</a>
+    </p>
+  </div>
+</BaseLayout>
+
+<style>
+  .guide-list {
+    padding: 0;
+    list-style: none;
+  }
+  .guide-list li + li {
+    margin-top: var(--space-4);
+  }
+  .guide-list a {
+    font-weight: 700;
+  }
+  .guide-list p {
+    margin: var(--space-1) 0 0;
+    color: var(--muted);
+  }
+</style>

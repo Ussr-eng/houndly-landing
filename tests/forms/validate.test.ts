@@ -32,6 +32,7 @@ describe('validateSubscribe', () => {
         plan: '',
         newsConsent: false,
         source: '',
+        locale: 'en',
       },
     });
   });

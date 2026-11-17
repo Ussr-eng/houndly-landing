@@ -1,0 +1,53 @@
+---
+// One guide in one language. A guide exists in a language when src/content/guides/ (English)
+// or src/content/guides/<locale>/ holds it; related guides link to the version in this language
+// when there is one, otherwise to the English one.
+import type { GetStaticPaths } from 'astro';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import GuideLayout from '../../../layouts/GuideLayout.astro';
+import { guideTranslations, publishedGuides } from '../../../lib/guides';
+import { builtLocales, defaultLocale, type Locale } from '../../../i18n/config';
+
+export const getStaticPaths = (async () => {
+  const all = await getCollection('guides');
+  const english = new Map(
+    publishedGuides(all.filter((g) => g.data.locale === defaultLocale)).map((g) => [
+      g.data.slug,
+      g,
+    ]),
+  );
+  return builtLocales.flatMap((locale) => {
+    const own = all.filter((g) => g.data.locale === locale && !g.data.draft);
+    const bySlug = new Map(own.map((g) => [g.data.slug, g]));
+    return own.map((guide) => ({
+      params: {
+        locale: locale === defaultLocale ? undefined : locale,
+        slug: guide.data.slug,
+      },
+      props: {
+        guide,
+        translations: guideTranslations(all, guide.data.slug),
+        related: guide.data.related.map((slug) => {
+          const target = bySlug.get(slug) ?? english.get(slug);
+          if (!target)
+            throw new Error(`Guide "${locale}/${guide.data.slug}" links to missing guide: ${slug}`);
+          return { slug, title: target.data.title, locale: target.data.locale };
+        }),
+      },
+    }));
+  });
+}) satisfies GetStaticPaths;
+
+interface Props {
+  guide: CollectionEntry<'guides'>;
+  translations: Locale[];
+  related: { slug: string; title: string; locale: Locale }[];
+}
+
+const { guide, translations, related } = Astro.props;
+const { Content } = await render(guide);
+---
+
+<GuideLayout guide={guide.data} related={related} translations={translations}>
+  <Content />
+</GuideLayout>

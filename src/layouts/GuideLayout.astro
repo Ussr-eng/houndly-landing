@@ -3,13 +3,13 @@ import BaseLayout from './BaseLayout.astro';
 import { article, breadcrumbList } from '../lib/seo/jsonld';
 import { absoluteUrl } from '../lib/seo/build';
 import { site, siteUrl } from '../config/site';
-import { htmlLang, localizedPath, siteLocale, type Locale } from '../i18n/config';
+import { htmlLang, localizedPath, type Locale } from '../i18n/config';
 import type { GuideData } from '../content/guide-schema';
 import { t } from '../i18n';
 
 interface Props {
   guide: GuideData;
-  /** `locale` is the language the related guide exists in (English when not translated). */
+  /** `locale` is the language the related guide exists in (English when not translated yet). */
   related: { title: string; slug: string; locale?: Locale }[];
   /** Every locale this guide exists in, this one included. */
   translations?: readonly Locale[];
@@ -18,8 +18,7 @@ interface Props {
 const { guide, related, translations = [guide.locale] } = Astro.props;
 const s = t(guide.locale);
 const origin = siteUrl();
-// Pages around the guide (home, guides index, calculator) exist only in full-site locales.
-const around = siteLocale(guide.locale);
+const around = guide.locale;
 const home = localizedPath(around, '/');
 const path = localizedPath(guide.locale, `/guides/${guide.slug}/`);
 const others = translations.filter((l) => l !== guide.locale);

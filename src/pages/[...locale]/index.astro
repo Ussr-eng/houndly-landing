@@ -1,0 +1,471 @@
+---
+// Home: the entry to the funnel. Positioning, how it works and pricing; the early-access form
+// lives on /early-access/.
+// The deadline calculator lives on /deadlines/; old shared calculator links are forwarded there.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PlanList from '../../components/PlanList.astro';
+import HeroIncident from '../../components/HeroIncident.astro';
+import CraFacts from '../../components/cra/CraFacts.astro';
+import CraReports from '../../components/cra/CraReports.astro';
+import { t } from '../../i18n';
+import { localeStaticPaths, pageLocale } from '../../i18n/routes';
+
+export const getStaticPaths = localeStaticPaths;
+const locale = pageLocale(Astro.currentLocale);
+
+const all = t(locale);
+const s = all.home;
+const p = all.pricing;
+const cra = all.cra;
+---
+
+<BaseLayout title={s.title} description={s.description} bleed nightHeader>
+  <section class="hero night" aria-labelledby="hero-heading">
+    <div class="container hero__inner">
+      <div class="hero__copy">
+        <h1 id="hero-heading">{s.heading}</h1>
+        <p class="hero__intro">{s.intro}</p>
+        <div class="hero__actions">
+          <a class="button button--large" href="/early-access/">
+            {s.primary}
+          </a>
+          <a class="button button--large button--secondary" href="/deadlines/">
+            {s.secondary}
+          </a>
+        </div>
+        <p class="hero__status">{s.status}</p>
+      </div>
+      <div class="hero__visual">
+        <HeroIncident />
+      </div>
+    </div>
+  </section>
+
+  <section class="band doors-band" aria-labelledby="doors-heading">
+    <div class="container">
+      <h2 id="doors-heading" class="visually-hidden">
+        {s.doors.heading}
+      </h2>
+      <ul class="doors">
+        {s.doors.items.map((door) => (
+          <li class:list={['door', `door--${door.id}`]}>
+            <h3>{door.name}</h3>
+            <p>{door.text}</p>
+            <a class="door__link" href={door.href}>
+              {door.link}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p class="note">{s.doors.note}</p>
+    </div>
+  </section>
+
+  <section class="band band--tint" aria-labelledby="pain-heading">
+    <div class="container">
+      <h2 id="pain-heading">{s.pain.heading}</h2>
+      <ul class="pain">
+        {s.pain.items.map((item, i) => (
+          <li class:list={['pain__item', `pain__item--${i + 1}`]}>
+            <span class="pain__marker" aria-hidden="true">
+              {s.pain.markers[i]}
+            </span>
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="cra-heading">
+    <div class="container">
+      <h2 id="cra-heading">{s.brief.heading}</h2>
+      <CraFacts />
+      <p class="brief__link">
+        <a href="/cra/">{s.brief.link}</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="band band--tint" aria-labelledby="reports-heading">
+    <div class="container">
+      <h2 id="reports-heading">{cra.reports.heading}</h2>
+      <p class="band__intro">{cra.reports.intro}</p>
+      <CraReports />
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="how-heading">
+    <div class="container">
+      <h2 id="how-heading">{s.how.heading}</h2>
+      <ol class="steps">
+        {s.how.steps.map((step, i) => (
+          <li class="step">
+            <span class="step__num" aria-hidden="true">
+              {i + 1}
+            </span>
+            <h3>{step.name}</h3>
+            <p>{step.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="band band--tint" aria-labelledby="oncall-heading">
+    <div class="container">
+      <h2 id="oncall-heading">
+        {s.oncall.heading} <span class="badge">{s.oncall.badge}</span>
+      </h2>
+      <ul class="panels">
+        {s.oncall.items.map((item) => (
+          <li class="panel">
+            <h3>{item.name}</h3>
+            <p>{item.text}</p>
+          </li>
+        ))}
+      </ul>
+      <p class="note">
+        <a href="/opsgenie-alternative/">{s.oncall.opsgenie}</a>{' '}
+        <a href="/on-call/">{s.oncall.link}</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="pricing-heading">
+    <div class="container">
+      <h2 id="pricing-heading">{s.pricing.heading}</h2>
+      <p class="band__intro">{s.pricing.intro}</p>
+      <PlanList formPath="/early-access/" headingLevel={3} />
+      <p class="note">
+        {p.oncallOnly} {p.priceLock} {p.pagerDuty} {p.consultant}
+      </p>
+    </div>
+  </section>
+
+  <section class="band band--tint" aria-labelledby="trust-heading">
+    <div class="container">
+      <h2 id="trust-heading">{s.trust.heading}</h2>
+      <ul class="trust">
+        {s.trust.items.map((item) => (
+          <li>
+            <h3>{item.name}</h3>
+            <p>{item.text}</p>
+          </li>
+        ))}
+      </ul>
+      <p>
+        <a href="/privacy/">{s.trust.privacy}</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="faq-heading">
+    <div class="container faq-layout">
+      <h2 id="faq-heading">{s.faq.heading}</h2>
+      <dl class="faq">
+        {s.faq.items.map((item) => (
+          <div class="faq__item">
+            <dt>{item.q}</dt>
+            <dd>{item.a}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  import { enhancePlanButtons } from '../../scripts/pricing';
+  import { forwardCalculatorLink } from '../../scripts/home';
+  forwardCalculatorLink();
+  enhancePlanButtons();
+</script>
+
+<style>
+  /* Hero: a night band in both themes, with the incident illustration beside the copy. */
+  .hero {
+    background:
+      radial-gradient(60rem 30rem at 80% 20%, var(--night-glow) 0%, transparent 70%), var(--bg);
+  }
+
+  .hero__inner {
+    display: grid;
+    gap: var(--space-12);
+    align-items: center;
+    padding-block: var(--space-16) var(--space-24);
+  }
+
+  @media (min-width: 64rem) {
+    .hero__inner {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: var(--space-16);
+    }
+  }
+
+  .hero h1 {
+    margin: 0;
+    font-size: var(--fs-2xl);
+    font-weight: var(--weight-heavy);
+    line-height: var(--lh-display);
+    letter-spacing: -0.02em;
+  }
+
+  .hero__intro {
+    max-width: 38rem;
+    margin: var(--space-6) 0 0;
+    font-size: var(--fs-md);
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-8);
+  }
+
+  .hero__status {
+    margin: var(--space-4) 0 0;
+    color: var(--muted);
+    font-size: var(--fs-sm);
+  }
+
+  /* Sections: full-width bands, alternating with a tinted background. */
+  .band {
+    padding-block: var(--space-16);
+    scroll-margin-top: var(--space-4);
+  }
+
+  .band--tint {
+    background: var(--bg-2);
+    border-block: 1px solid var(--border);
+  }
+
+  .band h2 {
+    margin: 0 0 var(--space-8);
+    font-size: var(--fs-xl);
+    font-weight: var(--weight-heavy);
+    letter-spacing: -0.01em;
+  }
+
+  .band__intro {
+    max-width: var(--measure);
+    margin: calc(-1 * var(--space-6)) 0 var(--space-8);
+    color: var(--muted);
+    font-size: var(--fs-md);
+  }
+
+  .band h3 {
+    margin: 0 0 var(--space-2);
+    font-size: var(--fs-md);
+  }
+
+  .band li > p {
+    margin: 0;
+  }
+
+  .pain,
+  .steps,
+  .panels,
+  .trust {
+    display: grid;
+    gap: var(--space-8);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 48rem) {
+    .pain {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .panels {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-6);
+    }
+    .trust {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .trust {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .panels {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .pain__item {
+    font-size: var(--fs-md);
+  }
+
+  .pain__marker {
+    display: block;
+    margin-bottom: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xl);
+    line-height: 1.2;
+  }
+
+  .pain__item--1 .pain__marker {
+    color: var(--overdue);
+  }
+
+  .pain__item--2 .pain__marker {
+    color: var(--soon);
+  }
+
+  .pain__item--3 .pain__marker {
+    color: var(--accent);
+  }
+
+  /* How it works: numbered stops on one line, like a timeline. */
+  .steps {
+    gap: var(--space-8) var(--space-6);
+  }
+
+  @media (min-width: 48rem) {
+    .steps {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      padding-top: 1.125rem;
+      border-top: 2px solid var(--border);
+    }
+    .step__num {
+      margin-top: calc(-1.125rem - 1.125rem - 1px);
+    }
+  }
+
+  .step__num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    margin-bottom: var(--space-4);
+    font-weight: var(--weight-heavy);
+    color: var(--brand-contrast);
+    background: var(--brand);
+    border-radius: 50%;
+  }
+
+  .step p,
+  .trust p {
+    color: var(--muted);
+  }
+
+  .panel {
+    padding: var(--space-6);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+  }
+
+  .badge {
+    display: inline-block;
+    margin-left: var(--space-2);
+    padding: 0 var(--space-2);
+    color: var(--soon);
+    font-size: var(--fs-sm);
+    font-weight: var(--weight-bold);
+    vertical-align: middle;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    letter-spacing: 0;
+  }
+
+  .note {
+    margin: var(--space-6) 0 0;
+    color: var(--muted);
+    font-size: var(--fs-sm);
+  }
+
+  .trust li {
+    padding-top: var(--space-4);
+    border-top: 2px solid var(--brand);
+  }
+
+  /* FAQ: heading on the left, questions on the right on wide screens. */
+  @media (min-width: 64rem) {
+    .faq-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+      gap: var(--space-12);
+    }
+  }
+
+  .faq {
+    margin: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .faq__item {
+    padding-block: var(--space-6);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .faq dt {
+    font-size: var(--fs-md);
+    font-weight: var(--weight-bold);
+  }
+
+  .faq dd {
+    max-width: var(--measure);
+    margin: var(--space-2) 0 0;
+    color: var(--muted);
+  }
+
+  /* Two entry points, one per service, straight under the hero. */
+  .doors-band {
+    padding-block: var(--space-12);
+  }
+
+  .doors {
+    display: grid;
+    gap: var(--space-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 48rem) {
+    .doors {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .door {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-6);
+    border-left: 4px solid var(--brand);
+    background: var(--bg-2);
+  }
+
+  .door--cra {
+    border-left-color: var(--soon);
+  }
+
+  .band .door h3 {
+    margin: 0;
+    font-size: var(--fs-lg);
+  }
+
+  .door p {
+    margin: 0;
+    color: var(--muted);
+  }
+
+  .door__link {
+    margin-top: auto;
+    font-weight: var(--weight-bold);
+  }
+
+  .brief__link {
+    margin: var(--space-8) 0 0;
+  }
+</style>
