@@ -1,5 +1,5 @@
 // Global indexing switch. Off until launch (L5): every page is noindex and robots.txt disallows all.
-import { splitLocale } from '../i18n/config.ts';
+import { hiddenLocales, splitLocale } from '../i18n/config.ts';
 
 // Pure helpers only; the env value is read in site.ts and scripts/check-dist.ts.
 
@@ -27,7 +27,11 @@ export const NOINDEX_PATHS = [
   '/form-error/unavailable/',
 ] as const;
 
-/** In any locale: "/de/pricing/thanks/" is noindex like "/pricing/thanks/". */
+/**
+ * In any locale: "/de/pricing/thanks/" is noindex like "/pricing/thanks/". Every page of a
+ * hidden locale (built for the owner only) is noindex too.
+ */
 export function isNoindexByDesign(path: string): boolean {
-  return (NOINDEX_PATHS as readonly string[]).includes(splitLocale(path).path);
+  const { locale, path: neutral } = splitLocale(path);
+  return hiddenLocales.includes(locale) || (NOINDEX_PATHS as readonly string[]).includes(neutral);
 }
