@@ -62,6 +62,7 @@ export interface TimelineLayout {
 const UNITS: Record<Locale, { h: string; d: string; mo: string }> = {
   en: { h: 'h', d: 'd', mo: 'mo' },
   de: { h: 'Std', d: 'T', mo: 'Mon' },
+  ru: { h: 'ч', d: 'дн', mo: 'мес' },
 };
 
 /** "24 h", "72 h", "14 d" (whole days from 96 h up), "1 mo". */

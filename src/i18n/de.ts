@@ -69,7 +69,7 @@ export const de: UiStrings = {
     calculatorCta: 'Ihre Meldefristen berechnen',
     published: 'Veröffentlicht',
     updated: 'Aktualisiert',
-    otherLanguage: 'Read this guide in English',
+    readInThisLanguage: 'Diesen Leitfaden auf Deutsch lesen',
   },
   deadlinesPage: {
     title: 'Rechner für EU-Meldefristen bei Vorfällen',

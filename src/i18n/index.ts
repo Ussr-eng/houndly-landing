@@ -1,8 +1,9 @@
 import type { Locale } from './config';
 import { en, type UiStrings } from './en';
 import { de } from './de';
+import { ru } from './ru';
 
-const strings: Record<Locale, UiStrings> = { en, de };
+const strings: Record<Locale, UiStrings> = { en, de, ru };
 
 export function t(locale: Locale): UiStrings {
   return strings[locale];

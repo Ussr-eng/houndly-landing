@@ -85,7 +85,7 @@ const s = t(locale);
 // public pages never link to it.
 const shown = hiddenLocales.includes(locale) ? [...translations, locale] : translations;
 const versions =
-  shown.length > 1 && !isNoindexByDesign(path)
+  shown.length > 1 && !isNoindexByDesign(neutral)
     ? shown.map((l) => ({ locale: l, href: localizedPath(l, neutral) }))
     : [];
 const api = apiOrigin();
@@ -111,7 +111,11 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | u
     <Header locale={locale} night={nightHeader} current={locale} versions={versions} />
     <LanguageHint
       current={locale}
-      versions={versions.filter((v) => publicLocales.includes(v.locale))}
+      versions={
+        hiddenLocales.includes(locale)
+          ? []
+          : versions.filter((v) => publicLocales.includes(v.locale))
+      }
     />
     <main id="main" class:list={[{ container: !bleed }]} tabindex="-1">
       <slot />

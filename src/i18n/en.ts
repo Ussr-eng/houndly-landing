@@ -74,8 +74,8 @@ export const en = {
     calculatorCta: 'Calculate your deadlines',
     published: 'Published',
     updated: 'Updated',
-    // Shown on a guide that exists in another language; the label is in that language.
-    otherLanguage: 'Diesen Leitfaden auf Deutsch lesen',
+    // Link to this language's version from a guide in another language; written in this language.
+    readInThisLanguage: 'Read this guide in English',
   },
   deadlinesPage: {
     title: 'EU incident reporting deadline calculator',

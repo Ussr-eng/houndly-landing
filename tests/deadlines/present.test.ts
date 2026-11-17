@@ -121,3 +121,20 @@ describe('German formatting', () => {
     expect(offsetLabel({ months: 1 }, 'de')).toBe('1 Mon');
   });
 });
+
+describe('Russian formatting', () => {
+  it('uses Russian plural forms and dates', async () => {
+    const { DateTime } = await import('luxon');
+    const { formatLongUtc } = await import('../../src/lib/deadlines/format');
+    const now = Date.UTC(2026, 0, 1);
+    const spoken = (s: number) => formatCountdownSpoken(remaining(now + s * 1000, now), 'ru');
+    expect(spoken(60)).toBe('1 минута');
+    expect(spoken(3 * 60)).toBe('3 минуты');
+    expect(spoken(11 * 60)).toBe('11 минут');
+    expect(spoken(21 * 3600 + 22 * 60)).toBe('21 час 22 минуты');
+    expect(spoken(5 * 86400 + 2 * 3600)).toBe('5 дней 2 часа');
+    expect(formatLongUtc(DateTime.fromISO('2026-10-02T09:00:00Z'), 'ru')).toBe(
+      '2 октября 2026, 09:00 UTC',
+    );
+  });
+});
