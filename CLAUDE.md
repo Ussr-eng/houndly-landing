@@ -94,10 +94,15 @@ Every page must be fully readable by Google without running JavaScript.
   size, on-call tool today and whether you sell in the EU, the plan, and an optional free-text note.
 - Custom analytics events: `calculator_opened`, `calculator_calculated`, `ics_downloaded`, `link_copied`,
   `kit_requested`, `buy_clicked` (with plan), `waitlist_submitted`, and for the CRA check chat
-  `cra_check_opened`, `cra_check_started`, `cra_check_answered` (with verdict), `cra_check_pain`.
-- CRA check chat (every page, only when `PUBLIC_API_URL` is set): email first, then the AI check
-  on the backend (houndly-backend `POST /public/cra-check/*`), then "what hurts most". The backend
-  stores everything in its own PostgreSQL; the browser keeps nothing.
+  `cra_check_opened`, `cra_check_started`, `cra_check_answered` (with verdict), `cra_check_pain`, and for the AI guide on the home page
+  `fit_check_asked`, `fit_check_answered` (with verdict), `fit_check_emailed`.
+- CRA check chat (every page except home, only when `PUBLIC_API_URL` is set): email first, then the
+  AI check on the backend (houndly-backend `POST /public/cra-check/*`), then "what hurts most". The
+  backend stores everything in its own PostgreSQL; the browser keeps nothing.
+- AI guide on the home page (hero, only when `PUBLIC_API_URL` is set): the visitor describes their
+  problem and gets a short answer with no email (houndly-backend `POST /public/fit-check`); the full
+  analysis comes by email only when asked (`POST /public/fit-check/email`). Module cards light up
+  when the answer names them; their ids and statuses match the backend's catalogue.
 - No tracking cookies, no third-party scripts beyond the analytics tool and the form provider
   (Turnstile). The only other host the browser talks to is our backend API.
 
