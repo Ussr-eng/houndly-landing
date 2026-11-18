@@ -17,6 +17,16 @@
   }
 }
 
+@keyframes fit-pulse {
+  0%,
+  100% {
+    box-shadow: 0 1.5rem 5rem rgb(53 99 240 / 0.25);
+  }
+  50% {
+    box-shadow: 0 1.5rem 7rem rgb(53 99 240 / 0.75);
+  }
+}
+
 @keyframes fit-rise {
   from {
     opacity: 0;
@@ -367,8 +377,13 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .fit-glow {
-    transition: none;
+  /* No turning with reduced motion. While the AI thinks, the glow around the box pulses
+     instead, so the visitor still sees that it is working, with nothing moving. */
+  .fit-glow[data-busy] {
+    animation: fit-pulse 1.6s ease-in-out infinite;
+    /* base.css shortens every animation under reduced motion; this one is allowed. */
+    animation-duration: 1.6s !important;
+    animation-iteration-count: infinite !important;
   }
   .fit__dot,
   .fit__answer {
