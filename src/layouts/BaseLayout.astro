@@ -43,6 +43,8 @@ interface Props {
   bleed?: boolean;
   /** Dark header in both themes, for a page that opens with a night band. */
   nightHeader?: boolean;
+  /** Leave out the CRA check chat (the home page has its own AI guide). */
+  noCraChat?: boolean;
 }
 
 const {
@@ -58,6 +60,7 @@ const {
   jsonLd = [],
   bleed = false,
   nightHeader = false,
+  noCraChat = false,
 } = Astro.props;
 
 const path = Astro.url.pathname === '/404.html' ? '/404/' : normalizePath(Astro.url.pathname);
@@ -121,7 +124,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | u
       <slot />
     </main>
     <Footer locale={locale} />
-    {api && (
+    {api && !noCraChat && (
       <CraCheck client:idle apiOrigin={api} turnstileSiteKey={turnstileSiteKey} locale={locale} />
     )}
   </body>

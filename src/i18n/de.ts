@@ -2,7 +2,7 @@
 // fails the build. Legal facts are the same as in English (articles, dates, numbers); only the
 // wording is translated. Links in hrefs stay English paths: non-English pages get them rewritten
 // to /de/… at build time (src/middleware.ts).
-import type { PrivacySection, UiStrings } from './en';
+import type { HomeModule, PrivacySection, UiStrings } from './en';
 
 export const de: UiStrings = {
   skipToContent: 'Zum Inhalt springen',
@@ -286,35 +286,140 @@ export const de: UiStrings = {
     },
   },
   home: {
-    title: 'On-Call und CRA-Meldungen für kleine Teams',
+    title: 'On-Call und EU-Meldepflichten für kleine Softwareteams',
     description:
-      'Dienstpläne, Eskalation und Anrufe, die die richtige Person wecken, dazu gesetzliche Fristen und KI-Entwürfe jeder CRA-Meldung. Früher Zugang, kostenlos.',
-    heading: 'Die richtige Person wecken. Die CRA-Meldung rechtzeitig abgeben.',
+      'Dienstpläne, Eskalation und Anrufe, Import aus Opsgenie, dazu Fristen nach CRA, NIS2 und DSGVO. Fragen Sie unseren KI-Guide, ob Within24 passt.',
+    heading: 'On-Call und EU-Meldepflichten für kleine Softwareteams',
     intro:
-      'Within24 übernimmt Ihren Bereitschaftsdienst: Dienstpläne, Eskalation und Anrufe, bis jemand „Ich übernehme“ tippt. Ist ein Vorfall nach dem CRA meldepflichtig, startet Within24 die gesetzlichen Fristen, und unsere KI entwirft jede Meldung, mit einer Quelle für jede Aussage.',
+      'Dienstpläne, Eskalation und Anrufe, ein Import aus Opsgenie und Fristen nach CRA, NIS2 und DSGVO mit KI-Entwürfen der Meldungen. Gehostet in der EU.',
     primary: 'Frühen Zugang sichern',
     secondary: 'Ihre Meldefristen berechnen',
-    doors: {
-      heading: 'Was brauchen Sie?',
+    status: 'Früher Zugang: Wir bauen Within24 gerade.',
+    // Der KI-Guide im Hero (src/components/fit-check).
+    guide: {
+      badge: 'KI-Guide: kennt jeden Teil von Within24',
+      label: 'Beschreiben Sie Ihr Problem. In Sekunden sehen Sie, ob wir es lösen.',
+      free: 'Kurze Antwort kostenlos, ohne E-Mail',
+      hint: 'Mit Enter fragen. Umschalt+Enter beginnt eine neue Zeile.',
+      examples: [
+        'Wir verlassen Opsgenie vor April und brauchen nachts Anrufe',
+        'Der Support kann keinen Entwickler wecken',
+        'Wir verkaufen ein Gerät in der EU. Was müssen wir nach dem CRA melden?',
+        'Ein Alarmsturm weckt drei Leute gleichzeitig',
+      ],
+      button: 'KI-Guide fragen',
+      tryLabel: 'Beispiele:',
+      chips: [
+        {
+          label: 'Weg von Opsgenie',
+          text: 'Wir sind 8 Engineers und verlassen Opsgenie vor April. Wir brauchen Dienstpläne, Eskalation und Anrufe.',
+        },
+        {
+          label: 'CRA-Meldungen',
+          text: 'Wir verkaufen ein vernetztes Gerät in der EU und müssen Schwachstellen nach dem CRA melden.',
+        },
+        {
+          label: 'Support soll Entwickler erreichen',
+          text: 'Unser Support braucht einen Weg, nachts den Entwickler in Bereitschaft anzurufen.',
+        },
+      ],
+      thinking: 'Wir prüfen Ihr Problem an jedem Modul',
+      verdicts: {
+        fits: 'Passt',
+        partly: 'Passt teilweise',
+        not_yet: 'Noch nicht',
+        not_for_us: 'Machen wir nicht',
+      },
+      statuses: {
+        available: 'Verfügbar',
+        building: 'In Arbeit',
+        next: 'Als Nächstes',
+        not_planned: 'Nicht geplant',
+        unknown: 'Wir fragen das Team',
+      },
+      emailLabel: 'Vollständige Analyse per E-Mail',
+      emailHint: 'Welcher Tarif passt, was Sie zuerst einrichten und was es noch nicht gibt.',
+      emailPlaceholder: 'sie@firma.de',
+      emailButton: 'Analyse per E-Mail senden',
+      emailSending: 'Wird gesendet…',
+      consent:
+        'Wir senden die Analyse sofort. Beim ersten Mal bitten wir Sie in einer zweiten E-Mail, Ihren Platz im frühen Zugang zu bestätigen.',
+      privacy: 'Datenschutzerklärung',
+      sent: {
+        heading: 'Sehen Sie in Ihr Postfach.',
+        text: 'Die vollständige Analyse ist unterwegs.',
+      },
+      again: 'Etwas anderes fragen',
+      errors: {
+        short: 'Beschreiben Sie Ihr Problem zuerst in ein paar Worten.',
+        email: 'Geben Sie eine gültige E-Mail-Adresse ein.',
+        network: 'Keine Verbindung. Prüfen Sie Ihr Internet und versuchen Sie es erneut.',
+        robot:
+          'Wir konnten nicht bestätigen, dass Sie kein Roboter sind. Laden Sie die Seite neu und versuchen Sie es erneut.',
+        tooMany: 'Zu viele Fragen in kurzer Zeit. Bitte versuchen Sie es später erneut.',
+        expired: 'Diese Antwort ist abgelaufen. Bitte fragen Sie erneut.',
+        already: 'Diese Analyse haben wir bereits gesendet. Sehen Sie in Ihr Postfach.',
+        unavailable:
+          'Der KI-Guide ist gerade nicht verfügbar. Bitte versuchen Sie es später erneut.',
+      },
+    },
+    modules: {
+      heading: 'Was Within24 macht',
+      headingAnswered: 'Was Ihr Problem abdeckt',
+      note: 'Jede Karte sagt, ob es heute funktioniert, gebaut wird oder als Nächstes kommt.',
+      swipe: 'Wischen, um alle zu sehen',
+      fit: 'Passt zu Ihrem Problem',
       items: [
         {
           id: 'oncall',
-          name: 'Sie brauchen jemanden in Bereitschaft',
-          text: 'Dienstpläne, Eskalation, Anrufe und ein Knopf „Entwickler anrufen“ für den Support. Sie verlassen Opsgenie? Nehmen Sie Ihre Dienstpläne mit.',
-          link: 'So funktioniert On-Call',
+          title: 'Die richtige Person wecken',
+          text: 'Dienstpläne, Eskalation und Anrufe, bis jemand „Ich übernehme“ tippt.',
+          tag: 'In der Beta',
+          tone: 'ok',
           href: '/on-call/',
+          link: 'So funktioniert On-Call',
         },
         {
-          id: 'cra',
-          name: 'Sie müssen nach dem CRA melden',
-          text: 'Die Fristen für 24 Stunden, 72 Stunden und den Abschlussbericht starten mit dem Alarm, und unsere KI entwirft jede Meldung, die Sie prüfen und selbst abgeben.',
-          link: 'Was der CRA von Ihnen verlangt',
-          href: '/cra/',
+          id: 'alerts',
+          title: 'Ein Problem, ein Vorfall',
+          text: 'Alarme aus Grafana, Prometheus oder jedem Webhook, zu einem Vorfall gebündelt.',
+          tag: 'In der Beta',
+          tone: 'ok',
         },
-      ],
-      note: 'Nutzen Sie eines davon oder beides. Markieren Sie einen Vorfall als meldepflichtig, und die gesetzlichen Fristen starten mit demselben Alarm, der Sie geweckt hat.',
+        {
+          id: 'opsgenie',
+          title: 'Weg von Opsgenie',
+          text: 'Dienstpläne, Eskalationsrichtlinien und Integrationen mitnehmen, bevor Opsgenie schließt.',
+          tag: 'In Arbeit',
+          tone: 'build',
+          href: '/opsgenie-alternative/',
+          link: 'Opsgenie-Alternative',
+        },
+        {
+          id: 'report',
+          title: 'Rechtzeitig melden',
+          text: 'Fristen nach CRA, NIS2 und DSGVO mit KI-Entwürfen der Meldungen. Der Fristenrechner ist schon jetzt kostenlos.',
+          tag: 'Kostenlose Tools',
+          tone: 'free',
+          href: '/deadlines/',
+          link: 'Fristen berechnen',
+        },
+        {
+          id: 'customers',
+          title: 'Betroffene Kunden informieren',
+          text: 'Wer das betroffene Produkt nutzt, eine Statusseite und ein Knopf „Entwickler anrufen“.',
+          tag: 'Als Nächstes',
+          tone: 'next',
+        },
+        {
+          id: 'team',
+          title: 'Faire Bereitschaft',
+          text: 'Nacht- und Wochenendstunden für die Lohnabrechnung, dazu Vorfallstatistiken.',
+          tag: 'Als Nächstes',
+          tone: 'next',
+        },
+      ] as HomeModule[],
     },
-    status: 'Früher Zugang: Wir bauen Within24 gerade.',
     example: {
       caption:
         'Beispielvorfall: Sam hat 4 Minuten nach dem Alarm übernommen, und die drei CRA-Fristen laufen seit 9 Stunden.',
@@ -343,19 +448,6 @@ export const de: UiStrings = {
       },
       draft: 'Entwurf der Frühwarnung bereit: 9 Aussagen, 9 Quellen',
     },
-    pain: {
-      heading: 'Der Alarm wartet nicht bis Montag',
-      markers: ['03:12', '24 Std', 'Gleiche Regeln'],
-      items: [
-        'Samstag, 3:12 Uhr. Ein Alarm geht los. Ist es nur ein Ausfall oder eine aktiv ausgenutzte Schwachstelle?',
-        'Nach dem CRA zählt die 24-Stunden-Frist für die Frühwarnung ab dem Moment, in dem Sie Kenntnis erlangen, nicht ab Montagmorgen.',
-        'Kleine Teams haben dieselbe Pflicht wie große, aber kein Sicherheitsteam, das sich darum kümmert.',
-      ],
-    },
-    brief: {
-      heading: 'Die CRA-Meldepflicht gilt seit dem 11. September 2026',
-      link: 'Zum CRA-Überblick: wichtige Termine, die drei Meldungen und wer betroffen ist',
-    },
     how: {
       heading: 'So funktioniert es',
       steps: [
@@ -376,26 +468,6 @@ export const de: UiStrings = {
           text: 'Vor jeder Frist liegt ein Entwurf aus der Vorfall-Zeitleiste bereit, mit einer Quelle für jede Aussage. Sie bearbeiten ihn und reichen ihn selbst auf der ENISA Single Reporting Platform ein.',
         },
       ],
-    },
-    oncall: {
-      heading: 'Arbeitet mit Ihrem On-Call zusammen oder ersetzt ihn',
-      badge: 'In Entwicklung',
-      items: [
-        {
-          name: 'Sie nutzen schon PagerDuty, Opsgenie oder Grafana',
-          text: 'Behalten Sie es. Senden Sie Alarme per Webhook an Within24: Ihr Werkzeug alarmiert weiter das Team, und Within24 führt die gesetzlichen Fristen und entwirft die Meldungen.',
-        },
-        {
-          name: 'Noch hat niemand Bereitschaft',
-          text: 'Within24 weckt die richtige Person selbst: Dienstpläne, Eskalation, Anrufe und ein Knopf „Entwickler anrufen“ für den Support.',
-        },
-        {
-          name: 'Nicht jeder Alarm ist ein rechtlicher Vorfall',
-          text: 'Die meisten Alarme sind Ausfälle. Sie alarmieren den Dienstplan, eskalieren und werden mit einer Notiz geschlossen. Nur Alarme, die Sie als meldepflichtig markieren, starten gesetzliche Fristen.',
-        },
-      ],
-      opsgenie: 'Sie verlassen Opsgenie? Nehmen Sie Ihre Dienstpläne mit.',
-      link: 'So funktioniert On-Call',
     },
     pricing: {
       heading: 'Preise',
@@ -1027,11 +1099,11 @@ export const de: UiStrings = {
     description:
       'Welche personenbezogenen Daten Within24 erhebt, warum, welche Anbieter sie verarbeiten, wie lange wir sie speichern und wie Sie Ihre Rechte nutzen.',
     lastUpdated: 'Zuletzt aktualisiert',
-    updatedOn: '1. November 2026',
+    updatedOn: '18. November 2026',
     translationNote:
       'Dies ist eine Übersetzung. Weicht sie von der englischen Fassung ab, gilt die englische Fassung.',
     intro:
-      'Diese Erklärung beschreibt, welche personenbezogenen Daten Within24 auf within24.app erhebt, warum, und was Sie dagegen tun können. Zum Lesen der Website und zur Nutzung des Rechners brauchen wir keine personenbezogenen Daten. Ihre E-Mail erhalten wir nur, wenn Sie eines unserer Formulare senden oder die CRA-Prüfung nutzen.',
+      'Diese Erklärung beschreibt, welche personenbezogenen Daten Within24 auf within24.app erhebt, warum, und was Sie dagegen tun können. Zum Lesen der Website und zur Nutzung des Rechners brauchen wir keine personenbezogenen Daten. Ihre E-Mail erhalten wir nur, wenn Sie eines unserer Formulare senden die CRA-Prüfung nutzen oder die vollständige Analyse des KI-Guides anfordern.',
     sections: [
       {
         heading: 'Wer verantwortlich ist',
@@ -1074,6 +1146,11 @@ export const de: UiStrings = {
                   'Um zu beantworten, ob der CRA für Ihr Produkt gilt, um nach Bestätigung Ihrer Adresse per E-Mail nachzufassen und um zu entscheiden, was wir als Nächstes bauen.',
                 ],
                 [
+                  'KI-Guide (das Feld oben auf der Startseite)',
+                  'Das Problem, das Sie beschreiben, die Antwort der KI, die Seite, auf der Sie ihn genutzt haben, und die Uhrzeit. Nur wenn Sie die vollständige Analyse anfordern: Ihre E-Mail und die Analyse, die wir senden.',
+                  'Um zu beantworten, ob Within24 zu Ihrem Problem passt, um Ihnen die angeforderte Analyse per E-Mail zu senden und um zu entscheiden, was wir als Nächstes bauen.',
+                ],
+                [
                   'Beide Formulare',
                   'Den Zeitpunkt Ihrer Anmeldung, welches Formular Sie genutzt haben und von welcher Seite Sie kamen, die Version des Einwilligungstextes und ob Sie gelegentliche Neuigkeiten wünschen.',
                   'Um Ihre Einwilligung nachzuweisen und Ihre Wahl zu respektieren.',
@@ -1101,6 +1178,7 @@ export const de: UiStrings = {
             ul: [
               'Formulare und E-Mails: Ihre Einwilligung (Art. 6 Abs. 1 Buchst. a DSGVO), die Sie mit dem Absenden des Formulars und der Bestätigung Ihrer E-Mail geben. Sie können sie jederzeit über den Abmeldelink in jeder E-Mail oder per Nachricht an uns widerrufen.',
               'CRA-Prüfung: Wir verarbeiten, was Sie eingeben, um Ihnen die erbetene Antwort zu geben (Art. 6 Abs. 1 Buchst. b DSGVO). E-Mails nach der Prüfung beruhen auf Ihrer Einwilligung, die Sie mit der Bestätigung Ihrer Adresse geben.',
+              'KI-Guide: Wir verarbeiten, was Sie eingeben, und Ihre E-Mail, wenn Sie die vollständige Analyse anfordern, um Ihnen die erbetene Antwort zu geben (Art. 6 Abs. 1 Buchst. b DSGVO). E-Mails zum frühen Zugang beruhen auf Ihrer Einwilligung, die Sie mit der Bestätigung Ihrer Adresse geben.',
               'Analyse, Bot-Prüfung und Hosting: unser berechtigtes Interesse (Art. 6 Abs. 1 Buchst. f DSGVO), eine sichere Website zu betreiben und zu erfahren, welche Seiten nützlich sind. Wir haben eine Analyse ohne Cookies gewählt, um Ihre Privatsphäre wenig zu belasten.',
             ],
           },
@@ -1118,7 +1196,7 @@ export const de: UiStrings = {
               rows: [
                 [
                   'Brevo SAS',
-                  'Speichert Formularanmeldungen und versendet Bestätigungs- und Kit-E-Mails',
+                  'Speichert Formularanmeldungen und versendet Bestätigungs-, Kit- und Analyse-E-Mails',
                   'Unternehmen in Frankreich; kann Daten in die USA und nach Indien übermitteln',
                   '[Datenschutzerklärung von Brevo](https://www.brevo.com/legal/privacypolicy/)',
                 ],
@@ -1130,13 +1208,13 @@ export const de: UiStrings = {
                 ],
                 [
                   'Anthropic, PBC',
-                  'Schreibt die Antwort der CRA-Prüfung aus Ihrer Produktbeschreibung (KI-Modell)',
+                  'Schreibt die Antworten der CRA-Prüfung und des KI-Guides aus Ihren Eingaben (KI-Modell)',
                   'Unternehmen in den USA',
                   '[Datenschutzerklärung von Anthropic](https://www.anthropic.com/legal/privacy)',
                 ],
                 [
                   'Hetzner Online GmbH',
-                  'Hostet unseren API-Server und die Datenbank der CRA-Prüfung',
+                  'Hostet unseren API-Server und die Datenbank der CRA-Prüfung und des KI-Guides',
                   'Unternehmen in Deutschland; unser Server steht in der EU (Deutschland oder Finnland)',
                   '[Datenschutzerklärung von Hetzner](https://www.hetzner.com/legal/privacy-policy/)',
                 ],
@@ -1166,6 +1244,7 @@ export const de: UiStrings = {
             ul: [
               'Bestätigte Anmeldungen: bis Sie sich abmelden oder die Löschung verlangen. Wenn die Liste für den frühen Zugang geschlossen wird, löschen wir Antworten, die wir nicht mehr brauchen.',
               'CRA-Prüfung: Was Sie eingeben, die Antworten und Ihre E-Mail werden 24 Monate nach Ihrer letzten Nutzung der Prüfung gelöscht oder früher, wenn Sie es verlangen.',
+              'KI-Guide: Was Sie eingeben und die Antworten werden 24 Monate nach Ihrer Frage gelöscht oder früher, wenn Sie es verlangen.',
               'Analyse: als zusammengefasste Statistik gespeichert.',
               'Daten aus Hosting und Bot-Prüfung: von Cloudflare für die Fristen in den eigenen Bedingungen gespeichert.',
             ],

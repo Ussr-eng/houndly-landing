@@ -17,6 +17,10 @@ export interface AnalyticsEvents {
   cra_check_answered: { verdict: string };
   /** choice: one of the offered problems, or "text" for a written one. */
   cra_check_pain: { choice: string };
+  /** The AI guide on the home page: question sent, short answer shown, full analysis asked for. */
+  fit_check_asked: undefined;
+  fit_check_answered: { verdict: string };
+  fit_check_emailed: undefined;
 }
 
 export type AnalyticsEvent = keyof AnalyticsEvents;
@@ -33,6 +37,9 @@ export const analyticsEvents = [
   'cra_check_started',
   'cra_check_answered',
   'cra_check_pain',
+  'fit_check_asked',
+  'fit_check_answered',
+  'fit_check_emailed',
 ] as const satisfies readonly AnalyticsEvent[];
 
 type Props = Record<string, string>;

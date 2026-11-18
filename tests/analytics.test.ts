@@ -39,6 +39,9 @@ describe('track', () => {
         'cra_check_started',
         'cra_check_answered',
         'cra_check_pain',
+        'fit_check_asked',
+        'fit_check_answered',
+        'fit_check_emailed',
       ].sort(),
     );
   });
