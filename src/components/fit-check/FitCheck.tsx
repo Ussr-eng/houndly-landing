@@ -35,6 +35,11 @@ interface Props {
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const TYPE_MS = 55;
+/** Seconds per turn of the glow around the box: slow at rest, fast while the AI thinks. */
+const TURN_REST_S = 30;
+const TURN_BUSY_S = 1.4;
+/** How quickly the glow speeds up and slows down (higher is quicker). */
+const SPIN_EASE = 2.5;
 const HOLD_TICKS = 40;
 
 /** Wait briefly for the Turnstile token; go on without it if it does not arrive. */
@@ -85,6 +90,8 @@ export default function FitCheck({
   const question = useRef<HTMLTextAreaElement>(null);
   const result = useRef<HTMLDivElement>(null);
   const emailInput = useRef<HTMLInputElement>(null);
+  const glow = useRef<HTMLDivElement>(null);
+  const spinFast = useRef(false);
 
   // The placeholder types out example problems while the box is empty and not focused.
   useEffect(() => {
@@ -103,6 +110,32 @@ export default function FitCheck({
     return () => window.clearInterval(timer);
   }, [animate, text, focused, s.examples]);
   const placeholder = animate && !text && !focused && typed ? typed : (s.examples[0] ?? '');
+
+  // The glow turns slowly at rest, speeds up while the AI thinks and slows back down after.
+  // The speed eases between the two, so the change never jumps. Off with reduced motion.
+  useEffect(() => {
+    const el = glow.current;
+    if (!el || reducedMotion() || typeof window.requestAnimationFrame !== 'function') return;
+    let angle = 0;
+    let speed = 360 / TURN_REST_S;
+    let last = performance.now();
+    let frame = 0;
+    const step = (now: number) => {
+      const dt = Math.min((now - last) / 1000, 0.1);
+      last = now;
+      const target = 360 / (spinFast.current ? TURN_BUSY_S : TURN_REST_S);
+      speed += (target - speed) * Math.min(1, dt * SPIN_EASE);
+      angle = (angle + speed * dt) % 360;
+      el.style.setProperty('--fit-angle', `${angle.toFixed(2)}deg`);
+      frame = window.requestAnimationFrame(step);
+    };
+    frame = window.requestAnimationFrame(step);
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
+  useEffect(() => {
+    spinFast.current = phase === 'thinking' || phase === 'sending';
+  }, [phase]);
 
   // Turnstile loads on the first interaction with the box, not with the page.
   function startTurnstile() {
@@ -202,10 +235,11 @@ export default function FitCheck({
   }
 
   const busy = phase === 'thinking';
+  const spinning = busy || phase === 'sending';
   const answered = answer && (phase === 'answer' || phase === 'sending' || phase === 'sent');
 
   return (
-    <div className="fit-glow">
+    <div className="fit-glow" ref={glow} data-busy={spinning ? 'true' : undefined}>
       <div className="fit">
         <form className="fit__ask" onSubmit={(e) => void ask(e)} noValidate>
           <div className="fit__top">
