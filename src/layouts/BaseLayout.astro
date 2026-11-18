@@ -17,10 +17,13 @@ import {
   localizedPath,
   ogLocale,
   normalizePath,
-  siteLocale,
+  splitLocale,
+  publicLocales,
+  hiddenLocales,
   type Locale,
 } from '../i18n/config';
 import { t } from '../i18n';
+import { pageLocale } from '../i18n/routes';
 
 interface Props {
   title: string;
@@ -28,7 +31,7 @@ interface Props {
   locale?: Locale;
   /** Locale-neutral path for hreflang; defaults to the current URL path. */
   neutralPath?: string;
-  /** Locales this page exists in. More than one adds hreflang tags; default: this page only. */
+  /** Public locales this page exists in (hreflang, switcher); default: every public locale. */
   translations?: readonly Locale[];
   ogImage?: string;
   /** Alt text for ogImage; defaults to the site-wide one. */
@@ -40,14 +43,16 @@ interface Props {
   bleed?: boolean;
   /** Dark header in both themes, for a page that opens with a night band. */
   nightHeader?: boolean;
+  /** Leave out the CRA check chat (the home page has its own AI guide). */
+  noCraChat?: boolean;
 }
 
 const {
   title,
   description,
-  locale = defaultLocale,
+  locale = pageLocale(Astro.currentLocale),
   neutralPath,
-  translations,
+  translations = publicLocales,
   ogImage = site.defaultOgImage,
   ogImageAlt = site.ogImageAlt,
   ogType = 'website',
@@ -55,9 +60,11 @@ const {
   jsonLd = [],
   bleed = false,
   nightHeader = false,
+  noCraChat = false,
 } = Astro.props;
 
 const path = Astro.url.pathname === '/404.html' ? '/404/' : normalizePath(Astro.url.pathname);
+const neutral = neutralPath ?? splitLocale(path).path;
 const seo = buildSeo({
   title,
   description,
@@ -68,23 +75,21 @@ const seo = buildSeo({
   ogType,
   ogLocale: ogLocale[locale],
   siteName: site.name,
-  // While the global switch is off, every page is noindex; status pages always are.
-  noindex: noindex || !allowIndexing() || isNoindexByDesign(path),
-  locales: translations ?? [locale],
+  // While the global switch is off, every page is noindex; status pages and hidden locales
+  // always are.
+  noindex: noindex || !allowIndexing() || isNoindexByDesign(path) || hiddenLocales.includes(locale),
+  locales: translations,
   defaultLocale,
-  ...(neutralPath ? { neutralPath } : {}),
+  neutralPath: neutral,
 });
 const s = t(locale);
-// Header and footer follow the locale only when the whole site exists in it.
-const chrome = siteLocale(locale);
 // This page in each language it exists in, for the switcher and the browser-language hint.
-// Status pages (noindex by design) have no translations to offer.
+// Status pages have no translations to offer. A hidden locale sees itself in the switcher;
+// public pages never link to it.
+const shown = hiddenLocales.includes(locale) ? [...translations, locale] : translations;
 const versions =
-  translations && translations.length > 1 && !isNoindexByDesign(path)
-    ? translations.map((l) => ({
-        locale: l,
-        href: localizedPath(l, neutralPath ?? path),
-      }))
+  shown.length > 1 && !isNoindexByDesign(neutral)
+    ? shown.map((l) => ({ locale: l, href: localizedPath(l, neutral) }))
     : [];
 const api = apiOrigin();
 const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
@@ -106,12 +111,21 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | u
     <a class="skip-link" href="#main">
       {s.skipToContent}
     </a>
-    <Header locale={chrome} night={nightHeader} current={locale} versions={versions} />
-    <LanguageHint current={locale} versions={versions} />
+    <Header locale={locale} night={nightHeader} current={locale} versions={versions} />
+    <LanguageHint
+      current={locale}
+      versions={
+        hiddenLocales.includes(locale)
+          ? []
+          : versions.filter((v) => publicLocales.includes(v.locale))
+      }
+    />
     <main id="main" class:list={[{ container: !bleed }]} tabindex="-1">
       <slot />
     </main>
-    <Footer locale={chrome} />
-    {api && <CraCheck client:idle apiOrigin={api} turnstileSiteKey={turnstileSiteKey} />}
+    <Footer locale={locale} />
+    {api && !noCraChat && (
+      <CraCheck client:idle apiOrigin={api} turnstileSiteKey={turnstileSiteKey} locale={locale} />
+    )}
   </body>
 </html>

@@ -2,6 +2,7 @@ import type { DeadlineRow } from '../../lib/deadlines/present';
 import { formatCountdown, formatCountdownSpoken, remaining } from '../../lib/deadlines/countdown';
 import { fill } from '../../i18n';
 import type { UiStrings } from '../../i18n/en';
+import type { Locale } from '../../i18n/config';
 
 interface Props {
   rows: DeadlineRow[];
@@ -10,14 +11,25 @@ interface Props {
   displayZone: string;
   reportingLabel: string;
   strings: UiStrings['calculator'];
+  locale: Locale;
   deadlineName: (row: DeadlineRow) => string;
   onDownload: (row: DeadlineRow & { status: 'due' }) => void;
 }
 
-function TimeLeft({ dueMs, now, s }: { dueMs: number; now: number; s: Props['strings'] }) {
+function TimeLeft({
+  dueMs,
+  now,
+  s,
+  locale,
+}: {
+  dueMs: number;
+  now: number;
+  s: Props['strings'];
+  locale: Locale;
+}) {
   const r = remaining(dueMs, now);
-  const visual = formatCountdown(r);
-  const spoken = formatCountdownSpoken(r);
+  const visual = formatCountdown(r, locale);
+  const spoken = formatCountdownSpoken(r, locale);
   return (
     <>
       {/* The ticking value is hidden from screen readers; they get a coarse, non-live text. */}
@@ -37,6 +49,7 @@ export function DeadlineTable({
   displayZone,
   reportingLabel,
   strings: s,
+  locale,
   deadlineName,
   onDownload,
 }: Props) {
@@ -86,7 +99,7 @@ export function DeadlineTable({
                     {now === null ? (
                       s.result.pending
                     ) : (
-                      <TimeLeft dueMs={row.dueMs} now={now} s={s} />
+                      <TimeLeft dueMs={row.dueMs} now={now} s={s} locale={locale} />
                     )}
                   </td>
                   <td data-label={c.calendar} className="calc-cal">

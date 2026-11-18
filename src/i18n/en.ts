@@ -8,6 +8,18 @@ export interface PrivacySection {
   blocks: PrivacyBlock[];
 }
 
+export interface HomeModule {
+  /** Module id, the same as in the backend's fit-check catalogue. */
+  id: string;
+  title: string;
+  text: string;
+  tag: string;
+  /** ok: works in the beta; build: being built; free: free tools now; next: planned. */
+  tone: 'ok' | 'build' | 'free' | 'next';
+  href?: string;
+  link?: string;
+}
+
 export const en = {
   skipToContent: 'Skip to content',
   // Language names are shown in their own language (in the switcher and the hint).
@@ -74,8 +86,15 @@ export const en = {
     calculatorCta: 'Calculate your deadlines',
     published: 'Published',
     updated: 'Updated',
-    // Shown on a guide that exists in another language; the label is in that language.
-    otherLanguage: 'Diesen Leitfaden auf Deutsch lesen',
+    // Link to this language's version from a guide in another language; written in this language.
+    readInThisLanguage: 'Read this guide in English',
+  },
+  deadlinesPage: {
+    title: 'EU incident reporting deadline calculator',
+    description:
+      'Calculate CRA, NIS2 and GDPR incident reporting deadlines in your time zone. Free, no sign-up.',
+    appName: '{site} deadline calculator',
+    lead: "Enter when you became aware of an actively exploited vulnerability or incident. Get every Cyber Resilience Act (CRA), NIS2 and GDPR reporting deadline in your time zone and the authority's.",
   },
   notFound: {
     title: 'Page not found',
@@ -280,36 +299,140 @@ export const en = {
     },
   },
   home: {
-    title: 'On-call and CRA incident reporting for small teams',
+    title: 'On-call and EU incident reporting for small software teams',
     description:
-      'Rotas, escalation and phone calls that wake the right person, plus legal clocks and AI drafts of every CRA report. Early access, no payment.',
-    heading: 'Wake the right person. File the CRA report on time.',
+      'Rotas, escalation and phone calls, an Opsgenie import, and CRA, NIS2 and GDPR clocks. Ask our AI guide if Within24 fits your team.',
+    heading: 'On-call and EU incident reporting for small software teams',
     intro:
-      'Within24 runs your on-call: rotas, escalation and phone calls until someone taps "I\'m on it". When an incident is reportable under the CRA, it starts the legal clocks and our AI drafts each report, with a source for every statement.',
+      'Rotas, escalation and phone calls, an import from Opsgenie, and CRA, NIS2 and GDPR clocks with AI report drafts. Hosted in the EU.',
     primary: 'Join early access',
     secondary: 'Calculate your reporting deadlines',
-    // Two entry points right under the hero: one per service.
-    doors: {
-      heading: 'What do you need?',
+    status: 'Early access: we are building Within24 now.',
+    // The AI guide in the hero (src/components/fit-check). The backend answers from its module
+    // catalogue (houndly-backend app/fit_check/catalogue/within24.md); keep statuses in step.
+    guide: {
+      badge: 'AI guide: knows every part of Within24',
+      label: 'Describe your problem. See in seconds if we solve it.',
+      free: 'Short answer free, no email',
+      hint: 'Press Enter to ask. Shift+Enter starts a new line.',
+      examples: [
+        'We leave Opsgenie before April and need phone calls at night',
+        'Support has no way to wake a developer',
+        'We sell a device in the EU. What do we report under the CRA?',
+        'One alert storm wakes three people at once',
+      ],
+      button: 'Ask the AI guide',
+      tryLabel: 'Try:',
+      chips: [
+        {
+          label: 'Leaving Opsgenie',
+          text: 'We are 8 engineers leaving Opsgenie before April. We need rotas, escalation and phone calls.',
+        },
+        {
+          label: 'CRA reporting',
+          text: 'We sell a connected device in the EU and need to report vulnerabilities under the CRA.',
+        },
+        {
+          label: 'Support must reach a developer',
+          text: 'Our support team needs a way to call the on-call developer at night.',
+        },
+      ],
+      thinking: 'Checking your problem against every module',
+      verdicts: {
+        fits: 'Fits',
+        partly: 'Partly fits',
+        not_yet: 'Not yet',
+        not_for_us: 'Not what we do',
+      },
+      statuses: {
+        available: 'Available',
+        building: 'Building now',
+        next: 'Next',
+        not_planned: 'Not planned',
+        unknown: 'We will ask the team',
+      },
+      emailLabel: 'Get the full analysis by email',
+      emailHint: 'Which plan fits, what to set up first, and what is not there yet.',
+      emailPlaceholder: 'you@company.com',
+      emailButton: 'Email me the analysis',
+      emailSending: 'Sending…',
+      consent:
+        'We email the analysis now. The first time, a second email asks you to confirm your place in early access.',
+      privacy: 'Privacy policy',
+      sent: {
+        heading: 'Check your inbox.',
+        text: 'The full analysis is on its way.',
+      },
+      again: 'Ask something else',
+      errors: {
+        short: 'Describe your problem in a few words first.',
+        email: 'Enter a valid email address.',
+        network: 'No connection. Check your internet and try again.',
+        robot: 'We could not confirm you are not a robot. Reload the page and try again.',
+        tooMany: 'Too many questions in a short time. Please try again later.',
+        expired: 'This answer has expired. Please ask again.',
+        already: 'We already sent this analysis. Check your inbox.',
+        unavailable: 'The AI guide is not available right now. Please try again later.',
+      },
+    },
+    // The module cards under the hero. They light up when the AI guide says they fit.
+    modules: {
+      heading: 'What Within24 does',
+      headingAnswered: 'What covers your problem',
+      note: 'Each card says if it works today, is being built, or comes next.',
+      swipe: 'Swipe to see all',
+      fit: 'Fits your problem',
       items: [
         {
           id: 'oncall',
-          name: 'You need someone on call',
-          text: 'Rotas, escalation, phone calls, and a "Call a developer" button for support staff. Moving off Opsgenie? Bring your schedules.',
-          link: 'See how on-call works',
+          title: 'Wake the right person',
+          text: 'Rotas, escalation and phone calls until someone taps “I’m on it”.',
+          tag: 'In beta',
+          tone: 'ok',
           href: '/on-call/',
+          link: 'How on-call works',
         },
         {
-          id: 'cra',
-          name: 'You need to report under the CRA',
-          text: 'The 24-hour, 72-hour and final-report clocks start from the alert, and our AI drafts each report for you to review and submit.',
-          link: 'See what the CRA asks of you',
-          href: '/cra/',
+          id: 'alerts',
+          title: 'One problem, one incident',
+          text: 'Alerts from Grafana, Prometheus or any webhook, grouped into one incident.',
+          tag: 'In beta',
+          tone: 'ok',
         },
-      ],
-      note: 'Use one, or both. Mark an incident as reportable and the legal clocks start from the same alert that woke you up.',
+        {
+          id: 'opsgenie',
+          title: 'Move off Opsgenie',
+          text: 'Bring rotas, escalation policies and integrations before Opsgenie closes.',
+          tag: 'Building now',
+          tone: 'build',
+          href: '/opsgenie-alternative/',
+          link: 'Opsgenie alternative',
+        },
+        {
+          id: 'report',
+          title: 'Report on time',
+          text: 'CRA, NIS2 and GDPR clocks with AI report drafts. The deadline calculator is free now.',
+          tag: 'Free tools now',
+          tone: 'free',
+          href: '/deadlines/',
+          link: 'Calculate deadlines',
+        },
+        {
+          id: 'customers',
+          title: 'Tell affected customers',
+          text: 'Who uses the affected product, a status page and a “Call a developer” button.',
+          tag: 'Next',
+          tone: 'next',
+        },
+        {
+          id: 'team',
+          title: 'Keep on-call fair',
+          text: 'Night and weekend hours for payroll, and incident statistics.',
+          tag: 'Next',
+          tone: 'next',
+        },
+      ] as HomeModule[],
     },
-    status: 'Early access: we are building Within24 now.',
     // Illustration of the product in the hero. Static example, not a calculation.
     example: {
       caption:
@@ -340,20 +463,6 @@ export const en = {
       },
       draft: 'Early warning draft ready: 9 statements, 9 sources',
     },
-    pain: {
-      heading: 'The alert does not wait for Monday',
-      markers: ['03:12', '24 h', 'Same rules'],
-      items: [
-        '3:12 a.m., Saturday. An alert fires. Is it just downtime, or an actively exploited vulnerability?',
-        'Under the CRA, the 24-hour early warning counts from when you become aware, not from Monday morning.',
-        'Small teams have the same obligation as large ones, without a security team to own it.',
-      ],
-    },
-    // A short version of the CRA page; the facts themselves come from cra.facts.
-    brief: {
-      heading: 'CRA reporting has applied since 11 September 2026',
-      link: 'Read the CRA overview: key dates, the three reports and who is in scope',
-    },
     how: {
       heading: 'How it works',
       steps: [
@@ -374,26 +483,6 @@ export const en = {
           text: 'Before each deadline, a draft is ready from the incident timeline, with a source for every statement. You edit it and submit it to the ENISA Single Reporting Platform yourself.',
         },
       ],
-    },
-    oncall: {
-      heading: 'Works with your on-call, or replaces it',
-      badge: 'In development',
-      items: [
-        {
-          name: 'You already use PagerDuty, Opsgenie or Grafana',
-          text: 'Keep it. Send alerts to Within24 by webhook: your tool keeps paging the team, and Within24 runs the legal clocks and drafts the reports.',
-        },
-        {
-          name: 'Nobody is on call yet',
-          text: 'Within24 wakes the right person itself: rotas, escalation, phone calls, and a "Call a developer" button for support staff.',
-        },
-        {
-          name: 'Not every alert is a legal incident',
-          text: 'Most alerts are outages. They page the rota, escalate and close with a note. Only the alerts you mark as reportable start legal clocks.',
-        },
-      ],
-      opsgenie: 'Moving off Opsgenie? Bring your schedules with you.',
-      link: 'See how on-call works',
     },
     pricing: {
       heading: 'Pricing',
@@ -1020,12 +1109,15 @@ export const en = {
     description:
       'What personal data Within24 collects, why, which providers process it, how long we keep it and how to use your rights.',
     lastUpdated: 'Last updated',
-    updatedOn: '1 November 2026',
-    // Text approved by the owner on 2026-10-27; the CRA check parts (2026-11-01) await approval
+    updatedOn: '18 November 2026',
+    // Shown on translations only (not on the English page): the English text is the binding one.
+    translationNote:
+      'This is a translation. If it differs from the English version, the English version applies.',
+    // Text approved by the owner on 2026-10-27; the CRA check parts (2026-11-01) were approved with PR #24; the AI guide parts (2026-11-18) await approval
     // in the pull request. Provider facts checked against the pages linked below. Inline links
     // use [text](https://…).
     intro:
-      'This policy explains what personal data Within24 collects on within24.app, why, and what you can do about it. Reading the site and using the calculator need no personal data. We collect your email only when you send one of our forms or use the CRA check.',
+      'This policy explains what personal data Within24 collects on within24.app, why, and what you can do about it. Reading the site and using the calculator need no personal data. We collect your email only when you send one of our forms, use the CRA check, or ask for the full analysis of the AI guide.',
     sections: [
       {
         heading: 'Who is responsible',
@@ -1068,6 +1160,11 @@ export const en = {
                   'To answer whether the CRA applies to your product, to follow up by email once you confirm your address, and to decide what to build next.',
                 ],
                 [
+                  'AI guide (the box at the top of the home page)',
+                  'The problem you describe, the answer the AI gives, the page you used it on and the time. Only if you ask for the full analysis: your email and the analysis we send.',
+                  'To answer whether Within24 fits your problem, to email you the full analysis you ask for, and to decide what to build next.',
+                ],
+                [
                   'Both forms',
                   'The time you signed up, which form you used and the page you came from, the version of the consent text, and whether you asked for occasional news.',
                   'To prove your consent and respect your choices.',
@@ -1095,6 +1192,7 @@ export const en = {
             ul: [
               'Forms and emails: your consent (GDPR Article 6(1)(a)), given when you send the form and confirm your email. You can withdraw it at any time with the unsubscribe link in every email or by writing to us.',
               'CRA check: we process what you type to give you the answer you ask for (GDPR Article 6(1)(b)). Emails after the check rely on your consent, given when you confirm your address.',
+              'AI guide: we process what you type, and your email when you ask for the full analysis, to give you the answer you ask for (GDPR Article 6(1)(b)). Early-access emails rely on your consent, given when you confirm your address.',
               'Analytics, bot check and hosting: our legitimate interest (GDPR Article 6(1)(f)) in running a secure site and learning which pages are useful. We chose cookieless analytics to keep this light on your privacy.',
             ],
           },
@@ -1112,7 +1210,7 @@ export const en = {
               rows: [
                 [
                   'Brevo SAS',
-                  'Stores form sign-ups and sends confirmation and kit emails',
+                  'Stores form sign-ups and sends confirmation, kit and analysis emails',
                   'Company in France; may transfer data to the USA and India',
                   '[Brevo privacy policy](https://www.brevo.com/legal/privacypolicy/)',
                 ],
@@ -1124,13 +1222,13 @@ export const en = {
                 ],
                 [
                   'Anthropic, PBC',
-                  'Writes the CRA check answer from your product description (AI model)',
+                  'Writes the answers of the CRA check and the AI guide from what you type (AI model)',
                   'Company in the USA',
                   '[Anthropic privacy policy](https://www.anthropic.com/legal/privacy)',
                 ],
                 [
                   'Hetzner Online GmbH',
-                  'Hosts our API server and the database of the CRA check',
+                  'Hosts our API server and the database of the CRA check and the AI guide',
                   'Company in Germany; our server is in the EU (Germany or Finland)',
                   '[Hetzner privacy policy](https://www.hetzner.com/legal/privacy-policy/)',
                 ],
@@ -1160,6 +1258,7 @@ export const en = {
             ul: [
               'Confirmed sign-ups: until you unsubscribe or ask us to delete them. When the early-access list closes, we delete answers we no longer need.',
               'CRA check: what you type, the answers and your email are deleted 24 months after you last used the check, or earlier when you ask us.',
+              'AI guide: what you type and the answers are deleted 24 months after you asked, or earlier when you ask us.',
               'Analytics: kept as aggregate statistics.',
               'Hosting and bot check data: kept by Cloudflare for the periods in its own terms.',
             ],
@@ -1204,6 +1303,9 @@ export const en = {
     country: 'Country',
     email: 'Email',
     emailPending: 'follows once the domain is set up',
+    // Shown on translations only.
+    translationNote:
+      'This is a translation. If it differs from the English version, the English version applies.',
   },
   calculator: {
     formHeading: 'Your incident',
@@ -1260,6 +1362,36 @@ export const en = {
       label: 'Reporting country',
       hint: 'Deadlines counted in months use the clock of this country ({zone}).',
     },
+    // Shown in the reporting-country list; codes from src/lib/calculator/countries.ts.
+    countryNames: {
+      AT: 'Austria',
+      BE: 'Belgium',
+      BG: 'Bulgaria',
+      HR: 'Croatia',
+      CY: 'Cyprus',
+      CZ: 'Czechia',
+      DK: 'Denmark',
+      EE: 'Estonia',
+      FI: 'Finland',
+      FR: 'France',
+      DE: 'Germany',
+      GR: 'Greece',
+      HU: 'Hungary',
+      IE: 'Ireland',
+      IT: 'Italy',
+      LV: 'Latvia',
+      LT: 'Lithuania',
+      LU: 'Luxembourg',
+      MT: 'Malta',
+      NL: 'Netherlands',
+      PL: 'Poland',
+      PT: 'Portugal',
+      RO: 'Romania',
+      SK: 'Slovakia',
+      SI: 'Slovenia',
+      ES: 'Spain',
+      SE: 'Sweden',
+    } as Record<string, string>,
     displayZone: {
       label: 'Show times in',
       hint: 'Changes only how times are shown, not the deadlines.',

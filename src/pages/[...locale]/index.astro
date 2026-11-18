@@ -1,0 +1,544 @@
+---
+// Home: compact, with the AI guide at the centre. The visitor describes their problem and sees at
+// once whether Within24 covers it; the module cards below light up for the parts that fit.
+// Below the cards, in plain HTML: how it works, pricing, what you can rely on and folded questions.
+// The deadline calculator lives on /deadlines/; old shared calculator links are forwarded there.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PlanList from '../../components/PlanList.astro';
+import FitCheck from '../../components/fit-check/FitCheck';
+import { apiOrigin } from '../../config/site';
+import { t } from '../../i18n';
+import { localeStaticPaths, pageLocale } from '../../i18n/routes';
+
+export const getStaticPaths = localeStaticPaths;
+const locale = pageLocale(Astro.currentLocale);
+
+const all = t(locale);
+const s = all.home;
+const p = all.pricing;
+const api = apiOrigin();
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
+
+// One line icon per module (24×24, stroke).
+const icons: Record<string, string> = {
+  oncall:
+    'M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2',
+  alerts: 'M4 6h16M4 12h10M4 18h6',
+  opsgenie: 'M4 12h12M12 6l6 6-6 6',
+  report: 'M12 7v5l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0',
+  customers: 'M4 19c1.5-3 4.5-4.5 8-4.5s6.5 1.5 8 4.5M12 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7',
+  team: 'M5 20V10M12 20V4M19 20v-7',
+};
+---
+
+<BaseLayout title={s.title} description={s.description} bleed nightHeader noCraChat>
+  <section class="hero night" aria-labelledby="hero-heading">
+    <div class="container hero__inner">
+      {api && (
+        <p class="hero__badge">
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z" />
+          </svg>
+          {s.guide.badge}
+        </p>
+      )}
+      <h1 id="hero-heading">{s.heading}</h1>
+      <p class="hero__intro">{s.intro}</p>
+      {api ? (
+        <FitCheck client:load apiOrigin={api} turnstileSiteKey={turnstileSiteKey} locale={locale} />
+      ) : (
+        <div class="hero__actions">
+          <a class="button button--large" href="/early-access/">
+            {s.primary}
+          </a>
+          <a class="button button--large button--secondary" href="/deadlines/">
+            {s.secondary}
+          </a>
+        </div>
+      )}
+      <p class="hero__status">{s.status}</p>
+    </div>
+  </section>
+
+  <section class="band mods-band" aria-labelledby="modules-heading" data-fit-cards>
+    <div class="container">
+      <div class="mods__head">
+        <h2 id="modules-heading">
+          <span class="mods__idle">{s.modules.heading}</span>
+          <span class="mods__answered">{s.modules.headingAnswered}</span>
+        </h2>
+        <p class="mods__note">{s.modules.note}</p>
+      </div>
+      <p class="mods__swipe">{s.modules.swipe}</p>
+      <ul class="mods">
+        {s.modules.items.map((m) => (
+          <li class:list={['mod', `mod--${m.tone}`]} data-module={m.id}>
+            <div class="mod__top">
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                class="mod__icon"
+              >
+                <path d={icons[m.id] ?? icons.alerts} />
+              </svg>
+              <span class="mod__tag">{m.tag}</span>
+              <span class="mod__fit">{s.modules.fit}</span>
+            </div>
+            <h3>{m.title}</h3>
+            <p>{m.text}</p>
+            {m.href && m.link && (
+              <a class="mod__link" href={m.href}>
+                {m.link}
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="band band--tint" aria-labelledby="how-heading">
+    <div class="container">
+      <h2 id="how-heading">{s.how.heading}</h2>
+      <ol class="steps">
+        {s.how.steps.map((step, i) => (
+          <li class="step">
+            <span class="step__num" aria-hidden="true">
+              {i + 1}
+            </span>
+            <h3>{step.name}</h3>
+            <p>{step.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="pricing-heading">
+    <div class="container">
+      <h2 id="pricing-heading">{s.pricing.heading}</h2>
+      <p class="band__intro">{s.pricing.intro}</p>
+      <PlanList formPath="/early-access/" headingLevel={3} />
+      <p class="note">
+        {p.oncallOnly}
+        {p.priceLock}
+        {p.pagerDuty}
+        {p.consultant}
+      </p>
+    </div>
+  </section>
+
+  <section class="band band--tint" aria-labelledby="trust-heading">
+    <div class="container">
+      <h2 id="trust-heading">{s.trust.heading}</h2>
+      <ul class="trust">
+        {s.trust.items.map((item) => (
+          <li>
+            <h3>{item.name}</h3>
+            <p>{item.text}</p>
+          </li>
+        ))}
+      </ul>
+      <p>
+        <a href="/privacy/">{s.trust.privacy}</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="faq-heading">
+    <div class="container faq-layout">
+      <h2 id="faq-heading">{s.faq.heading}</h2>
+      <div class="faq">
+        {s.faq.items.map((item) => (
+          <details class="faq__item">
+            <summary>{item.q}</summary>
+            <p>{item.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  import { enhancePlanButtons } from '../../scripts/pricing';
+  import { forwardCalculatorLink } from '../../scripts/home';
+  forwardCalculatorLink();
+  enhancePlanButtons();
+</script>
+
+<style>
+  /* Hero: a night band in both themes, centred on the AI guide. */
+  .hero {
+    background:
+      radial-gradient(60rem 30rem at 50% 0%, var(--night-glow) 0%, transparent 70%), var(--bg);
+  }
+
+  .hero__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+    max-width: 56rem;
+    padding-block: var(--space-8) var(--space-12);
+    text-align: center;
+  }
+
+  .hero__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0.375rem 0.75rem;
+    color: var(--muted);
+    font-size: var(--fs-sm);
+    background: var(--night-glow);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+  }
+
+  .hero__badge svg {
+    color: var(--accent);
+  }
+
+  .hero h1 {
+    max-width: 22em;
+    margin: 0;
+    font-size: clamp(1.75rem, 1.35rem + 2.2vw, 3.25rem);
+    font-weight: var(--weight-heavy);
+    line-height: var(--lh-display);
+    letter-spacing: -0.02em;
+  }
+
+  .hero__intro {
+    max-width: 40em;
+    margin: 0 0 var(--space-2);
+    font-size: var(--fs-md);
+    line-height: 1.55;
+    color: var(--muted);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+  }
+
+  .hero__status {
+    margin: var(--space-2) 0 0;
+    color: var(--muted);
+    font-size: var(--fs-sm);
+  }
+
+  /* Sections: full-width bands, alternating with a tinted background. */
+  .band {
+    padding-block: var(--space-16);
+    scroll-margin-top: var(--space-4);
+  }
+
+  .band--tint {
+    background: var(--bg-2);
+    border-block: 1px solid var(--border);
+  }
+
+  .band h2 {
+    margin: 0 0 var(--space-8);
+    font-size: var(--fs-xl);
+    font-weight: var(--weight-heavy);
+    letter-spacing: -0.01em;
+  }
+
+  .band__intro {
+    max-width: var(--measure);
+    margin: calc(-1 * var(--space-6)) 0 var(--space-8);
+    color: var(--muted);
+    font-size: var(--fs-md);
+  }
+
+  .band h3 {
+    margin: 0 0 var(--space-2);
+    font-size: var(--fs-md);
+  }
+
+  .band li > p {
+    margin: 0;
+  }
+
+  /* Module cards: six on a wide screen, a swipe row on a phone. */
+  .mods-band {
+    padding-block: var(--space-8) var(--space-12);
+  }
+
+  .mods__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-4);
+    margin-bottom: var(--space-4);
+  }
+
+  .band .mods__head h2 {
+    margin: 0;
+    font-size: var(--fs-lg);
+  }
+
+  .mods__note,
+  .mods__swipe {
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--fs-sm);
+  }
+
+  .mods__swipe {
+    display: none;
+    margin-bottom: var(--space-3);
+  }
+
+  .mods__answered,
+  .mod__fit {
+    display: none;
+  }
+
+  [data-answered] .mods__idle {
+    display: none;
+  }
+
+  [data-answered] .mods__answered {
+    display: inline;
+  }
+
+  .mods {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr));
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (max-width: 47.99rem) {
+    .mods__swipe {
+      display: block;
+    }
+    .mods {
+      display: flex;
+      overflow-x: auto;
+      margin-inline: calc(-1 * var(--space-4));
+      padding: 0.25rem var(--space-4) var(--space-3);
+      scroll-snap-type: x mandatory;
+    }
+    .mod {
+      flex: 0 0 13rem;
+      scroll-snap-align: start;
+    }
+  }
+
+  .mod {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: 0.875rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition:
+      opacity 0.3s,
+      box-shadow 0.3s,
+      border-color 0.3s;
+  }
+
+  .band .mod h3 {
+    margin: 0;
+    font-size: var(--fs-base);
+  }
+
+  .mod p {
+    color: var(--muted);
+    font-size: var(--fs-sm);
+    line-height: 1.45;
+  }
+
+  .mod__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+
+  .mod__icon {
+    flex: none;
+    color: var(--accent);
+  }
+
+  .mod__tag,
+  .mod__fit {
+    padding: 0.125rem 0.4375rem;
+    font-size: var(--fs-xs);
+    font-weight: var(--weight-bold);
+    border-radius: 4px;
+  }
+
+  .mod__tag {
+    color: var(--muted);
+    background: var(--surface-2);
+  }
+
+  .mod--ok .mod__tag,
+  .mod--free .mod__tag {
+    color: var(--ok);
+  }
+
+  .mod--build .mod__tag {
+    color: var(--soon);
+  }
+
+  .mod__link {
+    margin-top: auto;
+    padding-top: var(--space-1);
+    font-size: var(--fs-sm);
+    font-weight: var(--weight-bold);
+  }
+
+  /* After an answer: the cards that fit light up, the rest step back. */
+  [data-answered] .mod {
+    opacity: 0.55;
+  }
+
+  [data-answered] .mod[data-fit='yes'] {
+    opacity: 1;
+    border: 2px solid var(--brand);
+    box-shadow: 0 0 0 4px rgb(53 99 240 / 0.18);
+  }
+
+  .mod[data-fit='yes'] .mod__tag {
+    display: none;
+  }
+
+  .mod[data-fit='yes'] .mod__fit {
+    display: inline;
+    color: #fff;
+    background: var(--brand);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mod {
+      transition: none;
+    }
+  }
+
+  .steps,
+  .trust {
+    display: grid;
+    gap: var(--space-8);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 48rem) {
+    .trust {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .trust {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  /* How it works: numbered stops on one line, like a timeline. */
+  .steps {
+    gap: var(--space-8) var(--space-6);
+  }
+
+  @media (min-width: 48rem) {
+    .steps {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      padding-top: 1.125rem;
+      border-top: 2px solid var(--border);
+    }
+    .step__num {
+      margin-top: calc(-1.125rem - 1.125rem - 1px);
+    }
+  }
+
+  .step__num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    margin-bottom: var(--space-4);
+    font-weight: var(--weight-heavy);
+    color: var(--brand-contrast);
+    background: var(--brand);
+    border-radius: 50%;
+  }
+
+  .step p,
+  .trust p {
+    color: var(--muted);
+  }
+
+  .note {
+    margin: var(--space-6) 0 0;
+    color: var(--muted);
+    font-size: var(--fs-sm);
+  }
+
+  .trust li {
+    padding-top: var(--space-4);
+    border-top: 2px solid var(--brand);
+  }
+
+  /* FAQ: folded answers; heading on the left on wide screens. */
+  @media (min-width: 64rem) {
+    .faq-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+      gap: var(--space-12);
+    }
+  }
+
+  .faq {
+    border-top: 1px solid var(--border);
+  }
+
+  .faq__item {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .faq summary {
+    min-height: 2.75rem;
+    padding-block: var(--space-4);
+    font-size: var(--fs-md);
+    font-weight: var(--weight-bold);
+    cursor: pointer;
+  }
+
+  .faq__item p {
+    max-width: var(--measure);
+    margin: 0 0 var(--space-6);
+    color: var(--muted);
+  }
+</style>

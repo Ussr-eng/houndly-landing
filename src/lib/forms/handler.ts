@@ -4,7 +4,14 @@
 // Never logs request bodies or email addresses.
 
 import { selectProvider, type ProviderEnv, type SubscribeOutcome } from './provider';
-import { validateSubscribe, type ListId, type FieldError, type SubscribeData } from './validate';
+import {
+  formLocale,
+  validateSubscribe,
+  type ListId,
+  type FieldError,
+  type SubscribeData,
+} from './validate';
+import { defaultLocale, localizedPath, type Locale } from '../../i18n/config';
 
 export interface SubscribeEnv extends ProviderEnv {
   TURNSTILE_SECRET_KEY?: string;
@@ -39,11 +46,12 @@ function wantsJson(request: Request): boolean {
 function respond(
   request: Request,
   outcome:
-    | { ok: true; list: ListId }
+    | { ok: true; list: ListId; locale: Locale }
     | {
         ok: false;
         reason: ErrorReason;
         list: ListId | null;
+        locale: Locale;
         status: number;
         fields?: Partial<Record<keyof SubscribeData, FieldError>>;
       },
@@ -58,7 +66,10 @@ function respond(
       headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' },
     });
   }
-  const path = outcome.ok ? SUCCESS_PAGE[outcome.list] : `/form-error/${outcome.reason}/`;
+  const path = localizedPath(
+    outcome.locale,
+    outcome.ok ? SUCCESS_PAGE[outcome.list] : `/form-error/${outcome.reason}/`,
+  );
   return new Response(null, {
     status: 303,
     headers: { location: origin + path, 'cache-control': 'no-store' },
@@ -96,9 +107,16 @@ export async function handleSubscribe(
   try {
     form = await request.formData();
   } catch {
-    return respond(request, { ok: false, reason: 'invalid', list: null, status: 400 });
+    return respond(request, {
+      ok: false,
+      reason: 'invalid',
+      list: null,
+      locale: defaultLocale,
+      status: 400,
+    });
   }
 
+  const locale = formLocale(form);
   const listGuess = form.get('list') === 'waitlist' ? 'waitlist' : 'kit';
 
   // Bots: answer exactly like a success, store nothing.
@@ -109,7 +127,7 @@ export async function handleSubscribe(
     (elapsed > 0 && elapsed < MIN_FILL_MS)
   ) {
     deps.log('subscribe_dropped', { reason: honeypot ? 'honeypot' : 'too_fast' });
-    return respond(request, { ok: true, list: listGuess });
+    return respond(request, { ok: true, list: listGuess, locale });
   }
 
   const result = validateSubscribe(form);
@@ -118,6 +136,7 @@ export async function handleSubscribe(
       ok: false,
       reason: 'invalid',
       list: result.list,
+      locale,
       status: 400,
       fields: result.errors,
     });
@@ -129,6 +148,7 @@ export async function handleSubscribe(
         ok: false,
         reason: 'verification',
         list: result.data.list,
+        locale,
         status: 403,
       });
   }
@@ -140,6 +160,7 @@ export async function handleSubscribe(
       ok: false,
       reason: 'unavailable',
       list: result.data.list,
+      locale,
       status: 503,
     });
   }
@@ -149,7 +170,7 @@ export async function handleSubscribe(
   try {
     outcome = await provider.subscribe({
       data: result.data,
-      redirectionUrl: origin + CONFIRMED_PAGE[result.data.list],
+      redirectionUrl: origin + localizedPath(locale, CONFIRMED_PAGE[result.data.list]),
       at: deps.now().toISOString(),
     });
   } catch {
@@ -166,8 +187,9 @@ export async function handleSubscribe(
       ok: false,
       reason: 'unavailable',
       list: result.data.list,
+      locale,
       status: 502,
     });
   }
-  return respond(request, { ok: true, list: result.data.list });
+  return respond(request, { ok: true, list: result.data.list, locale });
 }

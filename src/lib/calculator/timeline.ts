@@ -6,6 +6,7 @@
 // 24 h / 72 h deadlines); after a visible break the rest covers up to the latest due time or
 // now, with a margin and rounded up to whole days, so it changes at most once a day.
 
+import type { Locale } from '../../i18n/config';
 import { Duration } from 'luxon';
 import type { DeadlineRow } from '../deadlines/present';
 import type { Anchor, Offset, Stage } from '../deadlines/types';
@@ -58,11 +59,18 @@ export interface TimelineLayout {
   now: { pos: number; beforeStart: boolean; labelAlign: 'start' | 'center' | 'end' } | null;
 }
 
+const UNITS: Record<Locale, { h: string; d: string; mo: string }> = {
+  en: { h: 'h', d: 'd', mo: 'mo' },
+  de: { h: 'Std', d: 'T', mo: 'Mon' },
+  ru: { h: 'ч', d: 'дн', mo: 'мес' },
+};
+
 /** "24 h", "72 h", "14 d" (whole days from 96 h up), "1 mo". */
-export function offsetLabel(offset: Offset): string {
-  if ('months' in offset) return `${offset.months} mo`;
+export function offsetLabel(offset: Offset, locale: Locale = 'en'): string {
+  const u = UNITS[locale];
+  if ('months' in offset) return `${offset.months} ${u.mo}`;
   const h = offset.hours;
-  return h >= 96 && h % 24 === 0 ? `${h / 24} d` : `${h} h`;
+  return h >= 96 && h % 24 === 0 ? `${h / 24} ${u.d}` : `${h} ${u.h}`;
 }
 
 export function markerStatus(anchorMs: number, dueMs: number, nowMs: number | null): MarkerStatus {
@@ -78,8 +86,9 @@ export function timelineLayout(input: {
   nowMs: number | null;
   /** Lane order: the selectable (regime, event_type) pairs in rule order. */
   laneOrder: EventKey[];
+  locale?: Locale;
 }): TimelineLayout {
-  const { rows, awareMs, anchors, nowMs, laneOrder } = input;
+  const { rows, awareMs, anchors, nowMs, laneOrder, locale } = input;
   const focusEnd = awareMs + FOCUS_MS;
   const latest = Math.max(
     awareMs,
@@ -113,7 +122,7 @@ export function timelineLayout(input: {
           ruleId: r.rule.id,
           stage: r.rule.stage,
           pos: pos(r.dueMs),
-          offsetLabel: offsetLabel(r.rule.offset),
+          offsetLabel: offsetLabel(r.rule.offset, locale),
           status: markerStatus(anchors[r.rule.anchor] ?? awareMs, r.dueMs, nowMs),
           labelSide: 'above',
           labelAlign: alignFor(pos(r.dueMs)),

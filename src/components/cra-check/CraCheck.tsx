@@ -23,6 +23,8 @@ import {
 } from '../../lib/cra-check/api';
 import { loadTurnstile } from '../../lib/turnstile';
 import { fill, t } from '../../i18n';
+import type { UiStrings } from '../../i18n/en';
+import { localizedPath, type Locale } from '../../i18n/config';
 import './cra-check.css';
 
 type Phase =
@@ -42,9 +44,11 @@ interface Props {
   api?: CraCheckApi;
   /** Seconds before the launcher shows by itself (it also shows after half a page). */
   launcherDelay?: number;
+  /** Language of the page; the chat's own texts follow it. */
+  locale?: Locale;
 }
 
-const s = t('en').craCheck;
+type Strings = UiStrings['craCheck'];
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const THINKING_STEP_MS = 900;
 
@@ -57,12 +61,12 @@ async function waitForToken(get: () => string, ms = 5000): Promise<string> {
   return get();
 }
 
-const fresh = (): Message[] => [
+const fresh = (s: Strings): Message[] => [
   { kind: 'bot', text: s.greeting },
   { kind: 'bot', text: s.askEmail, small: s.askEmailSmall },
 ];
 
-function errorText(e: unknown): string {
+function errorText(e: unknown, s: Strings): string {
   const status = e instanceof CraCheckError ? e.status : -1;
   if (status === 0) return s.errors.network;
   if (status === 403) return s.errors.robot;
@@ -84,13 +88,15 @@ export default function CraCheck({
   turnstileSiteKey,
   api: injected,
   launcherDelay = 20,
+  locale = 'en',
 }: Props) {
+  const s = t(locale).craCheck;
   const api = useRef<CraCheckApi>(injected ?? httpApi(apiOrigin));
   const [open, setOpen] = useState(false);
   const [launcher, setLauncher] = useState(false);
   const [launcherHidden, setLauncherHidden] = useState(false);
   const [phase, setPhase] = useState<Phase>('email');
-  const [messages, setMessages] = useState<Message[]>(fresh);
+  const [messages, setMessages] = useState<Message[]>(() => fresh(s));
   const [text, setText] = useState('');
   const [error, setError] = useState('');
   const [thinkingStep, setThinkingStep] = useState(0);
@@ -219,7 +225,7 @@ export default function CraCheck({
     token.current = '';
     description.current = '';
     turns.current = [];
-    setMessages(fresh());
+    setMessages(fresh(s));
     setPhase('email');
     setText('');
     setError('');
@@ -242,7 +248,7 @@ export default function CraCheck({
       setPhase('describe');
       track('cra_check_started');
     } catch (e) {
-      setError(errorText(e));
+      setError(errorText(e, s));
       setPhase('email');
     }
   }
@@ -267,7 +273,7 @@ export default function CraCheck({
       setPhase('pain');
       track('cra_check_answered', { verdict: answer.verdict });
     } catch (e) {
-      setError(errorText(e));
+      setError(errorText(e, s));
       setPhase(turns.current.length ? 'clarify' : 'describe');
       // The answer that failed is asked again on the next send.
       if (turns.current.length) {
@@ -292,7 +298,7 @@ export default function CraCheck({
       setPhase('done');
       track('cra_check_pain', { choice: choice ?? 'text' });
     } catch (e) {
-      setError(errorText(e));
+      setError(errorText(e, s));
       setPhase('pain');
     }
   }
@@ -492,7 +498,11 @@ export default function CraCheck({
                 );
               if (m.kind === 'done')
                 return (
-                  <a key={i} className="cra-cta" href="/early-access/?interest=cra">
+                  <a
+                    key={i}
+                    className="cra-cta"
+                    href={localizedPath(locale, '/early-access/') + '?interest=cra'}
+                  >
                     {s.earlyAccess}
                   </a>
                 );
@@ -516,7 +526,8 @@ export default function CraCheck({
                         ))}
                       </dl>
                       <p className="cra-small cra-lane-caption">
-                        {s.clocks.caption}. <a href="/deadlines/">{s.clocks.link}</a>
+                        {s.clocks.caption}.{' '}
+                        <a href={localizedPath(locale, '/deadlines/')}>{s.clocks.link}</a>
                       </p>
                     </div>
                   )}
@@ -650,7 +661,8 @@ export default function CraCheck({
               </form>
             )}
             <p className="cra-small cra-note">
-              {phase === 'done' ? s.source : s.footnote} <a href="/privacy/">{s.privacy}</a>
+              {phase === 'done' ? s.source : s.footnote}{' '}
+              <a href={localizedPath(locale, '/privacy/')}>{s.privacy}</a>
             </p>
             <div className="cra-turnstile" ref={turnstileSlot} />
           </div>

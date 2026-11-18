@@ -1,6 +1,9 @@
 ---
 // The four CRA facts: who reports, what, to whom and how fast.
 import { t } from '../../i18n';
+import { pageLocale } from '../../i18n/routes';
+
+const locale = pageLocale(Astro.currentLocale);
 
 interface Props {
   /** Show the article reference under each fact. */
@@ -8,7 +11,7 @@ interface Props {
 }
 
 const { refs = false } = Astro.props;
-const s = t('en').cra.asks;
+const s = t(locale).cra.asks;
 ---
 
 <dl class="facts">

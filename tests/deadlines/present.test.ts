@@ -104,3 +104,37 @@ describe('verificationSummary', () => {
     });
   });
 });
+
+describe('German formatting', () => {
+  it('formats countdowns and dates in German', async () => {
+    const { DateTime } = await import('luxon');
+    const { formatZoned, formatLongUtc } = await import('../../src/lib/deadlines/format');
+    const { offsetLabel } = await import('../../src/lib/calculator/timeline');
+    const now = Date.UTC(2026, 0, 1);
+    const r = remaining(now + (26 * 3600 + 4 * 60 + 5) * 1000, now);
+    expect(formatCountdown(r, 'de')).toBe('1 T 2 Std 04 Min 05 Sek');
+    expect(formatCountdownSpoken(r, 'de')).toBe('1 Tag 2 Stunden');
+    const dt = DateTime.fromISO('2026-10-02T09:00:00Z');
+    expect(formatZoned(dt, 'Europe/Berlin', 'de')).toBe('Fr 2. Okt 2026, 11:00 (UTC+02:00)');
+    expect(formatLongUtc(dt, 'de')).toBe('2. Oktober 2026, 09:00 UTC');
+    expect(offsetLabel({ hours: 24 }, 'de')).toBe('24 Std');
+    expect(offsetLabel({ months: 1 }, 'de')).toBe('1 Mon');
+  });
+});
+
+describe('Russian formatting', () => {
+  it('uses Russian plural forms and dates', async () => {
+    const { DateTime } = await import('luxon');
+    const { formatLongUtc } = await import('../../src/lib/deadlines/format');
+    const now = Date.UTC(2026, 0, 1);
+    const spoken = (s: number) => formatCountdownSpoken(remaining(now + s * 1000, now), 'ru');
+    expect(spoken(60)).toBe('1 минута');
+    expect(spoken(3 * 60)).toBe('3 минуты');
+    expect(spoken(11 * 60)).toBe('11 минут');
+    expect(spoken(21 * 3600 + 22 * 60)).toBe('21 час 22 минуты');
+    expect(spoken(5 * 86400 + 2 * 3600)).toBe('5 дней 2 часа');
+    expect(formatLongUtc(DateTime.fromISO('2026-10-02T09:00:00Z'), 'ru')).toBe(
+      '2 октября 2026, 09:00 UTC',
+    );
+  });
+});

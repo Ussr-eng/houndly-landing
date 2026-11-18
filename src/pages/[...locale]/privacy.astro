@@ -1,0 +1,107 @@
+---
+// Privacy policy. The text lives in src/i18n/en.ts (privacy); inline [text](url) links are
+// turned into anchors here.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { t } from '../../i18n';
+import { localeStaticPaths, pageLocale } from '../../i18n/routes';
+import { defaultLocale } from '../../i18n/config';
+
+export const getStaticPaths = localeStaticPaths;
+const locale = pageLocale(Astro.currentLocale);
+
+const s = t(locale).privacy;
+const slug = (heading: string) =>
+  heading
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/ß/g, 'ss')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+
+const LINK = /\[([^\]]+)\]\(((?:https:\/\/|mailto:)[^)\s]+)\)/g;
+type Part = { text: string; href?: string };
+function parts(text: string): Part[] {
+  const out: Part[] = [];
+  let last = 0;
+  for (const m of text.matchAll(LINK)) {
+    if (m.index > last) out.push({ text: text.slice(last, m.index) });
+    out.push({ text: m[1] ?? '', href: m[2] ?? '' });
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) out.push({ text: text.slice(last) });
+  return out;
+}
+---
+
+<BaseLayout title={s.title} description={s.description}>
+  <article class="prose legal-page">
+    <h1>{s.title}</h1>
+    {locale !== defaultLocale && <p class="legal-updated">{s.translationNote}</p>}
+    <p class="legal-updated">
+      {s.lastUpdated}: {s.updatedOn}
+    </p>
+    <p>{s.intro}</p>
+    {s.sections.map((section) => (
+      <section aria-labelledby={slug(section.heading)}>
+        <h2 id={slug(section.heading)}>{section.heading}</h2>
+        {section.blocks.map((block) =>
+          'p' in block ? (
+            <p>{parts(block.p).map((x) => (x.href ? <a href={x.href}>{x.text}</a> : x.text))}</p>
+          ) : 'ul' in block ? (
+            <ul>
+              {block.ul.map((item) => (
+                <li>{parts(item).map((x) => (x.href ? <a href={x.href}>{x.text}</a> : x.text))}</li>
+              ))}
+            </ul>
+          ) : (
+            <table>
+              <thead>
+                <tr>
+                  {block.table.head.map((h) => (
+                    <th scope="col">{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {block.table.rows.map((row) => (
+                  <tr>
+                    {row.map((cell, i) =>
+                      i === 0 ? (
+                        <th scope="row">{cell}</th>
+                      ) : (
+                        <td>
+                          {parts(cell).map((x) =>
+                            x.href ? <a href={x.href}>{x.text}</a> : x.text,
+                          )}
+                        </td>
+                      ),
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ),
+        )}
+      </section>
+    ))}
+  </article>
+</BaseLayout>
+
+<style>
+  .legal-page {
+    margin-block: var(--space-4) var(--space-12);
+  }
+
+  .legal-page h2 {
+    font-size: var(--fs-lg);
+  }
+
+  .legal-page th[scope='row'] {
+    font-weight: var(--weight-bold);
+  }
+
+  .legal-updated {
+    color: var(--muted);
+  }
+</style>

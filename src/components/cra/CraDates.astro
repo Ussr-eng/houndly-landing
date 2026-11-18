@@ -4,8 +4,11 @@
 import { DateTime } from 'luxon';
 import { fill, t } from '../../i18n';
 import { milestoneStatus } from '../../lib/milestone';
+import { pageLocale } from '../../i18n/routes';
 
-const s = t('en').cra.asks;
+const locale = pageLocale(Astro.currentLocale);
+
+const s = t(locale).cra.asks;
 const buildTime = DateTime.utc();
 const dates = s.dates.map((d) => {
   const status = milestoneStatus(d.date, buildTime);

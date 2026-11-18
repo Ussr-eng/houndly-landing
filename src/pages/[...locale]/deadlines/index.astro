@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { webApplication } from '../../../lib/seo/jsonld';
+import { site, siteUrl } from '../../../config/site';
+import Calculator from '../../../components/calculator/Calculator';
+import { fill, t } from '../../../i18n';
+import Bridge from '../../../components/Bridge.astro';
+import { htmlLang, localizedPath } from '../../../i18n/config';
+import { localeStaticPaths, pageLocale } from '../../../i18n/routes';
+
+export const getStaticPaths = localeStaticPaths;
+const locale = pageLocale(Astro.currentLocale);
+
+const d = t(locale).deadlinesPage;
+const title = d.title;
+const description = d.description;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={[
+    webApplication({
+      name: fill(d.appName, { site: site.name }),
+      url: siteUrl() + localizedPath(locale, '/deadlines/'),
+      description,
+      inLanguage: htmlLang[locale],
+    }),
+  ]}
+>
+  <div class="prose">
+    <h1>{title}</h1>
+    <p class="lead">{d.lead}</p>
+  </div>
+  <!-- Server-rendered with the fixed example; hydrates without changing the rows. -->
+  <Calculator client:load locale={locale} />
+  <noscript>
+    <p class="noscript-note">{t(locale).calculator.result.noscript}</p>
+  </noscript>
+  <Bridge locale={locale} />
+</BaseLayout>

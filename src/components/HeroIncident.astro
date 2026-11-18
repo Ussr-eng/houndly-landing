@@ -3,8 +3,11 @@
 // A static example (no live time, no calculation); the real thing is the calculator on /deadlines/.
 // Lanes share one 72-hour scale: the early warning ends at 24 h (1/3), "now" sits 9 h 13 min in.
 import { t } from '../i18n';
+import { pageLocale } from '../i18n/routes';
 
-const e = t('en').home.example;
+const locale = pageLocale(Astro.currentLocale);
+
+const e = t(locale).home.example;
 const now = (9 + 13 / 60) / 72;
 ---
 

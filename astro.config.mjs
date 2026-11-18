@@ -14,7 +14,7 @@ export default defineConfig({
   // Inline CSS (about 10 KB): one less render-blocking request on mobile.
   build: { format: 'directory', inlineStylesheets: 'always' },
   i18n: {
-    locales: ['en', 'de'],
+    locales: ['en', 'de', 'ru'],
     defaultLocale: 'en',
     routing: { prefixDefaultLocale: false },
   },
@@ -22,7 +22,7 @@ export default defineConfig({
     react(),
     sitemap({
       filter: (page) => !isNoindexByDesign(new URL(page).pathname),
-      // Turns on hreflang in the sitemap once a second locale is added.
+      // Public locales only: hidden ones (ru) are filtered out of the sitemap above.
       i18n: { defaultLocale: 'en', locales: { en: 'en', de: 'de' } },
     }),
   ],

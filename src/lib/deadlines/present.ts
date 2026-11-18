@@ -3,6 +3,7 @@
 
 import { formatUtc, formatZoned } from './format';
 import { parseInstant } from './instant';
+import type { Locale } from '../../i18n/config';
 import type { Anchor, Deadline, Rule, RuleSet } from './types';
 
 export type DeadlineRow =
@@ -18,7 +19,7 @@ export type DeadlineRow =
 export function presentDeadlines(
   deadlines: Deadline[],
   ruleSet: RuleSet,
-  options: { displayZone: string; reportingZone: string },
+  options: { displayZone: string; reportingZone: string; locale?: Locale },
 ): DeadlineRow[] {
   const order = new Map(ruleSet.rules.map((r, i) => [r.id, i]));
   const rows = deadlines.map((d): DeadlineRow => {
@@ -32,8 +33,8 @@ export function presentDeadlines(
       dueAt: d.due_at,
       dueMs: due.toMillis(),
       display: {
-        local: formatZoned(due, options.displayZone),
-        reporting: formatZoned(due, options.reportingZone),
+        local: formatZoned(due, options.displayZone, options.locale),
+        reporting: formatZoned(due, options.reportingZone, options.locale),
         utc: formatUtc(due),
       },
     };
