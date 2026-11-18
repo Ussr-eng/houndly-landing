@@ -6,12 +6,6 @@
   initial-value: 0deg;
 }
 
-@keyframes fit-spin {
-  to {
-    --fit-angle: 360deg;
-  }
-}
-
 @keyframes fit-dot {
   0%,
   80%,
@@ -34,7 +28,8 @@
   }
 }
 
-/* A slowly turning glow around the box: the one thing on the page that moves by itself. */
+/* A slowly turning glow around the box: the one thing on the page that moves by itself.
+   FitCheck.tsx turns it (--fit-angle), faster while the AI thinks. */
 .fit-glow {
   width: 100%;
   padding: 2px;
@@ -48,7 +43,11 @@
     var(--night-brand)
   );
   box-shadow: 0 1.5rem 5rem rgb(53 99 240 / 0.28);
-  animation: fit-spin 7s linear infinite;
+  transition: box-shadow 0.6s ease;
+}
+
+.fit-glow[data-busy] {
+  box-shadow: 0 1.5rem 6rem rgb(53 99 240 / 0.5);
 }
 
 .fit {
@@ -368,7 +367,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .fit-glow,
+  .fit-glow {
+    transition: none;
+  }
   .fit__dot,
   .fit__answer {
     animation: none;
