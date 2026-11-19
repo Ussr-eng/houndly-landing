@@ -19,6 +19,9 @@ export interface FitAnswer {
   summary: string;
   needs: FitNeed[];
   modules: string[];
+  /** Questions this visitor may still ask today, and the daily limit. */
+  questions_left?: number;
+  questions_per_day?: number;
 }
 
 export interface FitCheckApi {

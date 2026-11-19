@@ -153,11 +153,37 @@ describe('AI guide on the home page', () => {
     expect(screen.getByText('450/500')).toBeTruthy();
   });
 
+  it('shows the daily limit from the third question on', async () => {
+    const api = fakeApi({ ...ANSWER, questions_left: 4, questions_per_day: 5 });
+    const { user } = mount(api);
+    const box = screen.getByLabelText(/Describe your problem/);
+    await user.type(box, 'Calls at night{Enter}');
+    await screen.findByText('Partly fits');
+    expect(screen.queryByText(/questions a day/)).toBeNull();
+
+    api.ask.mockResolvedValue({ ...ANSWER, questions_left: 3, questions_per_day: 5 });
+    await user.click(screen.getByRole('button', { name: 'Ask something else' }));
+    await user.type(box, 'And a status page{Enter}');
+    expect(
+      await screen.findByText('You can ask up to 5 questions a day. 3 left today.'),
+    ).toBeTruthy();
+
+    api.ask.mockResolvedValue({ ...ANSWER, questions_left: 0, questions_per_day: 5 });
+    await user.click(screen.getByRole('button', { name: 'Ask something else' }));
+    expect(screen.getByText(/3 left today/)).toBeTruthy();
+    await user.type(box, 'And reports{Enter}');
+    expect(
+      await screen.findByText(
+        'You can ask up to 5 questions a day. That was the last one for today.',
+      ),
+    ).toBeTruthy();
+  });
+
   it('says how many questions a day there are when the limit is reached', async () => {
     const { user } = mount(fakeApi(new FitCheckError(429)));
     await user.type(screen.getByLabelText(/Describe your problem/), 'Calls at night{Enter}');
     expect((await screen.findByRole('alert')).textContent).toBe(
-      'You can ask 3 questions a day. Please come back tomorrow.',
+      'You can ask up to 5 questions a day. Please come back tomorrow.',
     );
   });
 

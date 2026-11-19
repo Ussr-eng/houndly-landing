@@ -36,6 +36,8 @@ interface Props {
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 /** The longest question the backend accepts. */
 const MAX_QUESTION = 500;
+/** The daily limit shows once a visitor has this many questions left (from the third on). */
+const SHOW_LEFT_FROM = 3;
 /** The character count shows from here on. */
 const COUNT_FROM = 400;
 const TYPE_MS = 55;
@@ -86,6 +88,7 @@ export default function FitCheck({
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [answer, setAnswer] = useState<FitAnswer | null>(null);
+  const [quota, setQuota] = useState<{ left: number; max: number } | null>(null);
   const [typed, setTyped] = useState('');
   const [focused, setFocused] = useState(false);
   const turnstileToken = useRef('');
@@ -190,6 +193,9 @@ export default function FitCheck({
         turnstile,
       );
       setAnswer(got);
+      if (typeof got.questions_left === 'number' && typeof got.questions_per_day === 'number') {
+        setQuota({ left: got.questions_left, max: got.questions_per_day });
+      }
       setPhase('answer');
       highlightModules(got.verdict === 'off_topic' ? null : got.modules);
       track('fit_check_answered', { verdict: got.verdict });
@@ -286,6 +292,13 @@ export default function FitCheck({
           {text.length >= COUNT_FROM && (
             <p className="fit__count">
               {text.length}/{MAX_QUESTION}
+            </p>
+          )}
+          {quota && quota.left <= SHOW_LEFT_FROM && (
+            <p className="fit__quota">
+              {(quota.left > 0 ? s.left : s.lastOne)
+                .replace('{max}', String(quota.max))
+                .replace('{left}', String(quota.left))}
             </p>
           )}
           <p id="fit-hint" className="visually-hidden">

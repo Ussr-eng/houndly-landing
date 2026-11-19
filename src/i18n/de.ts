@@ -353,13 +353,15 @@ export const de: UiStrings = {
         text: 'Die vollständige Analyse ist unterwegs.',
       },
       again: 'Etwas anderes fragen',
+      left: 'Sie können bis zu {max} Fragen pro Tag stellen. Heute noch {left}.',
+      lastOne: 'Sie können bis zu {max} Fragen pro Tag stellen. Das war die letzte für heute.',
       errors: {
         short: 'Beschreiben Sie Ihr Problem zuerst in ein paar Worten.',
         email: 'Geben Sie eine gültige E-Mail-Adresse ein.',
         network: 'Keine Verbindung. Prüfen Sie Ihr Internet und versuchen Sie es erneut.',
         robot:
           'Wir konnten nicht bestätigen, dass Sie kein Roboter sind. Laden Sie die Seite neu und versuchen Sie es erneut.',
-        tooMany: 'Sie können 3 Fragen pro Tag stellen. Bitte kommen Sie morgen wieder.',
+        tooMany: 'Sie können bis zu 5 Fragen pro Tag stellen. Bitte kommen Sie morgen wieder.',
         expired: 'Diese Antwort ist abgelaufen. Bitte fragen Sie erneut.',
         already: 'Diese Analyse haben wir bereits gesendet. Sehen Sie in Ihr Postfach.',
         unavailable:
