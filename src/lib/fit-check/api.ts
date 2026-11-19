@@ -4,7 +4,7 @@
 
 import type { Locale } from '../../i18n/config';
 
-export type FitVerdict = 'fits' | 'partly' | 'not_yet' | 'not_for_us';
+export type FitVerdict = 'fits' | 'partly' | 'not_yet' | 'not_for_us' | 'off_topic';
 export type FitStatus = 'available' | 'building' | 'next' | 'not_planned' | 'unknown';
 
 export interface FitNeed {
@@ -19,6 +19,9 @@ export interface FitAnswer {
   summary: string;
   needs: FitNeed[];
   modules: string[];
+  /** Questions this visitor may still ask today, and the daily limit. */
+  questions_left?: number;
+  questions_per_day?: number;
 }
 
 export interface FitCheckApi {

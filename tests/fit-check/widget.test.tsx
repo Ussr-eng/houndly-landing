@@ -117,14 +117,6 @@ describe('AI guide on the home page', () => {
     expect(api.ask).not.toHaveBeenCalled();
   });
 
-  it('says plainly when there are too many questions', async () => {
-    const { user } = mount(fakeApi(new FitCheckError(429)));
-    await user.type(screen.getByLabelText(/Describe your problem/), 'Something{Enter}');
-    expect((await screen.findByRole('alert')).textContent).toBe(
-      'Too many questions in a short time. Please try again later.',
-    );
-  });
-
   it('clears the answer and the cards when the visitor asks something else', async () => {
     const { user, cards } = mount(fakeApi());
     await user.type(screen.getByLabelText(/Describe your problem/), 'Calls at night{Enter}');
@@ -132,6 +124,67 @@ describe('AI guide on the home page', () => {
     await user.click(screen.getByRole('button', { name: 'Ask something else' }));
     expect(screen.queryByText('Partly fits')).toBeNull();
     expect(cards.dataset.answered).toBeUndefined();
+  });
+
+  it('answers off-topic text with its own words, no email form and no cards', async () => {
+    const api = fakeApi({
+      ...ANSWER,
+      verdict: 'off_topic',
+      summary: 'off topic',
+      needs: [],
+      modules: [],
+    });
+    const { user, cards } = mount(api);
+    await user.type(screen.getByLabelText(/Describe your problem/), 'Write me a poem{Enter}');
+    expect(await screen.findByText('Off topic')).toBeTruthy();
+    expect(screen.getByText(/I only answer one question/)).toBeTruthy();
+    expect(screen.queryByText('off topic')).toBeNull();
+    expect(screen.queryByLabelText('Get the full analysis by email')).toBeNull();
+    expect(cards.dataset.answered).toBeUndefined();
+  });
+
+  it('keeps questions to 500 characters and shows the count near the end', async () => {
+    const { user } = mount(fakeApi());
+    const box = screen.getByLabelText<HTMLTextAreaElement>(/Describe your problem/);
+    expect(box.maxLength).toBe(500);
+    expect(screen.queryByText(/\/500$/)).toBeNull();
+    await user.click(box);
+    await user.paste('x'.repeat(450));
+    expect(screen.getByText('450/500')).toBeTruthy();
+  });
+
+  it('shows the daily limit from the third question on', async () => {
+    const api = fakeApi({ ...ANSWER, questions_left: 4, questions_per_day: 5 });
+    const { user } = mount(api);
+    const box = screen.getByLabelText(/Describe your problem/);
+    await user.type(box, 'Calls at night{Enter}');
+    await screen.findByText('Partly fits');
+    expect(screen.queryByText(/questions a day/)).toBeNull();
+
+    api.ask.mockResolvedValue({ ...ANSWER, questions_left: 3, questions_per_day: 5 });
+    await user.click(screen.getByRole('button', { name: 'Ask something else' }));
+    await user.type(box, 'And a status page{Enter}');
+    expect(
+      await screen.findByText('You can ask up to 5 questions a day. 3 left today.'),
+    ).toBeTruthy();
+
+    api.ask.mockResolvedValue({ ...ANSWER, questions_left: 0, questions_per_day: 5 });
+    await user.click(screen.getByRole('button', { name: 'Ask something else' }));
+    expect(screen.getByText(/3 left today/)).toBeTruthy();
+    await user.type(box, 'And reports{Enter}');
+    expect(
+      await screen.findByText(
+        'You can ask up to 5 questions a day. That was the last one for today.',
+      ),
+    ).toBeTruthy();
+  });
+
+  it('says how many questions a day there are when the limit is reached', async () => {
+    const { user } = mount(fakeApi(new FitCheckError(429)));
+    await user.type(screen.getByLabelText(/Describe your problem/), 'Calls at night{Enter}');
+    expect((await screen.findByRole('alert')).textContent).toBe(
+      'You can ask up to 5 questions a day. Please come back tomorrow.',
+    );
   });
 
   it('speaks German on the German page', async () => {
