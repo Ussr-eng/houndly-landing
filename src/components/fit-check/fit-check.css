@@ -450,8 +450,11 @@
     animation-duration: 1.6s !important;
     animation-iteration-count: infinite !important;
   }
+  /* The dots on "AI is answering..." only fade in one after another: nothing moves on the
+     screen, so they stay on too (base.css would cut them to one frame). */
   .fit__wait span {
-    opacity: 1;
+    animation-duration: 1.2s !important;
+    animation-iteration-count: infinite !important;
   }
   .fit__dot,
   .fit__answer {
