@@ -96,11 +96,6 @@
   font-weight: var(--weight-bold);
 }
 
-.fit__free {
-  color: var(--night-muted);
-  font-size: var(--fs-sm);
-}
-
 .fit__row {
   display: flex;
   flex-direction: column;
@@ -155,6 +150,62 @@
 .fit__send {
   min-height: 3.5rem;
   font-size: var(--fs-md);
+}
+
+/* "AI is answering..." while waiting: the dots appear one after another, then start again. */
+.fit__send:disabled {
+  min-width: 12rem;
+}
+
+.fit__wait {
+  display: inline-block;
+  width: 1.2em;
+  text-align: left;
+}
+
+.fit__wait span {
+  opacity: 0;
+  animation: fit-dot-1 1.2s steps(1, end) infinite;
+}
+
+.fit__wait span:nth-child(2) {
+  animation-name: fit-dot-2;
+}
+
+.fit__wait span:nth-child(3) {
+  animation-name: fit-dot-3;
+}
+
+@keyframes fit-dot-1 {
+  0% {
+    opacity: 0;
+  }
+  25%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fit-dot-2 {
+  0%,
+  25% {
+    opacity: 0;
+  }
+  50%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fit-dot-3 {
+  0%,
+  50% {
+    opacity: 0;
+  }
+  75%,
+  100% {
+    opacity: 1;
+  }
 }
 
 .fit__send:hover,
@@ -384,6 +435,9 @@
     /* base.css shortens every animation under reduced motion; this one is allowed. */
     animation-duration: 1.6s !important;
     animation-iteration-count: infinite !important;
+  }
+  .fit__wait span {
+    opacity: 1;
   }
   .fit__dot,
   .fit__answer {

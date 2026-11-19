@@ -244,7 +244,6 @@ export default function FitCheck({
         <form className="fit__ask" onSubmit={(e) => void ask(e)} noValidate>
           <div className="fit__top">
             <label htmlFor="fit-question">{s.label}</label>
-            <span className="fit__free">{s.free}</span>
           </div>
           <div className="fit__row">
             <textarea
@@ -264,7 +263,18 @@ export default function FitCheck({
               onKeyDown={onKey}
             />
             <button type="submit" className="fit__send" disabled={busy}>
-              {s.button}
+              {busy ? (
+                <>
+                  {s.buttonBusy}
+                  <span className="fit__wait" aria-hidden="true">
+                    <span>.</span>
+                    <span>.</span>
+                    <span>.</span>
+                  </span>
+                </>
+              ) : (
+                s.button
+              )}
             </button>
           </div>
           <p id="fit-hint" className="visually-hidden">
