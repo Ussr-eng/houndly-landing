@@ -311,7 +311,6 @@ export const en = {
     // The AI guide in the hero (src/components/fit-check). The backend answers from its module
     // catalogue (houndly-backend app/fit_check/catalogue/within24.md); keep statuses in step.
     guide: {
-      badge: 'AI guide: knows every part of Within24',
       label: 'Describe your problem. See in seconds if we solve it.',
       hint: 'Press Enter to ask. Shift+Enter starts a new line.',
       examples: [

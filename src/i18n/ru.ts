@@ -291,7 +291,6 @@ export const ru: UiStrings = {
     status: 'Ранний доступ: мы сейчас строим Within24.',
     // ИИ-проводник в первом экране (src/components/fit-check).
     guide: {
-      badge: 'ИИ-проводник: знает каждую часть Within24',
       label: 'Опишите вашу проблему. За секунды узнаете, решаем ли мы её.',
       hint: 'Enter отправляет вопрос. Shift+Enter начинает новую строку.',
       examples: [
