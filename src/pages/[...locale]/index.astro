@@ -34,24 +34,6 @@ const icons: Record<string, string> = {
 <BaseLayout title={s.title} description={s.description} bleed nightHeader noCraChat>
   <section class="hero night" aria-labelledby="hero-heading">
     <div class="container hero__inner">
-      {api && (
-        <p class="hero__badge">
-          <svg
-            width="15"
-            height="15"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z" />
-          </svg>
-          {s.guide.badge}
-        </p>
-      )}
       <h1 id="hero-heading">{s.heading}</h1>
       <p class="hero__intro">{s.intro}</p>
       {api ? (
@@ -199,23 +181,6 @@ const icons: Record<string, string> = {
     max-width: 56rem;
     padding-block: var(--space-8) var(--space-12);
     text-align: center;
-  }
-
-  .hero__badge {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    margin: 0;
-    padding: 0.375rem 0.75rem;
-    color: var(--muted);
-    font-size: var(--fs-sm);
-    background: var(--night-glow);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-  }
-
-  .hero__badge svg {
-    color: var(--accent);
   }
 
   .hero h1 {

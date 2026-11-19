@@ -297,7 +297,6 @@ export const de: UiStrings = {
     status: 'Früher Zugang: Wir bauen Within24 gerade.',
     // Der KI-Guide im Hero (src/components/fit-check).
     guide: {
-      badge: 'KI-Guide: kennt jeden Teil von Within24',
       label: 'Beschreiben Sie Ihr Problem. In Sekunden sehen Sie, ob wir es lösen.',
       hint: 'Mit Enter fragen. Umschalt+Enter beginnt eine neue Zeile.',
       examples: [
