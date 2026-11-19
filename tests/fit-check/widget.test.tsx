@@ -53,6 +53,7 @@ describe('AI guide on the home page', () => {
     expect(html).toContain('Describe your problem. See in seconds if we solve it.');
     expect(html).toContain('<textarea');
     expect(html).toContain('Leaving Opsgenie');
+    expect(html).not.toContain('Short answer free');
   });
 
   it('shows the short answer without an email and lights up the matching cards', async () => {
@@ -92,6 +93,18 @@ describe('AI guide on the home page', () => {
     expect(await screen.findByText('Check your inbox.')).toBeTruthy();
     expect(api.email).toHaveBeenCalledWith(ANSWER.check_token, 'anna@team.eu');
     expect(track).toHaveBeenCalledWith('fit_check_emailed');
+  });
+
+  it('says the AI is answering on the button while it waits', async () => {
+    const api = fakeApi();
+    let finish: (a: FitAnswer) => void = () => undefined;
+    api.ask.mockReturnValue(new Promise<FitAnswer>((r) => (finish = r)));
+    const { user } = mount(api);
+    await user.type(screen.getByLabelText(/Describe your problem/), 'Calls at night{Enter}');
+    const button = await screen.findByRole('button', { name: 'AI is answering' });
+    expect((button as HTMLButtonElement).disabled).toBe(true);
+    finish(ANSWER);
+    expect(await screen.findByRole('button', { name: 'Ask the AI guide' })).toBeTruthy();
   });
 
   it('asks for a few words before sending an empty question', async () => {

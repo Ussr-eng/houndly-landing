@@ -313,7 +313,6 @@ export const en = {
     guide: {
       badge: 'AI guide: knows every part of Within24',
       label: 'Describe your problem. See in seconds if we solve it.',
-      free: 'Short answer free, no email',
       hint: 'Press Enter to ask. Shift+Enter starts a new line.',
       examples: [
         'We leave Opsgenie before April and need phone calls at night',
@@ -322,6 +321,7 @@ export const en = {
         'One alert storm wakes three people at once',
       ],
       button: 'Ask the AI guide',
+      buttonBusy: 'AI is answering',
       tryLabel: 'Try:',
       chips: [
         {

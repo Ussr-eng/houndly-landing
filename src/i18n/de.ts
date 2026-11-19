@@ -299,7 +299,6 @@ export const de: UiStrings = {
     guide: {
       badge: 'KI-Guide: kennt jeden Teil von Within24',
       label: 'Beschreiben Sie Ihr Problem. In Sekunden sehen Sie, ob wir es lösen.',
-      free: 'Kurze Antwort kostenlos, ohne E-Mail',
       hint: 'Mit Enter fragen. Umschalt+Enter beginnt eine neue Zeile.',
       examples: [
         'Wir verlassen Opsgenie vor April und brauchen nachts Anrufe',
@@ -308,6 +307,7 @@ export const de: UiStrings = {
         'Ein Alarmsturm weckt drei Leute gleichzeitig',
       ],
       button: 'KI-Guide fragen',
+      buttonBusy: 'KI antwortet',
       tryLabel: 'Beispiele:',
       chips: [
         {
