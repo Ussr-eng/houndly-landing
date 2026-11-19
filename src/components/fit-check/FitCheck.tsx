@@ -34,6 +34,10 @@ interface Props {
 }
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+/** The longest question the backend accepts. */
+const MAX_QUESTION = 500;
+/** The character count shows from here on. */
+const COUNT_FROM = 400;
 const TYPE_MS = 55;
 /** Seconds per turn of the glow around the box: slow at rest, fast while the AI thinks. */
 const TURN_REST_S = 30;
@@ -180,14 +184,14 @@ export default function FitCheck({
       turnstileToken.current = '';
       if (turnstile && turnstileSlot.current) window.turnstile?.reset(turnstileSlot.current);
       const got = await api.current.ask(
-        value,
+        value.slice(0, MAX_QUESTION),
         pagePath(window.location.pathname),
         locale,
         turnstile,
       );
       setAnswer(got);
       setPhase('answer');
-      highlightModules(got.modules);
+      highlightModules(got.verdict === 'off_topic' ? null : got.modules);
       track('fit_check_answered', { verdict: got.verdict });
     } catch (e) {
       setError(errorText(e, s, 'ask'));
@@ -237,6 +241,8 @@ export default function FitCheck({
   const busy = phase === 'thinking';
   const spinning = busy || phase === 'sending';
   const answered = answer && (phase === 'answer' || phase === 'sending' || phase === 'sent');
+  // Off topic: the page shows its own text, never the model's, and offers no email.
+  const offTopic = answer?.verdict === 'off_topic';
 
   return (
     <div className="fit-glow" ref={glow} data-busy={spinning ? 'true' : undefined}>
@@ -250,7 +256,7 @@ export default function FitCheck({
               id="fit-question"
               ref={question}
               rows={2}
-              maxLength={2000}
+              maxLength={MAX_QUESTION}
               value={text}
               placeholder={placeholder}
               aria-describedby="fit-hint"
@@ -277,6 +283,11 @@ export default function FitCheck({
               )}
             </button>
           </div>
+          {text.length >= COUNT_FROM && (
+            <p className="fit__count">
+              {text.length}/{MAX_QUESTION}
+            </p>
+          )}
           <p id="fit-hint" className="visually-hidden">
             {s.hint}
           </p>
@@ -322,7 +333,7 @@ export default function FitCheck({
               <span id="fit-verdict" className={`fit__verdict fit__verdict--${answer.verdict}`}>
                 {s.verdicts[answer.verdict]}
               </span>{' '}
-              <span>{answer.summary}</span>
+              <span>{offTopic ? s.offTopic : answer.summary}</span>
             </p>
             {answer.needs.length > 0 && (
               <ul className="fit__needs">
@@ -337,7 +348,7 @@ export default function FitCheck({
               </ul>
             )}
 
-            {phase === 'sent' ? (
+            {offTopic ? null : phase === 'sent' ? (
               <p className="fit__sent" role="status">
                 <strong>{s.sent.heading}</strong> {s.sent.text}{' '}
                 <button type="button" className="fit__again" onClick={reset}>

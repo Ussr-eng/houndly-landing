@@ -103,6 +103,9 @@ Every page must be fully readable by Google without running JavaScript.
   problem and gets a short answer with no email (houndly-backend `POST /public/fit-check`); the full
   analysis comes by email only when asked (`POST /public/fit-check/email`). Module cards light up
   when the answer names them; their ids and statuses match the backend's catalogue.
+  Questions are at most 500 characters and 3 per visitor per day (the backend enforces both);
+  text that is not about the visitor's problem gets the `off_topic` verdict and a fixed text.
+  Everything from the visitor or the model is rendered as text, never as HTML.
 - No tracking cookies, no third-party scripts beyond the analytics tool and the form provider
   (Turnstile). The only other host the browser talks to is our backend API.
 

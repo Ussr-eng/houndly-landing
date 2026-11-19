@@ -329,7 +329,10 @@ export const de: UiStrings = {
         partly: 'Passt teilweise',
         not_yet: 'Noch nicht',
         not_for_us: 'Machen wir nicht',
+        off_topic: 'Nicht unser Thema',
       },
+      offTopic:
+        'Ich beantworte nur eine Frage: Kann Within24 Ihr Problem lösen? Beschreiben Sie, was Ihr Team braucht, zum Beispiel wie Sie nachts geweckt werden oder welche Meldungen Sie abgeben müssen.',
       statuses: {
         available: 'Verfügbar',
         building: 'In Arbeit',
@@ -356,7 +359,7 @@ export const de: UiStrings = {
         network: 'Keine Verbindung. Prüfen Sie Ihr Internet und versuchen Sie es erneut.',
         robot:
           'Wir konnten nicht bestätigen, dass Sie kein Roboter sind. Laden Sie die Seite neu und versuchen Sie es erneut.',
-        tooMany: 'Zu viele Fragen in kurzer Zeit. Bitte versuchen Sie es später erneut.',
+        tooMany: 'Sie können 3 Fragen pro Tag stellen. Bitte kommen Sie morgen wieder.',
         expired: 'Diese Antwort ist abgelaufen. Bitte fragen Sie erneut.',
         already: 'Diese Analyse haben wir bereits gesendet. Sehen Sie in Ihr Postfach.',
         unavailable:

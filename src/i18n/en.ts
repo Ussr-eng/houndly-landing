@@ -343,7 +343,10 @@ export const en = {
         partly: 'Partly fits',
         not_yet: 'Not yet',
         not_for_us: 'Not what we do',
+        off_topic: 'Off topic',
       },
+      offTopic:
+        'I only answer one question: can Within24 solve your problem. Describe what your team needs, for example how you are woken at night or which reports you must file.',
       statuses: {
         available: 'Available',
         building: 'Building now',
@@ -369,7 +372,7 @@ export const en = {
         email: 'Enter a valid email address.',
         network: 'No connection. Check your internet and try again.',
         robot: 'We could not confirm you are not a robot. Reload the page and try again.',
-        tooMany: 'Too many questions in a short time. Please try again later.',
+        tooMany: 'You can ask 3 questions a day. Please come back tomorrow.',
         expired: 'This answer has expired. Please ask again.',
         already: 'We already sent this analysis. Check your inbox.',
         unavailable: 'The AI guide is not available right now. Please try again later.',

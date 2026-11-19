@@ -4,7 +4,7 @@
 
 import type { Locale } from '../../i18n/config';
 
-export type FitVerdict = 'fits' | 'partly' | 'not_yet' | 'not_for_us';
+export type FitVerdict = 'fits' | 'partly' | 'not_yet' | 'not_for_us' | 'off_topic';
 export type FitStatus = 'available' | 'building' | 'next' | 'not_planned' | 'unknown';
 
 export interface FitNeed {

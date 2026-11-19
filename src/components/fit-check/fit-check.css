@@ -313,7 +313,15 @@
   background: var(--night-soon);
 }
 
-.fit__verdict--not_for_us {
+.fit__count {
+  margin: calc(-1 * var(--space-2)) 0 0;
+  color: var(--night-muted);
+  font-size: var(--fs-xs);
+  text-align: right;
+}
+
+.fit__verdict--not_for_us,
+.fit__verdict--off_topic {
   color: var(--night-text);
   background: var(--night-surface-2);
 }
