@@ -31,7 +31,7 @@ describe('locales', () => {
   it('recognises configured locales only', () => {
     expect(isLocale('en')).toBe(true);
     expect(isLocale('de')).toBe(true);
-    expect(isLocale('fr')).toBe(false);
+    expect(isLocale('es')).toBe(false);
   });
 
   it('has no empty UI strings', () => {
@@ -48,7 +48,7 @@ describe('splitLocale', () => {
     ['/faq/', 'en', '/faq/'],
     ['/', 'en', '/'],
     ['/en/faq/', 'en', '/en/faq/'],
-    ['/fr/faq/', 'en', '/fr/faq/'],
+    ['/es/faq/', 'en', '/es/faq/'],
   ])('%s -> %s %s', (input, locale, path) => {
     expect(splitLocale(input)).toEqual({ locale, path });
   });

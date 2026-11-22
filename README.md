@@ -42,14 +42,14 @@ JavaScript the form shows the result inline. Request bodies and email addresses 
 
 Cloudflare Pages environment variables (Settings → Environment variables), per environment:
 
-| Name                                                  | Type     | Value                                                                                                         |
-| ----------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------- |
-| `FORM_PROVIDER`                                       | variable | `brevo`, or `fake` (accepts everything, stores nothing). Unset: forms answer "not available".                 |
-| `BREVO_API_KEY`                                       | secret   | Brevo API key                                                                                                 |
-| `BREVO_LIST_KIT`, `BREVO_LIST_WAITLIST`               | variable | Brevo list IDs                                                                                                |
-| `BREVO_TEMPLATE_KIT`, `BREVO_TEMPLATE_WAITLIST`       | variable | Brevo double opt-in template IDs                                                                              |
-| `BREVO_TEMPLATE_KIT_DE`, `BREVO_TEMPLATE_WAITLIST_DE` | variable | German double opt-in templates; unset: the English template is used. Same pattern for any language (`_FR`, …) |
-| `TURNSTILE_SECRET_KEY`                                | secret   | Turnstile secret key                                                                                          |
+| Name                                                  | Type     | Value                                                                                                                  |
+| ----------------------------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `FORM_PROVIDER`                                       | variable | `brevo`, or `fake` (accepts everything, stores nothing). Unset: forms answer "not available".                          |
+| `BREVO_API_KEY`                                       | secret   | Brevo API key                                                                                                          |
+| `BREVO_LIST_KIT`, `BREVO_LIST_WAITLIST`               | variable | Brevo list IDs                                                                                                         |
+| `BREVO_TEMPLATE_KIT`, `BREVO_TEMPLATE_WAITLIST`       | variable | Brevo double opt-in template IDs                                                                                       |
+| `BREVO_TEMPLATE_KIT_DE`, `BREVO_TEMPLATE_WAITLIST_DE` | variable | German double opt-in templates; unset: the English template is used. Same pattern for every language (`_FR`, `_PL`, …) |
+| `TURNSTILE_SECRET_KEY`                                | secret   | Turnstile secret key                                                                                                   |
 
 GitHub repository variable: `PUBLIC_TURNSTILE_SITE_KEY` (Turnstile site key; the widget is added
 only when it is set).
@@ -70,15 +70,20 @@ language in `builtLocales`. Internal links are written as English paths; on non-
 language with the switcher in the header; a browser in another language sees a one-line hint.
 Nothing redirects by IP or country.
 
-To add a language (for example French):
+Public languages: English, German, French and Polish. Russian (`/ru/`) is built for the team only.
 
-1. `src/i18n/config.ts`: add `fr` to `locales`, `htmlLang`, `ogLocale` and `builtLocales`.
+To add a language (for example Spanish):
+
+1. `src/i18n/config.ts`: add `es` to `locales`, `htmlLang`, `ogLocale` and `builtLocales`.
 2. `astro.config.mjs`: add it to `i18n.locales` and to the sitemap `i18n.locales`.
-3. `src/i18n/fr.ts`: a full copy of `en.ts` typed as `UiStrings` (a missing key fails the build),
+3. `src/i18n/es.ts`: a full copy of `en.ts` typed as `UiStrings` (a missing key fails the build),
    registered in `src/i18n/index.ts`.
-4. `src/content/guides/fr/`: translated guides with `locale: fr` and the same `slug`. A guide
+4. `src/content/guides/es/`: translated guides with `locale: es` and the same `slug`. A guide
    without a translation is simply not built in that language.
-5. Brevo: optional `BREVO_TEMPLATE_KIT_FR` and `BREVO_TEMPLATE_WAITLIST_FR`.
+5. Date words, countdown units and plural rule in `src/lib/deadlines/format.ts` and
+   `countdown.ts`, unit labels in `src/lib/calculator/timeline.ts` (typed by locale: the build fails
+   until they exist).
+6. Brevo: optional `BREVO_TEMPLATE_KIT_ES` and `BREVO_TEMPLATE_WAITLIST_ES`.
 
 A language listed in `hiddenLocales` is built but noindex, left out of the sitemap, the switcher
 and hreflang: for drafts or internal versions.

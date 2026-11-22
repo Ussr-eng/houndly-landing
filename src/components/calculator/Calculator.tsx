@@ -137,7 +137,12 @@ export default function Calculator({ locale }: Props) {
     : [];
   const dueRows = rows.filter((r): r is DeadlineRow & { status: 'due' } => r.status === 'due');
 
-  const deadlineName = (row: DeadlineRow) => `${row.rule.regime} ${s.stages[row.rule.stage]}`;
+  // "CRA early warning" in English, "Alerte précoce CRA" in French: the order comes from the
+  // strings, and the first letter is capitalised for languages that put the stage first.
+  const deadlineName = (row: DeadlineRow) => {
+    const name = fill(s.deadlineName, { regime: row.rule.regime, stage: s.stages[row.rule.stage] });
+    return name.charAt(0).toUpperCase() + name.slice(1);
+  };
 
   // calculator_calculated: once per distinct input, 2 s after the person stops editing.
   // Dependencies are primitives so the one-second clock re-render does not reset the timer.

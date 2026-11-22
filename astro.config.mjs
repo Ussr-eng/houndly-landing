@@ -14,7 +14,7 @@ export default defineConfig({
   // Inline CSS (about 10 KB): one less render-blocking request on mobile.
   build: { format: 'directory', inlineStylesheets: 'always' },
   i18n: {
-    locales: ['en', 'de', 'ru'],
+    locales: ['en', 'de', 'fr', 'pl', 'ru'],
     defaultLocale: 'en',
     routing: { prefixDefaultLocale: false },
   },
@@ -23,7 +23,7 @@ export default defineConfig({
     sitemap({
       filter: (page) => !isNoindexByDesign(new URL(page).pathname),
       // Public locales only: hidden ones (ru) are filtered out of the sitemap above.
-      i18n: { defaultLocale: 'en', locales: { en: 'en', de: 'de' } },
+      i18n: { defaultLocale: 'en', locales: { en: 'en', de: 'de', fr: 'fr', pl: 'pl' } },
     }),
   ],
 });

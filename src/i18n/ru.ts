@@ -1282,6 +1282,7 @@ export const ru: UiStrings = {
       'Это перевод. Если он расходится с английской версией, действует английская версия.',
   },
   calculator: {
+    deadlineName: '{regime} {stage}',
     formHeading: 'Ваш инцидент',
     resultHeading: 'Сроки отчётности',
     events: {

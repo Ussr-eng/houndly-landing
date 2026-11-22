@@ -39,6 +39,16 @@ interface Units {
 }
 
 const twoForms = (n: number) => (n === 1 ? 0 : 1);
+/** French: 0 and 1 take the singular (0 minute, 1 jour, 2 jours). */
+const frenchForms = (n: number) => (n <= 1 ? 0 : 1);
+/** Polish: 1 godzina, 2 godziny, 5 godzin; 22 godziny, 12 godzin. */
+const polishForms = (n: number) => {
+  if (n === 1) return 0;
+  const mod10 = n % 10;
+  const mod100 = n % 100;
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return 1;
+  return 2;
+};
 /** Russian: 1 день, 2 дня, 5 дней; 21 день, 22 дня, 11 дней. */
 const russianForms = (n: number) => {
   const mod10 = n % 10;
@@ -70,6 +80,28 @@ const UNITS: Record<Locale, Units> = {
     minute: ['Minute', 'Minuten'],
     plural: twoForms,
     lessThanMinute: 'weniger als eine Minute',
+  },
+  fr: {
+    d: 'j',
+    h: 'h',
+    min: 'min',
+    s: 's',
+    day: ['jour', 'jours'],
+    hour: ['heure', 'heures'],
+    minute: ['minute', 'minutes'],
+    plural: frenchForms,
+    lessThanMinute: 'moins d’une minute',
+  },
+  pl: {
+    d: 'd',
+    h: 'h',
+    min: 'min',
+    s: 's',
+    day: ['dzień', 'dni', 'dni'],
+    hour: ['godzina', 'godziny', 'godzin'],
+    minute: ['minuta', 'minuty', 'minut'],
+    plural: polishForms,
+    lessThanMinute: 'mniej niż minuta',
   },
   ru: {
     d: 'дн',
