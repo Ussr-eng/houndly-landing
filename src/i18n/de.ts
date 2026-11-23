@@ -1103,11 +1103,11 @@ export const de: UiStrings = {
     description:
       'Welche personenbezogenen Daten Within24 erhebt, warum, welche Anbieter sie verarbeiten, wie lange wir sie speichern und wie Sie Ihre Rechte nutzen.',
     lastUpdated: 'Zuletzt aktualisiert',
-    updatedOn: '18. November 2026',
+    updatedOn: '23. November 2026',
     translationNote:
       'Dies ist eine Übersetzung. Weicht sie von der englischen Fassung ab, gilt die englische Fassung.',
     intro:
-      'Diese Erklärung beschreibt, welche personenbezogenen Daten Within24 auf within24.app erhebt, warum, und was Sie dagegen tun können. Zum Lesen der Website und zur Nutzung des Rechners brauchen wir keine personenbezogenen Daten. Ihre E-Mail erhalten wir nur, wenn Sie eines unserer Formulare senden die CRA-Prüfung nutzen oder die vollständige Analyse des KI-Guides anfordern.',
+      'Diese Erklärung beschreibt, welche personenbezogenen Daten Within24 auf within24.app erhebt, warum, und was Sie dagegen tun können. Zum Lesen der Website und zur Nutzung des Rechners brauchen wir keine personenbezogenen Daten. Ihre E-Mail erhalten wir nur, wenn Sie eines unserer Formulare senden die CRA-Prüfung nutzen oder die vollständige Analyse des KI-Guides anfordern. Diese Erklärung gilt auch für den Hilfe-Chat in unserer Web-App (app.within24.app).',
     sections: [
       {
         heading: 'Wer verantwortlich ist',
@@ -1155,6 +1155,11 @@ export const de: UiStrings = {
                   'Um zu beantworten, ob Within24 zu Ihrem Problem passt, um Ihnen die angeforderte Analyse per E-Mail zu senden und um zu entscheiden, was wir als Nächstes bauen.',
                 ],
                 [
+                  'Hilfe-Chat in der Web-App (app.within24.app)',
+                  'Die E-Mail Ihres Kontos und Ihr Workspace, Ihre Nachrichten, angehängte Bilder (neu gespeichert ohne Standort, Kameradaten und andere Dateiangaben), die Antworten der KI, die Seite, von der Sie schreiben, die Sprache der App und die Uhrzeit.',
+                  'Um Ihre Frage zu beantworten, damit das Team behebt, was Sie melden, und per E-Mail antwortet, und um zu entscheiden, was wir als Nächstes bauen.',
+                ],
+                [
                   'Beide Formulare',
                   'Den Zeitpunkt Ihrer Anmeldung, welches Formular Sie genutzt haben und von welcher Seite Sie kamen, die Version des Einwilligungstextes und ob Sie gelegentliche Neuigkeiten wünschen.',
                   'Um Ihre Einwilligung nachzuweisen und Ihre Wahl zu respektieren.',
@@ -1183,6 +1188,7 @@ export const de: UiStrings = {
               'Formulare und E-Mails: Ihre Einwilligung (Art. 6 Abs. 1 Buchst. a DSGVO), die Sie mit dem Absenden des Formulars und der Bestätigung Ihrer E-Mail geben. Sie können sie jederzeit über den Abmeldelink in jeder E-Mail oder per Nachricht an uns widerrufen.',
               'CRA-Prüfung: Wir verarbeiten, was Sie eingeben, um Ihnen die erbetene Antwort zu geben (Art. 6 Abs. 1 Buchst. b DSGVO). E-Mails nach der Prüfung beruhen auf Ihrer Einwilligung, die Sie mit der Bestätigung Ihrer Adresse geben.',
               'KI-Guide: Wir verarbeiten, was Sie eingeben, und Ihre E-Mail, wenn Sie die vollständige Analyse anfordern, um Ihnen die erbetene Antwort zu geben (Art. 6 Abs. 1 Buchst. b DSGVO). E-Mails zum frühen Zugang beruhen auf Ihrer Einwilligung, die Sie mit der Bestätigung Ihrer Adresse geben.',
+              'Hilfe-Chat in der Web-App: Wir verarbeiten Ihre Nachrichten und Bilder, um Ihnen zu antworten und Sie bei dem Dienst zu unterstützen, den Sie nutzen (Art. 6 Abs. 1 Buchst. b DSGVO).',
               'Analyse, Bot-Prüfung und Hosting: unser berechtigtes Interesse (Art. 6 Abs. 1 Buchst. f DSGVO), eine sichere Website zu betreiben und zu erfahren, welche Seiten nützlich sind. Wir haben eine Analyse ohne Cookies gewählt, um Ihre Privatsphäre wenig zu belasten.',
             ],
           },
@@ -1212,13 +1218,13 @@ export const de: UiStrings = {
                 ],
                 [
                   'Anthropic, PBC',
-                  'Schreibt die Antworten der CRA-Prüfung und des KI-Guides aus Ihren Eingaben (KI-Modell)',
+                  'Schreibt die Antworten der CRA-Prüfung, des KI-Guides und des Hilfe-Chats in der Web-App aus Ihren Eingaben und angehängten Bildern (KI-Modell)',
                   'Unternehmen in den USA',
                   '[Datenschutzerklärung von Anthropic](https://www.anthropic.com/legal/privacy)',
                 ],
                 [
                   'Hetzner Online GmbH',
-                  'Hostet unseren API-Server und die Datenbank der CRA-Prüfung und des KI-Guides',
+                  'Hostet unseren API-Server und die Datenbank der CRA-Prüfung, des KI-Guides und des Hilfe-Chats',
                   'Unternehmen in Deutschland; unser Server steht in der EU (Deutschland oder Finnland)',
                   '[Datenschutzerklärung von Hetzner](https://www.hetzner.com/legal/privacy-policy/)',
                 ],
@@ -1249,6 +1255,7 @@ export const de: UiStrings = {
               'Bestätigte Anmeldungen: bis Sie sich abmelden oder die Löschung verlangen. Wenn die Liste für den frühen Zugang geschlossen wird, löschen wir Antworten, die wir nicht mehr brauchen.',
               'CRA-Prüfung: Was Sie eingeben, die Antworten und Ihre E-Mail werden 24 Monate nach Ihrer letzten Nutzung der Prüfung gelöscht oder früher, wenn Sie es verlangen.',
               'KI-Guide: Was Sie eingeben und die Antworten werden 24 Monate nach Ihrer Frage gelöscht oder früher, wenn Sie es verlangen.',
+              'Hilfe-Chat: Ihre Nachrichten, die Antworten und angehängte Bilder werden 24 Monate nach der letzten Nachricht im Gespräch gelöscht oder früher, wenn Sie es verlangen. Bilder, die Sie nie senden, werden nach einem Tag gelöscht.',
               'Analyse: als zusammengefasste Statistik gespeichert.',
               'Daten aus Hosting und Bot-Prüfung: von Cloudflare für die Fristen in den eigenen Bedingungen gespeichert.',
             ],

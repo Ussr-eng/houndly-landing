@@ -1113,15 +1113,15 @@ export const en = {
     description:
       'What personal data Within24 collects, why, which providers process it, how long we keep it and how to use your rights.',
     lastUpdated: 'Last updated',
-    updatedOn: '18 November 2026',
+    updatedOn: '23 November 2026',
     // Shown on translations only (not on the English page): the English text is the binding one.
     translationNote:
       'This is a translation. If it differs from the English version, the English version applies.',
-    // Text approved by the owner on 2026-10-27; the CRA check parts (2026-11-01) were approved with PR #24; the AI guide parts (2026-11-18) await approval
+    // Text approved by the owner on 2026-10-27; the CRA check parts (2026-11-01) were approved with PR #24; the AI guide parts (2026-11-18) were approved with PR #27; the help chat parts were approved by the owner on 2026-11-23
     // in the pull request. Provider facts checked against the pages linked below. Inline links
     // use [text](https://…).
     intro:
-      'This policy explains what personal data Within24 collects on within24.app, why, and what you can do about it. Reading the site and using the calculator need no personal data. We collect your email only when you send one of our forms, use the CRA check, or ask for the full analysis of the AI guide.',
+      'This policy explains what personal data Within24 collects on within24.app, why, and what you can do about it. Reading the site and using the calculator need no personal data. We collect your email only when you send one of our forms, use the CRA check, or ask for the full analysis of the AI guide. This policy also covers the help chat in our web app (app.within24.app).',
     sections: [
       {
         heading: 'Who is responsible',
@@ -1169,6 +1169,11 @@ export const en = {
                   'To answer whether Within24 fits your problem, to email you the full analysis you ask for, and to decide what to build next.',
                 ],
                 [
+                  'Help chat in the web app (app.within24.app)',
+                  'Your account email and workspace, the messages you write, images you attach (re-saved without location, camera and other file details), the answers the AI gives, the page you wrote from, the app language and the time.',
+                  'To answer your question, to let the team fix what you report and reply by email, and to decide what to build next.',
+                ],
+                [
                   'Both forms',
                   'The time you signed up, which form you used and the page you came from, the version of the consent text, and whether you asked for occasional news.',
                   'To prove your consent and respect your choices.',
@@ -1197,6 +1202,7 @@ export const en = {
               'Forms and emails: your consent (GDPR Article 6(1)(a)), given when you send the form and confirm your email. You can withdraw it at any time with the unsubscribe link in every email or by writing to us.',
               'CRA check: we process what you type to give you the answer you ask for (GDPR Article 6(1)(b)). Emails after the check rely on your consent, given when you confirm your address.',
               'AI guide: we process what you type, and your email when you ask for the full analysis, to give you the answer you ask for (GDPR Article 6(1)(b)). Early-access emails rely on your consent, given when you confirm your address.',
+              'Help chat in the web app: we process your messages and images to answer you and support you in the service you use (GDPR Article 6(1)(b)).',
               'Analytics, bot check and hosting: our legitimate interest (GDPR Article 6(1)(f)) in running a secure site and learning which pages are useful. We chose cookieless analytics to keep this light on your privacy.',
             ],
           },
@@ -1226,13 +1232,13 @@ export const en = {
                 ],
                 [
                   'Anthropic, PBC',
-                  'Writes the answers of the CRA check and the AI guide from what you type (AI model)',
+                  'Writes the answers of the CRA check, the AI guide and the help chat in the web app from what you type and the images you attach (AI model)',
                   'Company in the USA',
                   '[Anthropic privacy policy](https://www.anthropic.com/legal/privacy)',
                 ],
                 [
                   'Hetzner Online GmbH',
-                  'Hosts our API server and the database of the CRA check and the AI guide',
+                  'Hosts our API server and the database of the CRA check, the AI guide and the help chat',
                   'Company in Germany; our server is in the EU (Germany or Finland)',
                   '[Hetzner privacy policy](https://www.hetzner.com/legal/privacy-policy/)',
                 ],
@@ -1263,6 +1269,7 @@ export const en = {
               'Confirmed sign-ups: until you unsubscribe or ask us to delete them. When the early-access list closes, we delete answers we no longer need.',
               'CRA check: what you type, the answers and your email are deleted 24 months after you last used the check, or earlier when you ask us.',
               'AI guide: what you type and the answers are deleted 24 months after you asked, or earlier when you ask us.',
+              'Help chat: your messages, the answers and the images you attach are deleted 24 months after the last message in the conversation, or earlier when you ask us. Images you never send are deleted after a day.',
               'Analytics: kept as aggregate statistics.',
               'Hosting and bot check data: kept by Cloudflare for the periods in its own terms.',
             ],
