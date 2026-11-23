@@ -1312,6 +1312,8 @@ export const en = {
       'This is a translation. If it differs from the English version, the English version applies.',
   },
   calculator: {
+    // How a deadline is named: regime and stage (stage words in calculator.stages).
+    deadlineName: '{regime} {stage}',
     formHeading: 'Your incident',
     resultHeading: 'Reporting deadlines',
     events: {

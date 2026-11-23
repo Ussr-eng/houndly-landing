@@ -9,12 +9,12 @@
 // A locale in `hiddenLocales` is built for the team only: noindex, left out of hreflang, the
 // sitemap, the language switcher on other pages and the browser-language hint.
 
-export const locales = ['en', 'de', 'ru'] as const;
+export const locales = ['en', 'de', 'fr', 'pl', 'ru'] as const;
 export type Locale = (typeof locales)[number];
 export const defaultLocale: Locale = 'en';
 
 /** Locales every page is built in. */
-export const builtLocales: readonly Locale[] = ['en', 'de', 'ru'];
+export const builtLocales: readonly Locale[] = ['en', 'de', 'fr', 'pl', 'ru'];
 
 /** Built, but not for the public. Russian is the owner's own reading copy (2026-11-17). */
 export const hiddenLocales: readonly Locale[] = ['ru'];
@@ -24,8 +24,20 @@ export const publicLocales: readonly Locale[] = builtLocales.filter(
   (l) => !hiddenLocales.includes(l),
 );
 
-export const htmlLang: Record<Locale, string> = { en: 'en', de: 'de', ru: 'ru' };
-export const ogLocale: Record<Locale, string> = { en: 'en_GB', de: 'de_DE', ru: 'ru_RU' };
+export const htmlLang: Record<Locale, string> = {
+  en: 'en',
+  de: 'de',
+  fr: 'fr',
+  pl: 'pl',
+  ru: 'ru',
+};
+export const ogLocale: Record<Locale, string> = {
+  en: 'en_GB',
+  de: 'de_DE',
+  fr: 'fr_FR',
+  pl: 'pl_PL',
+  ru: 'ru_RU',
+};
 
 export function isLocale(value: string): value is Locale {
   return (locales as readonly string[]).includes(value);

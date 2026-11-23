@@ -77,7 +77,8 @@ main:focus {
   max-width: var(--measure);
 }
 
-/* Guide tables wrap inside the column instead of widening the page on phones. */
+/* Guide tables wrap inside the column instead of widening the page on phones. `anywhere`
+   (not `break-word`) also lets a long word (Polish, German) shrink a column at 360px. */
 .prose table {
   width: 100%;
   border-collapse: collapse;
@@ -89,7 +90,7 @@ main:focus {
   border-bottom: 1px solid var(--border);
   text-align: start;
   vertical-align: top;
-  overflow-wrap: break-word;
+  overflow-wrap: anywhere;
   hyphens: auto;
 }
 

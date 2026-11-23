@@ -1297,6 +1297,7 @@ export const de: UiStrings = {
       'Dies ist eine Übersetzung. Weicht sie von der englischen Fassung ab, gilt die englische Fassung.',
   },
   calculator: {
+    deadlineName: '{regime} {stage}',
     formHeading: 'Ihr Vorfall',
     resultHeading: 'Meldefristen',
     events: {
