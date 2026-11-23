@@ -1091,11 +1091,11 @@ export const pl: UiStrings = {
     description:
       'Jakie dane osobowe zbiera Within24, po co, którzy dostawcy je przetwarzają, jak długo je przechowujemy i jak skorzystać ze swoich praw.',
     lastUpdated: 'Ostatnia aktualizacja',
-    updatedOn: '18 listopada 2026',
+    updatedOn: '23 listopada 2026',
     translationNote:
       'To jest tłumaczenie. Jeśli różni się od wersji angielskiej, obowiązuje wersja angielska.',
     intro:
-      'Ta polityka wyjaśnia, jakie dane osobowe Within24 zbiera w serwisie within24.app, po co i co możesz z tym zrobić. Czytanie serwisu i korzystanie z kalkulatora nie wymagają żadnych danych osobowych. Twój e-mail zbieramy tylko wtedy, gdy wysyłasz jeden z naszych formularzy, korzystasz ze sprawdzenia CRA lub prosisz o pełną analizę przewodnika AI.',
+      'Ta polityka wyjaśnia, jakie dane osobowe Within24 zbiera w serwisie within24.app, po co i co możesz z tym zrobić. Czytanie serwisu i korzystanie z kalkulatora nie wymagają żadnych danych osobowych. Twój e-mail zbieramy tylko wtedy, gdy wysyłasz jeden z naszych formularzy, korzystasz ze sprawdzenia CRA lub prosisz o pełną analizę przewodnika AI. Polityka obejmuje też czat pomocy w naszej aplikacji internetowej (app.within24.app).',
     sections: [
       {
         heading: 'Kto odpowiada',
@@ -1143,6 +1143,11 @@ export const pl: UiStrings = {
                   'Aby odpowiedzieć, czy Within24 pasuje do Twojego problemu, wysłać Ci e-mailem pełną analizę, o którą prosisz, i zdecydować, co zbudować dalej.',
                 ],
                 [
+                  'Czat pomocy w aplikacji internetowej (app.within24.app)',
+                  'E-mail Twojego konta i Twój workspace, wiadomości, które piszesz, dołączone obrazy (zapisane ponownie bez lokalizacji, danych aparatu i innych szczegółów pliku), odpowiedzi AI, strona, z której piszesz, język aplikacji i czas.',
+                  'Aby odpowiedzieć na Twoje pytanie, aby zespół mógł naprawić to, co zgłaszasz, i odpowiedzieć e-mailem, oraz aby zdecydować, co zbudować dalej.',
+                ],
+                [
                   'Oba formularze',
                   'Czas zapisu, użyty formularz i strona, z której przyszedłeś, wersja tekstu zgody oraz to, czy prosiłeś o okazjonalne nowości.',
                   'Aby udokumentować Twoją zgodę i szanować Twoje wybory.',
@@ -1171,6 +1176,7 @@ export const pl: UiStrings = {
               'Formularze i e-maile: Twoja zgoda (art. 6 ust. 1 lit. a) RODO), wyrażona, gdy wysyłasz formularz i potwierdzasz e-mail. Możesz ją wycofać w każdej chwili linkiem do rezygnacji w każdym e-mailu albo pisząc do nas.',
               'Sprawdzenie CRA: przetwarzamy to, co wpisujesz, aby udzielić odpowiedzi, o którą prosisz (art. 6 ust. 1 lit. b) RODO). E-maile po sprawdzeniu opierają się na Twojej zgodzie, wyrażonej przy potwierdzeniu adresu.',
               'Przewodnik AI: przetwarzamy to, co wpisujesz, oraz Twój e-mail, gdy prosisz o pełną analizę, aby udzielić odpowiedzi, o którą prosisz (art. 6 ust. 1 lit. b) RODO). E-maile wczesnego dostępu opierają się na Twojej zgodzie, wyrażonej przy potwierdzeniu adresu.',
+              'Czat pomocy w aplikacji internetowej: przetwarzamy Twoje wiadomości i obrazy, aby Ci odpowiedzieć i wspierać Cię w usłudze, z której korzystasz (art. 6 ust. 1 lit. b) RODO).',
               'Analityka, kontrola botów i hosting: nasz prawnie uzasadniony interes (art. 6 ust. 1 lit. f) RODO) w prowadzeniu bezpiecznego serwisu i w wiedzy, które strony są przydatne. Wybraliśmy analitykę bez plików cookie, aby jak najmniej ingerować w Twoją prywatność.',
             ],
           },
@@ -1200,13 +1206,13 @@ export const pl: UiStrings = {
                 ],
                 [
                   'Anthropic, PBC',
-                  'Pisze odpowiedzi sprawdzenia CRA i przewodnika AI na podstawie tego, co wpisujesz (model AI)',
+                  'Pisze odpowiedzi sprawdzenia CRA, przewodnika AI i czatu pomocy w aplikacji internetowej na podstawie tego, co wpisujesz, i dołączonych obrazów (model AI)',
                   'Spółka w USA',
                   '[Polityka prywatności Anthropic](https://www.anthropic.com/legal/privacy)',
                 ],
                 [
                   'Hetzner Online GmbH',
-                  'Hostuje nasz serwer API oraz bazę danych sprawdzenia CRA i przewodnika AI',
+                  'Hostuje nasz serwer API oraz bazę danych sprawdzenia CRA, przewodnika AI i czatu pomocy',
                   'Spółka w Niemczech; nasz serwer jest w UE (w Niemczech lub Finlandii)',
                   '[Polityka prywatności Hetzner](https://www.hetzner.com/legal/privacy-policy/)',
                 ],
@@ -1237,6 +1243,7 @@ export const pl: UiStrings = {
               'Potwierdzone zapisy: do czasu rezygnacji lub prośby o usunięcie. Gdy lista wczesnego dostępu zostanie zamknięta, usuwamy odpowiedzi, których już nie potrzebujemy.',
               'Sprawdzenie CRA: to, co wpisujesz, odpowiedzi i Twój e-mail usuwamy 24 miesiące po ostatnim użyciu sprawdzenia lub wcześniej na Twoją prośbę.',
               'Przewodnik AI: to, co wpisujesz, i odpowiedzi usuwamy 24 miesiące po zadaniu pytania lub wcześniej na Twoją prośbę.',
+              'Czat pomocy: Twoje wiadomości, odpowiedzi i dołączone obrazy usuwamy 24 miesiące po ostatniej wiadomości w rozmowie lub wcześniej na Twoją prośbę. Obrazy, których nie wyślesz, usuwamy po jednym dniu.',
               'Analityka: przechowywana jako zbiorcze statystyki.',
               'Dane hostingu i kontroli botów: przechowywane przez Cloudflare przez okresy określone w jego warunkach.',
             ],

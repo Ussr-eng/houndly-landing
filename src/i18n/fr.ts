@@ -1105,11 +1105,11 @@ export const fr: UiStrings = {
     description:
       'Quelles données personnelles Within24 collecte, pourquoi, quels prestataires les traitent, combien de temps nous les gardons et comment exercer vos droits.',
     lastUpdated: 'Dernière mise à jour',
-    updatedOn: '18 novembre 2026',
+    updatedOn: '23 novembre 2026',
     translationNote:
       'Ceci est une traduction. En cas de divergence avec la version anglaise, la version anglaise prévaut.',
     intro:
-      'Cette politique explique quelles données personnelles Within24 collecte sur within24.app, pourquoi, et ce que vous pouvez faire à ce sujet. Lire le site et utiliser le calculateur ne nécessitent aucune donnée personnelle. Nous ne collectons votre e-mail que lorsque vous envoyez l’un de nos formulaires, utilisez la vérification CRA ou demandez l’analyse complète du guide IA.',
+      'Cette politique explique quelles données personnelles Within24 collecte sur within24.app, pourquoi, et ce que vous pouvez faire à ce sujet. Lire le site et utiliser le calculateur ne nécessitent aucune donnée personnelle. Nous ne collectons votre e-mail que lorsque vous envoyez l’un de nos formulaires, utilisez la vérification CRA ou demandez l’analyse complète du guide IA. Cette politique couvre aussi le chat d’aide de notre application web (app.within24.app).',
     sections: [
       {
         heading: 'Qui est responsable',
@@ -1157,6 +1157,11 @@ export const fr: UiStrings = {
                   'Pour répondre à la question de savoir si Within24 convient à votre problème, pour vous envoyer par e-mail l’analyse complète que vous demandez, et pour décider quoi construire ensuite.',
                 ],
                 [
+                  'Chat d’aide de l’application web (app.within24.app)',
+                  'L’e-mail de votre compte et votre espace de travail, les messages que vous écrivez, les images que vous joignez (réenregistrées sans localisation, données d’appareil photo ni autres détails du fichier), les réponses de l’IA, la page d’où vous écrivez, la langue de l’application et l’heure.',
+                  'Pour répondre à votre question, permettre à l’équipe de corriger ce que vous signalez et de vous répondre par e-mail, et décider quoi construire ensuite.',
+                ],
+                [
                   'Les deux formulaires',
                   'L’heure de votre inscription, le formulaire utilisé et la page d’où vous venez, la version du texte de consentement, et si vous avez demandé des nouvelles occasionnelles.',
                   'Pour prouver votre consentement et respecter vos choix.',
@@ -1187,6 +1192,7 @@ export const fr: UiStrings = {
               'Formulaires et e-mails : votre consentement (RGPD, article 6, paragraphe 1, point a), donné lorsque vous envoyez le formulaire et confirmez votre e-mail. Vous pouvez le retirer à tout moment avec le lien de désinscription présent dans chaque e-mail ou en nous écrivant.',
               'Vérification CRA : nous traitons ce que vous saisissez pour vous donner la réponse que vous demandez (RGPD, article 6, paragraphe 1, point b). Les e-mails après la vérification reposent sur votre consentement, donné lorsque vous confirmez votre adresse.',
               'Guide IA : nous traitons ce que vous saisissez, et votre e-mail lorsque vous demandez l’analyse complète, pour vous donner la réponse que vous demandez (RGPD, article 6, paragraphe 1, point b). Les e-mails d’accès anticipé reposent sur votre consentement, donné lorsque vous confirmez votre adresse.',
+              'Chat d’aide de l’application web : nous traitons vos messages et vos images pour vous répondre et vous assister dans le service que vous utilisez (RGPD, article 6, paragraphe 1, point b).',
               'Mesure d’audience, contrôle anti-robot et hébergement : notre intérêt légitime (RGPD, article 6, paragraphe 1, point f) à exploiter un site sûr et à savoir quelles pages sont utiles. Nous avons choisi une mesure d’audience sans cookies pour limiter l’atteinte à votre vie privée.',
             ],
           },
@@ -1216,13 +1222,13 @@ export const fr: UiStrings = {
                 ],
                 [
                   'Anthropic, PBC',
-                  'Rédige les réponses de la vérification CRA et du guide IA à partir de ce que vous saisissez (modèle d’IA)',
+                  'Rédige les réponses de la vérification CRA, du guide IA et du chat d’aide de l’application web à partir de ce que vous saisissez et des images que vous joignez (modèle d’IA)',
                   'Société aux États-Unis',
                   '[Politique de confidentialité d’Anthropic](https://www.anthropic.com/legal/privacy)',
                 ],
                 [
                   'Hetzner Online GmbH',
-                  'Héberge notre serveur d’API et la base de données de la vérification CRA et du guide IA',
+                  'Héberge notre serveur d’API et la base de données de la vérification CRA, du guide IA et du chat d’aide',
                   'Société en Allemagne ; notre serveur est dans l’UE (Allemagne ou Finlande)',
                   '[Politique de confidentialité de Hetzner](https://www.hetzner.com/legal/privacy-policy/)',
                 ],
@@ -1253,6 +1259,7 @@ export const fr: UiStrings = {
               'Inscriptions confirmées : jusqu’à votre désinscription ou votre demande de suppression. À la fermeture de la liste d’accès anticipé, nous supprimons les réponses dont nous n’avons plus besoin.',
               'Vérification CRA : ce que vous saisissez, les réponses et votre e-mail sont supprimés 24 mois après votre dernière utilisation de la vérification, ou plus tôt sur demande.',
               'Guide IA : ce que vous saisissez et les réponses sont supprimés 24 mois après votre question, ou plus tôt sur demande.',
+              'Chat d’aide : vos messages, les réponses et les images jointes sont supprimés 24 mois après le dernier message de la conversation, ou plus tôt sur demande. Les images jamais envoyées sont supprimées au bout d’un jour.',
               'Mesure d’audience : conservée sous forme de statistiques agrégées.',
               'Données d’hébergement et du contrôle anti-robot : conservées par Cloudflare pendant les durées prévues dans ses propres conditions.',
             ],
